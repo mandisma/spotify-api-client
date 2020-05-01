@@ -1,0 +1,38 @@
+{
+    "name": "mandisma/spotify-api-client",
+    "type": "library",
+    "description": "Http Client for the Spotify API.",
+    "keywords": [
+        "Spotify",
+        "http",
+        "client",
+        "api"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Maël Mandis",
+            "email": "mandis68@gmail.com"
+        }
+    ],
+    "require": {
+        "guzzlehttp/guzzle": "^6.3",
+        "php": "^7.2",
+        "ext-json": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.3",
+        "phpstan/phpstan": "^0.12.19",
+        "squizlabs/php_codesniffer": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Mandisma\\SpotifyApiClient\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Mandisma\\SpotifyApiClient\\Tests\\": "tests/"
+        }
+    }
+}
