@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Mandisma\SpotifyApiClient\Api;
 
-use Mandisma\SpotifyApiClient\Client\ResourceClient;
-
-final class PlaylistApi
+final class PlaylistApi extends AbstractApi
 {
     /**
      * URI suffix for the playlist endpoint
@@ -14,19 +12,6 @@ final class PlaylistApi
      * @var string
      */
     public const PLAYER_URI = '/v1/playlists';
-
-    /**
-     * @var ResourceClient
-     */
-    private $resourceClient;
-
-    /**
-     * @param ResourceClient $resourceClient
-     */
-    public function __construct(ResourceClient $resourceClient)
-    {
-        $this->resourceClient = $resourceClient;
-    }
 
     /**
      * Add one or more items to a user’s playlist.

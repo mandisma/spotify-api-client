@@ -4,23 +4,8 @@ declare(strict_types=1);
 
 namespace Mandisma\SpotifyApiClient\Api;
 
-use Mandisma\SpotifyApiClient\Client\ResourceClient;
-
-final class FollowApi
+final class FollowApi extends AbstractApi
 {
-    /**
-     * @var ResourceClient
-     */
-    private $resourceClient;
-
-    /**
-     * @param ResourceClient $resourceClient
-     */
-    public function __construct(ResourceClient $resourceClient)
-    {
-        $this->resourceClient = $resourceClient;
-    }
-
     /**
      * Check to see if the current user is following one or more artists
      * https://developer.spotify.com/documentation/web-api/reference/follow/check-current-user-follows/

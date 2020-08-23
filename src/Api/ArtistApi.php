@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Mandisma\SpotifyApiClient\Api;
 
-use Mandisma\SpotifyApiClient\Client\ResourceClient;
-
-final class ArtistApi
+final class ArtistApi extends AbstractApi
 {
     /**
      * URI suffix for the artists endpoint
@@ -14,19 +12,6 @@ final class ArtistApi
      * @var string
      */
     public const ARTIST_URI = '/v1/artists';
-
-    /**
-     * @var ResourceClient
-     */
-    private $resourceClient;
-
-    /**
-     * @param ResourceClient $resourceClient
-     */
-    public function __construct(ResourceClient $resourceClient)
-    {
-        $this->resourceClient = $resourceClient;
-    }
 
     /**
      * Get Spotify catalog information for a single artist identified by their unique Spotify ID

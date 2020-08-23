@@ -4,23 +4,8 @@ declare(strict_types=1);
 
 namespace Mandisma\SpotifyApiClient\Api;
 
-use Mandisma\SpotifyApiClient\Client\ResourceClient;
-
-final class UserProfileApi
+final class UserProfileApi extends AbstractApi
 {
-    /**
-     * @var ResourceClient
-     */
-    private $resourceClient;
-
-    /**
-     * @param ResourceClient $resourceClient
-     */
-    public function __construct(ResourceClient $resourceClient)
-    {
-        $this->resourceClient = $resourceClient;
-    }
-
     /**
      * Get detailed profile information about the current user (including the current user’s username).
      * https://developer.spotify.com/documentation/web-api/reference/users-profile/get-current-users-profile/

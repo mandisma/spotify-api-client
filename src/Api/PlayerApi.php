@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Mandisma\SpotifyApiClient\Api;
 
-use Mandisma\SpotifyApiClient\Client\ResourceClient;
-
-final class PlayerApi
+final class PlayerApi extends AbstractApi
 {
     /**
      * URI suffix for the player endpoint
@@ -14,19 +12,6 @@ final class PlayerApi
      * @var string
      */
     public const PLAYER_URI = '/v1/artists';
-
-    /**
-     * @var ResourceClient
-     */
-    private $resourceClient;
-
-    /**
-     * @param ResourceClient $resourceClient
-     */
-    public function __construct(ResourceClient $resourceClient)
-    {
-        $this->resourceClient = $resourceClient;
-    }
 
     /**
      * Get information about a user’s available devices

@@ -4,23 +4,8 @@ declare(strict_types=1);
 
 namespace Mandisma\SpotifyApiClient\Api;
 
-use Mandisma\SpotifyApiClient\Client\ResourceClient;
-
-final class LibraryApi
+final class LibraryApi extends AbstractApi
 {
-    /**
-     * @var ResourceClient
-     */
-    private $resourceClient;
-
-    /**
-     * @param ResourceClient $resourceClient
-     */
-    public function __construct(ResourceClient $resourceClient)
-    {
-        $this->resourceClient = $resourceClient;
-    }
-
     /**
      * Check if one or more albums is already saved in the current Spotify user’s ‘Your Music’ library
      * https://developer.spotify.com/documentation/web-api/reference/library/check-users-saved-albums/

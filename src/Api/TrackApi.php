@@ -4,23 +4,8 @@ declare(strict_types=1);
 
 namespace Mandisma\SpotifyApiClient\Api;
 
-use Mandisma\SpotifyApiClient\Client\ResourceClient;
-
-final class TrackApi
+final class TrackApi extends AbstractApi
 {
-    /**
-     * @var ResourceClient
-     */
-    private $resourceClient;
-
-    /**
-     * @param ResourceClient $resourceClient
-     */
-    public function __construct(ResourceClient $resourceClient)
-    {
-        $this->resourceClient = $resourceClient;
-    }
-
     /**
      * Get a detailed audio analysis for a single track identified by its unique Spotify ID.
      * https://developer.spotify.com/documentation/web-api/reference/tracks/get-audio-analysis/

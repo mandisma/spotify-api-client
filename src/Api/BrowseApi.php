@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Mandisma\SpotifyApiClient\Api;
 
-use Mandisma\SpotifyApiClient\Client\ResourceClient;
-
-final class BrowseApi
+final class BrowseApi extends AbstractApi
 {
     /**
      * URI suffix for the browse endpoint
@@ -14,19 +12,6 @@ final class BrowseApi
      * @var string
      */
     public const BROWSE_URI = '/v1/browse';
-
-    /**
-     * @var ResourceClient
-     */
-    private $resourceClient;
-
-    /**
-     * @param ResourceClient $resourceClient
-     */
-    public function __construct(ResourceClient $resourceClient)
-    {
-        $this->resourceClient = $resourceClient;
-    }
 
     /**
      * Get a single category used to tag items in Spotify (on, for example, the Spotify player’s “Browse” tab)

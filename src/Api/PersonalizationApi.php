@@ -4,23 +4,8 @@ declare(strict_types=1);
 
 namespace Mandisma\SpotifyApiClient\Api;
 
-use Mandisma\SpotifyApiClient\Client\ResourceClient;
-
-final class PersonalizationApi
+final class PersonalizationApi extends AbstractApi
 {
-    /**
-     * @var ResourceClient
-     */
-    private $resourceClient;
-
-    /**
-     * @param ResourceClient $resourceClient
-     */
-    public function __construct(ResourceClient $resourceClient)
-    {
-        $this->resourceClient = $resourceClient;
-    }
-
     /**
      * Get the current user’s top artists based on calculated affinity
      * https://developer.spotify.com/documentation/web-api/reference/personalization/get-users-top-artists-and-tracks/
