@@ -98,6 +98,8 @@ final class ResourceClient
      */
     private function handleRequestError(ResponseInterface $response): void
     {
-        throw new ResponseException(sprintf('Spotify Api Error (%d) : %s', $response->getStatusCode(), $response->getBody()));
+        throw new ResponseException(
+            sprintf('Spotify Api Error (%d) : %s', $response->getStatusCode(), $response->getBody())
+        );
     }
 }

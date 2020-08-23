@@ -27,12 +27,12 @@ final class Authentication
     private $refreshToken;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $authorizationCode;
 
     /**
-     * @var int
+     * @var int|null
      */
     private $expirationTime;
 
@@ -71,8 +71,8 @@ final class Authentication
      * @param string $redirectUri
      * @param string $accessToken
      * @param string $refreshToken
-     * @param string $authorizationCode
-     * @param integer $expirationTime
+     * @param string|null $authorizationCode
+     * @param integer|null $expirationTime
      * @return Authentication
      */
     public static function fromTokens(
