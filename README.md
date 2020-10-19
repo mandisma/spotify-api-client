@@ -16,8 +16,10 @@ composer require mandisma/spotify-api-client
 
 ```php
 $clientBuilder = new \Mandisma\SpotifyApiClient\ClientBuilder();
+
 // Refreshable app authorization. Tokens are automaticaly get before the request. Only works for non user request.
 $client = $clientBuilder->buildByCredentials('your_client_id', 'your_client_secret', 'your_redirect_uri');
+
 // or Refreshable user authorization
 $client = $clientBuilder->buildByTokens('your_client_id', 'your_client_secret', 'your_redirect_uri', 'access_token', 'refresh_token');
 ```
@@ -25,23 +27,33 @@ $client = $clientBuilder->buildByTokens('your_client_id', 'your_client_secret', 
 **Request an authorization code :**
 
 ```php
+// Create the client.
 $clientBuilder = new \Mandisma\SpotifyApiClient\ClientBuilder();
 $client = $clientBuilder->buildByCredentials('your_client_id', 'your_client_secret', 'your_redirect_uri');
+
+// Define which scopes are necessary.
 $scopes = ['user-read-playback-state'];
-// It will redirect to the spotify authorization url and after validation to your redirect url
+
+// Request the authorization code.
+// It will redirect to the spotify authorization url and after the validation to your redirect url
 $client->getAuthenticationApi()->requestAuthorizationCode($scopes);
 ```
 
 **Request an access token from an authorization code :**
 
 ```php
+// Create the client
 $clientBuilder = new \Mandisma\SpotifyApiClient\ClientBuilder();
 $client = $clientBuilder->buildByCredentials('your_client_id', 'your_client_secret', 'your_redirect_uri');
+
+// Request the access token.
 $authentication = $client->getAuthenticationApi()->requestAccessToken('the_authorization_code');
 ```
 
 After the operation below access_token and refresh_token will automatically set to the client for the current execution.
-I recommended you to save the tokens for the next initialization. You can get tokens like this :
+I recommended you to save the tokens for the next initialization.
+
+You can get tokens like this :
 
 ```php
 $authentication->getAccessToken();
