@@ -36,8 +36,8 @@ abstract class ApiTestCase extends TestCase
             'handler' => $this->mockHandler,
         ]);
 
-        $clientBuilder = new ClientBuilder($this->httpClient);
-        $this->client = $clientBuilder->buildByTokens(
+        $clientBuilder = new ClientBuilder();
+        $this->client = $clientBuilder->withHttpClient($this->httpClient)->buildByTokens(
             'client_id',
             'client_secret',
             'redirect_uri',

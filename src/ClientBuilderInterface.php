@@ -4,10 +4,19 @@ declare(strict_types=1);
 
 namespace Mandisma\SpotifyApiClient;
 
+use GuzzleHttp\ClientInterface as HttpClientInterface;
 use Mandisma\SpotifyApiClient\Security\AuthenticationInterface;
 
 interface ClientBuilderInterface
 {
+    /**
+     * Change the default http client.
+     *
+     * @param HttpClientInterface $httpClient
+     * @return self
+     */
+    public function withHttpClient(HttpClientInterface $httpClient): self;
+
     /**
      * Build a client with credentials
      *

@@ -32,22 +32,25 @@ final class ClientBuilder implements ClientBuilderInterface
      */
     private $httpClient;
 
-    /**
-     * @param HttpClientInterface $httpClient
-     */
-    public function __construct(HttpClientInterface $httpClient = null)
+    public function __construct()
     {
-        if (is_null($httpClient)) {
-            $httpClient = new GuzzleHttpClient([
-                'base_uri' => Client::API_URL,
-                'http_errors' => false,
-                'headers' => [
-                    'Accept' => 'application/json',
-                ],
-            ]);
-        }
+        $this->httpClient = new GuzzleHttpClient([
+            'base_uri' => Client::API_URL,
+            'http_errors' => false,
+            'headers' => [
+                'Accept' => 'application/json',
+            ],
+        ]);
+    }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function withHttpClient(HttpClientInterface $httpClient): self
+    {
         $this->httpClient = $httpClient;
+
+        return $this;
     }
 
     /**
