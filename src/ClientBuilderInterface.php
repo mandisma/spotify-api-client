@@ -13,9 +13,9 @@ interface ClientBuilderInterface
      * Change the default http client.
      *
      * @param HttpClientInterface $httpClient
-     * @return self
+     * @return ClientBuilderInterface
      */
-    public function withHttpClient(HttpClientInterface $httpClient): self;
+    public function withHttpClient(HttpClientInterface $httpClient): ClientBuilderInterface;
 
     /**
      * Build a client with credentials

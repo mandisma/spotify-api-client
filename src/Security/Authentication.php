@@ -48,8 +48,11 @@ final class Authentication implements AuthenticationInterface
     /**
      * {@inheritdoc}
      */
-    public static function fromCredentials(string $clientId, string $clientSecret, string $redirectUri): Authentication
-    {
+    public static function fromCredentials(
+        string $clientId,
+        string $clientSecret,
+        string $redirectUri
+    ): AuthenticationInterface {
         $authentication = new self();
         $authentication->clientId = $clientId;
         $authentication->clientSecret = $clientSecret;
@@ -69,7 +72,7 @@ final class Authentication implements AuthenticationInterface
         string $refreshToken,
         string $authorizationCode = null,
         int $expirationTime = null
-    ): Authentication {
+    ): AuthenticationInterface {
         $authentication = new self();
         $authentication->clientId = $clientId;
         $authentication->clientSecret = $clientSecret;
@@ -101,7 +104,7 @@ final class Authentication implements AuthenticationInterface
     /**
      * {@inheritdoc}
      */
-    public function setAccessToken(string $accessToken): Authentication
+    public function setAccessToken(string $accessToken): AuthenticationInterface
     {
         $this->accessToken = $accessToken;
 
@@ -119,7 +122,7 @@ final class Authentication implements AuthenticationInterface
     /**
      * {@inheritdoc}
      */
-    public function setRefreshToken(string $refreshToken): Authentication
+    public function setRefreshToken(string $refreshToken): AuthenticationInterface
     {
         $this->refreshToken = $refreshToken;
 
@@ -137,7 +140,7 @@ final class Authentication implements AuthenticationInterface
     /**
      * {@inheritdoc}
      */
-    public function setExpirationTime(int $expirationTime): Authentication
+    public function setExpirationTime(int $expirationTime): AuthenticationInterface
     {
         $this->expirationTime = $expirationTime;
 
@@ -163,7 +166,7 @@ final class Authentication implements AuthenticationInterface
     /**
      * {@inheritdoc}
      */
-    public function setAuthorizationCode(string $authorizationCode): Authentication
+    public function setAuthorizationCode(string $authorizationCode): AuthenticationInterface
     {
         $this->authorizationCode = $authorizationCode;
         return $this;

@@ -46,7 +46,7 @@ final class ClientBuilder implements ClientBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function withHttpClient(HttpClientInterface $httpClient): self
+    public function withHttpClient(HttpClientInterface $httpClient): ClientBuilderInterface
     {
         $this->httpClient = $httpClient;
 
