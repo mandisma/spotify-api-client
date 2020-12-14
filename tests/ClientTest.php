@@ -4,6 +4,7 @@ namespace Mandisma\SpotifyApiClient\Tests;
 
 use Mandisma\SpotifyApiClient\Api\AlbumApi;
 use Mandisma\SpotifyApiClient\Api\ArtistApi;
+use Mandisma\SpotifyApiClient\Api\AuthenticationApi;
 use Mandisma\SpotifyApiClient\Api\BrowseApi;
 use Mandisma\SpotifyApiClient\Api\EpisodeApi;
 use Mandisma\SpotifyApiClient\Api\FollowApi;
@@ -15,10 +16,14 @@ use Mandisma\SpotifyApiClient\Api\ShowApi;
 use Mandisma\SpotifyApiClient\Api\TrackApi;
 use Mandisma\SpotifyApiClient\Api\UserProfileApi;
 use Mandisma\SpotifyApiClient\ClientBuilder;
+use Mandisma\SpotifyApiClient\ClientInterface;
 use PHPUnit\Framework\TestCase;
 
 class ClientTest extends TestCase
 {
+    /**
+     * @var ClientInterface
+     */
     private $client;
 
     public function setUp(): void
@@ -66,6 +71,12 @@ class ClientTest extends TestCase
     {
         $artistApi = $this->client->getArtistApi();
         $this->assertInstanceOf(ArtistApi::class, $artistApi);
+    }
+
+    public function testGetAuthenticationApi()
+    {
+        $artistApi = $this->client->getAuthenticationApi();
+        $this->assertInstanceOf(AuthenticationApi::class, $artistApi);
     }
 
     public function testGetUserProfileApi()

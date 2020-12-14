@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Mandisma\SpotifyApiClient\Tests;
 
 use GuzzleHttp\Psr7\Response;
-use Mandisma\SpotifyApiClient\Tests\Api\ApiTestCase;
+use Mandisma\SpotifyApiClient\Tests\ApiTestCase;
 
 class ShowApiTest extends ApiTestCase
 {
@@ -31,7 +31,7 @@ class ShowApiTest extends ApiTestCase
     {
         $this->mockHandler->append(new Response(200, [], load_fixture('show-episodes')));
 
-        $episodes = $this->client->getShowApi()->getShow('38bS44xjbVVZ3No3ByF1dJ');
+        $episodes = $this->client->getShowApi()->getShowEpisodes('38bS44xjbVVZ3No3ByF1dJ');
 
         $this->assertNotEmpty($episodes['items']);
     }

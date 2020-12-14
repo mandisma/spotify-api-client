@@ -1,6 +1,6 @@
 <?php
 
-namespace Mandisma\SpotifyApiClient\Tests\Api;
+namespace Mandisma\SpotifyApiClient\Tests;
 
 use GuzzleHttp\Client as GuzzleHttpClient;
 use GuzzleHttp\Handler\MockHandler;
@@ -26,7 +26,7 @@ abstract class ApiTestCase extends TestCase
     protected $client;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setUp(): void
     {
@@ -47,7 +47,7 @@ abstract class ApiTestCase extends TestCase
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function tearDown(): void
     {

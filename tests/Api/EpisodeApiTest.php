@@ -3,7 +3,7 @@
 namespace Mandisma\SpotifyApiClient\Tests\Actions;
 
 use GuzzleHttp\Psr7\Response;
-use Mandisma\SpotifyApiClient\Tests\Api\ApiTestCase;
+use Mandisma\SpotifyApiClient\Tests\ApiTestCase;
 
 class EpisodeApiTest extends ApiTestCase
 {
