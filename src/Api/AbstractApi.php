@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace Mandisma\SpotifyApiClient\Api;
 
-use Mandisma\SpotifyApiClient\Client\ResourceClient;
+use Mandisma\SpotifyApiClient\Client\ResourceClientInterface;
 
 abstract class AbstractApi
 {
     /**
-     * @var ResourceClient
+     * @var ResourceClientInterface
      */
     protected $resourceClient;
 
     /**
-     * @param ResourceClient $resourceClient
+     * @param ResourceClientInterface $resourceClient
      */
-    public function __construct(ResourceClient $resourceClient)
+    public function __construct(ResourceClientInterface $resourceClient)
     {
         $this->resourceClient = $resourceClient;
     }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Mandisma\SpotifyApiClient\Security;
 
-final class Authentication
+final class Authentication implements AuthenticationInterface
 {
     /**
      * @var string
@@ -46,12 +46,7 @@ final class Authentication
     }
 
     /**
-     * Create an authentication object with credentials
-     *
-     * @param string $clientId
-     * @param string $clientSecret
-     * @param string $redirectUri
-     * @return Authentication
+     * {@inheritdoc}
      */
     public static function fromCredentials(string $clientId, string $clientSecret, string $redirectUri): Authentication
     {
@@ -64,16 +59,7 @@ final class Authentication
     }
 
     /**
-     * Create an authentication object with credentials and tokens
-     *
-     * @param string $clientId
-     * @param string $clientSecret
-     * @param string $redirectUri
-     * @param string $accessToken
-     * @param string $refreshToken
-     * @param string|null $authorizationCode
-     * @param integer|null $expirationTime
-     * @return Authentication
+     * {@inheritdoc}
      */
     public static function fromTokens(
         string $clientId,
@@ -97,9 +83,7 @@ final class Authentication
     }
 
     /**
-     * Get the client id
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getClientId(): string
     {
@@ -107,9 +91,7 @@ final class Authentication
     }
 
     /**
-     * Get the client secret
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getClientSecret(): string
     {
@@ -117,10 +99,7 @@ final class Authentication
     }
 
     /**
-     * Initialize an access token
-     *
-     * @param string $accessToken
-     * @return Authentication
+     * {@inheritdoc}
      */
     public function setAccessToken(string $accessToken): Authentication
     {
@@ -130,9 +109,7 @@ final class Authentication
     }
 
     /**
-     * Get the access token
-     *
-     * @return string|null
+     * {@inheritdoc}
      */
     public function getAccessToken(): ?string
     {
@@ -140,10 +117,7 @@ final class Authentication
     }
 
     /**
-     * Initialize a refresh token
-     *
-     * @param string $refreshToken
-     * @return Authentication
+     * {@inheritdoc}
      */
     public function setRefreshToken(string $refreshToken): Authentication
     {
@@ -153,9 +127,7 @@ final class Authentication
     }
 
     /**
-     * Get the refresh token
-     *
-     * @return string|null
+     * {@inheritdoc}
      */
     public function getRefreshToken(): ?string
     {
@@ -163,10 +135,7 @@ final class Authentication
     }
 
     /**
-     * Set an expiration time
-     *
-     * @param integer $expirationTime
-     * @return Authentication
+     * {@inheritdoc}
      */
     public function setExpirationTime(int $expirationTime): Authentication
     {
@@ -176,9 +145,7 @@ final class Authentication
     }
 
     /**
-     * Get the expiration time of the token
-     *
-     * @return integer|null
+     * {@inheritdoc}
      */
     public function getExpirationTime(): ?int
     {
@@ -186,9 +153,7 @@ final class Authentication
     }
 
     /**
-     * Get the redirect Uri
-     *
-     * @return string|null
+     * {@inheritdoc}
      */
     public function getRedirectUri(): ?string
     {
@@ -196,10 +161,7 @@ final class Authentication
     }
 
     /**
-     * Set an authorization code
-     *
-     * @param string $authorizationCode
-     * @return Authentication
+     * {@inheritdoc}
      */
     public function setAuthorizationCode(string $authorizationCode): Authentication
     {
@@ -208,9 +170,7 @@ final class Authentication
     }
 
     /**
-     * Get the authorization code
-     *
-     * @return string|null
+     * {@inheritdoc}
      */
     public function getAuthorizationCode(): ?string
     {
@@ -218,9 +178,7 @@ final class Authentication
     }
 
     /**
-     * Return true if the token is expired or if the access_token is null
-     *
-     * @return boolean
+     * {@inheritdoc}
      */
     public function needAuthentication(): bool
     {

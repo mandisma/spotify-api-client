@@ -4,13 +4,10 @@ declare(strict_types=1);
 
 namespace Mandisma\SpotifyApiClient\Api;
 
-final class UserProfileApi extends AbstractApi
+final class UserProfileApi extends AbstractApi implements UserProfileApiInterface
 {
     /**
-     * Get detailed profile information about the current user (including the current user’s username).
-     * https://developer.spotify.com/documentation/web-api/reference/users-profile/get-current-users-profile/
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getCurrentUserProfile(): array
     {
@@ -18,11 +15,7 @@ final class UserProfileApi extends AbstractApi
     }
 
     /**
-     * Get public profile information about a Spotify user.
-     * https://developer.spotify.com/documentation/web-api/reference/users-profile/get-users-profile/
-     *
-     * @param string $userId The user's Spotify user ID
-     * @return array
+     * {@inheritdoc}
      */
     public function getUserProfile(string $userId): array
     {

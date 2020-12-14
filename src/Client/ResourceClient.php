@@ -8,21 +8,17 @@ use GuzzleHttp\RequestOptions;
 use Mandisma\SpotifyApiClient\Exception\ResponseException;
 use Psr\Http\Message\ResponseInterface;
 
-final class ResourceClient
+final class ResourceClient implements ResourceClientInterface
 {
     private $baseHttpClient;
 
-    public function __construct(AuthenticatedHttpClient $baseHttpClient)
+    public function __construct(AuthenticatedHttpClientInterface $baseHttpClient)
     {
         $this->baseHttpClient = $baseHttpClient;
     }
 
     /**
-     * Make a GET request to Forge servers and return the response.
-     *
-     * @param string $uri
-     * @param array $query
-     * @return array
+     * {@inheritdoc}
      */
     public function get(string $uri, array $query = []): array
     {
@@ -30,11 +26,7 @@ final class ResourceClient
     }
 
     /**
-     * Make a POST request to Forge servers and return the response.
-     *
-     * @param  string $uri
-     * @param  array $payload
-     * @return mixed
+     * {@inheritdoc}
      */
     public function post(string $uri, array $payload = [])
     {
@@ -42,11 +34,7 @@ final class ResourceClient
     }
 
     /**
-     * Make a PUT request to Forge servers and return the response.
-     *
-     * @param  string $uri
-     * @param  array $payload
-     * @return mixed
+     * {@inheritdoc}
      */
     public function put(string $uri, array $payload = [])
     {
@@ -54,11 +42,7 @@ final class ResourceClient
     }
 
     /**
-     * Make a DELETE request to Forge servers and return the response.
-     *
-     * @param  string $uri
-     * @param  array $payload
-     * @return mixed
+     * {@inheritdoc}
      */
     public function delete(string $uri, array $payload = [])
     {
@@ -66,12 +50,7 @@ final class ResourceClient
     }
 
     /**
-     * Make request to Forge servers and return the response.
-     *
-     * @param  string $verb
-     * @param  string $uri
-     * @param  array $payload
-     * @return mixed
+     * {@inheritdoc}
      */
     public function request(string $verb, string $uri, array $payload = [])
     {

@@ -8,7 +8,7 @@ use GuzzleHttp\ClientInterface;
 use Mandisma\SpotifyApiClient\Api\AuthenticationApi;
 use Psr\Http\Message\ResponseInterface;
 
-final class AuthenticatedHttpClient
+final class AuthenticatedHttpClient implements AuthenticatedHttpClientInterface
 {
     /**
      * @var ClientInterface
@@ -33,12 +33,7 @@ final class AuthenticatedHttpClient
     }
 
     /**
-     * Execute an authenticated request
-     *
-     * @param string $method Http verb
-     * @param string $uri The uri
-     * @param array $options
-     * @return ResponseInterface
+     * {@inheritdoc}
      */
     public function request(string $method, string $uri = '', array $options = []): ResponseInterface
     {

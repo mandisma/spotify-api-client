@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Mandisma\SpotifyApiClient;
 
 use GuzzleHttp\Client as GuzzleHttpClient;
-use GuzzleHttp\ClientInterface;
+use GuzzleHttp\ClientInterface as HttpClientInterface;
 use Mandisma\SpotifyApiClient\Api\AlbumApi;
 use Mandisma\SpotifyApiClient\Api\ArtistApi;
 use Mandisma\SpotifyApiClient\Api\AuthenticationApi;
@@ -23,18 +23,19 @@ use Mandisma\SpotifyApiClient\Api\UserProfileApi;
 use Mandisma\SpotifyApiClient\Client\AuthenticatedHttpClient;
 use Mandisma\SpotifyApiClient\Client\ResourceClient;
 use Mandisma\SpotifyApiClient\Security\Authentication;
+use Mandisma\SpotifyApiClient\Security\AuthenticationInterface;
 
-final class ClientBuilder
+final class ClientBuilder implements ClientBuilderInterface
 {
     /**
-     * @var ClientInterface
+     * @var HttpClientInterface
      */
     private $httpClient;
 
     /**
-     * @param ClientInterface $httpClient
+     * @param HttpClientInterface $httpClient
      */
-    public function __construct(ClientInterface $httpClient = null)
+    public function __construct(HttpClientInterface $httpClient = null)
     {
         if (is_null($httpClient)) {
             $httpClient = new GuzzleHttpClient([
@@ -50,14 +51,9 @@ final class ClientBuilder
     }
 
     /**
-     * Build a client with credentials
-     *
-     * @param string $clientId
-     * @param string $clientSecret
-     * @param string $redirectUri
-     * @return Client
+     * {@inheritdoc}
      */
-    public function buildByCredentials(string $clientId, string $clientSecret, string $redirectUri): Client
+    public function buildByCredentials(string $clientId, string $clientSecret, string $redirectUri): ClientInterface
     {
         $authentication = Authentication::fromCredentials($clientId, $clientSecret, $redirectUri);
 
@@ -65,16 +61,7 @@ final class ClientBuilder
     }
 
     /**
-     * Build a client with credentials + tokens
-     *
-     * @param string $clientId
-     * @param string $clientSecret
-     * @param string $redirectUri
-     * @param string $accessToken
-     * @param string $refreshToken
-     * @param string|null $authorizationCode
-     * @param integer|null $expirationTime
-     * @return Client
+     * {@inheritdoc}
      */
     public function buildByTokens(
         string $clientId,
@@ -84,7 +71,7 @@ final class ClientBuilder
         string $refreshToken,
         string $authorizationCode = null,
         int $expirationTime = null
-    ): Client {
+    ): ClientInterface {
         $authentication = Authentication::fromTokens(
             $clientId,
             $clientSecret,
@@ -99,12 +86,9 @@ final class ClientBuilder
     }
 
     /**
-     * Build a client from an authentication object
-     *
-     * @param Authentication $authentication
-     * @return Client
+     * {@inheritdoc}
      */
-    public function buildAuthenticated(Authentication $authentication): Client
+    public function buildAuthenticated(AuthenticationInterface $authentication): ClientInterface
     {
         $authenticationApi = new AuthenticationApi($this->httpClient, $authentication);
         $authenticatedHttpClient = new AuthenticatedHttpClient($this->httpClient, $authenticationApi);

@@ -7,9 +7,9 @@ namespace Mandisma\SpotifyApiClient\Api;
 use Exception;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\RequestOptions;
-use Mandisma\SpotifyApiClient\Security\Authentication;
+use Mandisma\SpotifyApiClient\Security\AuthenticationInterface;
 
-final class AuthenticationApi
+final class AuthenticationApi implements AuthenticationApiInterface
 {
     /**
      * The Spotify Account URI
@@ -24,14 +24,14 @@ final class AuthenticationApi
     private $httpClient;
 
     /**
-     * @var Authentication
+     * @var AuthenticationInterface
      */
     private $authentication;
 
     /**
      * @param ClientInterface $httpClient
      */
-    public function __construct(ClientInterface $httpClient, Authentication $authentication)
+    public function __construct(ClientInterface $httpClient, AuthenticationInterface $authentication)
     {
         $this->httpClient = $httpClient;
         $this->authentication = $authentication;
@@ -40,15 +40,16 @@ final class AuthenticationApi
     /**
      * Run an authentication request
      *
-     * @param array $payload
+     * @param array $parameters
      * @return array
      */
-    private function auth(array $payload = []): array
+    private function auth(array $parameters = []): array
     {
         $uri = self::ACCOUNT_URL . '/api/token';
         $token = base64_encode($this->authentication->getClientId() . ':' . $this->authentication->getClientSecret());
 
-        $payload[RequestOptions::FORM_PARAMS] = $payload;
+        $payload[RequestOptions::FORM_PARAMS] = $parameters;
+
         $payload['headers'] = [
             'Authorization' => sprintf('Basic %s', $token),
             'Content-Type' => 'application/x-www-form-urlencoded'
@@ -62,11 +63,9 @@ final class AuthenticationApi
     }
 
     /**
-     * Request an access token using the Client Credentials Flow.
-     *
-     * @return Authentication
+     * {@inheritdoc}
      */
-    public function requestCredentialsToken(): Authentication
+    public function requestCredentialsToken(): AuthenticationInterface
     {
         $parameters = [
             'grant_type' => 'client_credentials',
@@ -80,18 +79,16 @@ final class AuthenticationApi
     }
 
     /**
-     * Request an access token using the Authorization Code Flow
-     *
-     * @param string|null $code The Authorization Code
-     * @return Authentication
+     * {@inheritdoc}
      */
-    public function requestAccessToken(string $code = null): Authentication
+    public function requestAccessToken(string $code = null): AuthenticationInterface
     {
         if (is_null($code)) {
             $code = $this->authentication->getAuthorizationCode();
         }
 
         if (is_null($code)) {
+            // TODO: Use a custom exception
             throw new Exception("Authorization missing. Request Aborted", 1);
         }
 
@@ -111,11 +108,9 @@ final class AuthenticationApi
     }
 
     /**
-     * Refresh the access token
-     *
-     * @return Authentication
+     * {@inheritdoc}
      */
-    public function refreshAccessToken(): Authentication
+    public function refreshAccessToken(): AuthenticationInterface
     {
         $refreshToken = $this->authentication->getRefreshToken();
 
@@ -136,13 +131,9 @@ final class AuthenticationApi
     }
 
     /**
-     * Request an user authorization code
-     *
-     * @param array $scopes
-     *
-     * @return void
+     * {@inheritdoc}
      */
-    public function requestAuthorizationCode(array $scopes): void
+    public function requestAuthorizationCode(array $scopes): bool
     {
         $authorizationUrl = self::ACCOUNT_URL . '/authorize';
 
@@ -157,15 +148,13 @@ final class AuthenticationApi
 
         // Redirect the user to the authorization URL.
         header('Location: ' . $authorizationUrl);
-        exit;
+        return true;
     }
 
     /**
-     * Get the authentication class
-     *
-     * @return Authentication
+     * {@inheritdoc}
      */
-    public function getAuthentication(): Authentication
+    public function getAuthentication(): AuthenticationInterface
     {
         return $this->authentication;
     }
