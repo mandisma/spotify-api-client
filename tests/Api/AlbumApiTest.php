@@ -8,7 +8,7 @@ class AlbumApiTest extends ApiTestCase
 {
     protected $albumIds;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->albumIds = [

@@ -17,7 +17,7 @@ class AuthenticationApiTest extends ApiTestCase
     private $authorizationCode;
     private $refreshToken;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

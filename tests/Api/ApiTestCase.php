@@ -28,7 +28,7 @@ abstract class ApiTestCase extends TestCase
     /**
      * {@inheritDoc}
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->mockHandler = new MockHandler();
 
@@ -49,7 +49,7 @@ abstract class ApiTestCase extends TestCase
     /**
      * {@inheritDoc}
      */
-    public function tearDown()
+    protected function tearDown(): void
     {
         $this->mockHandler = null;
         $this->httpClient = null;

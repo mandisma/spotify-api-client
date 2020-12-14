@@ -13,7 +13,7 @@ class ClientBuilderTest extends TestCase
      */
     private $clientBuilder;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->clientBuilder = new ClientBuilder();
     }

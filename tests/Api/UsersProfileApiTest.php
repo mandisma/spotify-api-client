@@ -9,7 +9,7 @@ use Mandisma\SpotifyApiClient\Tests\Api\ApiTestCase;
 
 class UsersProfileApiTest extends ApiTestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
