@@ -30,7 +30,7 @@ final class ResourceClient implements ResourceClientInterface
      */
     public function post(string $uri, array $payload = [])
     {
-        return $this->request('POST', $uri, $payload);
+        return $this->request('POST', $uri, $payload, RequestOptions::JSON);
     }
 
     /**
@@ -38,7 +38,7 @@ final class ResourceClient implements ResourceClientInterface
      */
     public function put(string $uri, array $payload = [])
     {
-        return $this->request('PUT', $uri, $payload);
+        return $this->request('PUT', $uri, $payload, RequestOptions::JSON);
     }
 
     /**
@@ -46,16 +46,14 @@ final class ResourceClient implements ResourceClientInterface
      */
     public function delete(string $uri, array $payload = [])
     {
-        return $this->request('DELETE', $uri, $payload);
+        return $this->request('DELETE', $uri, $payload, RequestOptions::JSON);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function request(string $verb, string $uri, array $payload = [])
+    public function request(string $verb, string $uri, array $payload = [], string $payloadIndex = RequestOptions::QUERY)
     {
-        $payloadIndex = ($verb === 'GET') ? RequestOptions::QUERY : RequestOptions::JSON;
-
         $params = [
             $payloadIndex => $payload
         ];

@@ -19,7 +19,7 @@ use Mandisma\SpotifyApiClient\Api\ShowApiInterface;
 use Mandisma\SpotifyApiClient\Api\TrackApiInterface;
 use Mandisma\SpotifyApiClient\Api\UserProfileApiInterface;
 
-final class Client implements ClientInterface
+final class Client
 {
     /**
      * @var AlbumApiInterface
@@ -147,7 +147,7 @@ final class Client implements ClientInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return AlbumApiInterface
      */
     public function getAlbumApi(): AlbumApiInterface
     {
@@ -155,7 +155,7 @@ final class Client implements ClientInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return ArtistApiInterface
      */
     public function getArtistApi(): ArtistApiInterface
     {
@@ -163,7 +163,7 @@ final class Client implements ClientInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return AuthenticationApiInterface
      */
     public function getAuthenticationApi(): AuthenticationApiInterface
     {
@@ -171,7 +171,7 @@ final class Client implements ClientInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return BrowseApiInterface
      */
     public function getBrowseApi(): BrowseApiInterface
     {
@@ -179,7 +179,7 @@ final class Client implements ClientInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return EpisodeApiInterface
      */
     public function getEpisodeApi(): EpisodeApiInterface
     {
@@ -187,7 +187,7 @@ final class Client implements ClientInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return FollowApiInterface
      */
     public function getFollowApi(): FollowApiInterface
     {
@@ -195,7 +195,7 @@ final class Client implements ClientInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return LibraryApiInterface
      */
     public function getLibraryApi(): LibraryApiInterface
     {
@@ -203,7 +203,7 @@ final class Client implements ClientInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return PersonalizationApiInterface
      */
     public function getPersonalizationApi(): PersonalizationApiInterface
     {
@@ -211,7 +211,7 @@ final class Client implements ClientInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return PlayerApiInterface
      */
     public function getPlayerApi(): PlayerApiInterface
     {
@@ -219,7 +219,7 @@ final class Client implements ClientInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return PlaylistApiInterface
      */
     public function getPlaylistApi(): PlaylistApiInterface
     {
@@ -227,7 +227,7 @@ final class Client implements ClientInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return SearchApiInterface
      */
     public function getSearchApi(): SearchApiInterface
     {
@@ -235,7 +235,7 @@ final class Client implements ClientInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return ShowApiInterface
      */
     public function getShowApi(): ShowApiInterface
     {
@@ -243,7 +243,7 @@ final class Client implements ClientInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return TrackApiInterface
      */
     public function getTrackApi(): TrackApiInterface
     {
@@ -251,7 +251,7 @@ final class Client implements ClientInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return UserProfileApiInterface
      */
     public function getUserProfileApi(): UserProfileApiInterface
     {

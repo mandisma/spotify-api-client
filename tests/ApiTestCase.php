@@ -6,6 +6,7 @@ use GuzzleHttp\Client as GuzzleHttpClient;
 use GuzzleHttp\Handler\MockHandler;
 use Mandisma\SpotifyApiClient\Client;
 use Mandisma\SpotifyApiClient\ClientBuilder;
+use Mandisma\SpotifyApiClient\Security\Authentication;
 use PHPUnit\Framework\TestCase;
 
 abstract class ApiTestCase extends TestCase
@@ -36,14 +37,17 @@ abstract class ApiTestCase extends TestCase
             'handler' => $this->mockHandler,
         ]);
 
-        $clientBuilder = new ClientBuilder();
-        $this->client = $clientBuilder->withHttpClient($this->httpClient)->buildByTokens(
+        $authentication = new Authentication(
             'client_id',
             'client_secret',
             'redirect_uri',
             'access_token',
             'refresh_token'
         );
+
+        $this->client = (new ClientBuilder($authentication))
+            ->withHttpClient($this->httpClient)
+            ->build();
     }
 
     /**

@@ -7,42 +7,6 @@ namespace Mandisma\SpotifyApiClient\Security;
 interface AuthenticationInterface
 {
     /**
-     * Create an authentication object with credentials
-     *
-     * @param string $clientId
-     * @param string $clientSecret
-     * @param string $redirectUri
-     * @return AuthenticationInterface
-     */
-    public static function fromCredentials(
-        string $clientId,
-        string $clientSecret,
-        string $redirectUri
-    ): AuthenticationInterface;
-
-    /**
-     * Create an authentication object with credentials and tokens
-     *
-     * @param string $clientId
-     * @param string $clientSecret
-     * @param string $redirectUri
-     * @param string $accessToken
-     * @param string $refreshToken
-     * @param string|null $authorizationCode
-     * @param integer|null $expirationTime
-     * @return AuthenticationInterface
-     */
-    public static function fromTokens(
-        string $clientId,
-        string $clientSecret,
-        string $redirectUri,
-        string $accessToken,
-        string $refreshToken,
-        string $authorizationCode = null,
-        int $expirationTime = null
-    ): AuthenticationInterface;
-
-    /**
      * Get the client id
      *
      * @return string

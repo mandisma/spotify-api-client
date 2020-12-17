@@ -15,22 +15,9 @@ use Mandisma\SpotifyApiClient\Api\SearchApi;
 use Mandisma\SpotifyApiClient\Api\ShowApi;
 use Mandisma\SpotifyApiClient\Api\TrackApi;
 use Mandisma\SpotifyApiClient\Api\UserProfileApi;
-use Mandisma\SpotifyApiClient\ClientBuilder;
-use Mandisma\SpotifyApiClient\ClientInterface;
-use PHPUnit\Framework\TestCase;
 
-class ClientTest extends TestCase
+class ClientTest extends ApiTestCase
 {
-    /**
-     * @var ClientInterface
-     */
-    private $client;
-
-    public function setUp(): void
-    {
-        $this->client = (new ClientBuilder())->buildByCredentials('client_id', 'client_secret', 'redirect_uri');
-    }
-
     public function testGetSearchApi()
     {
         $searchApi = $this->client->getSearchApi();

@@ -15,7 +15,7 @@ class AuthenticatedHttpClientTest extends ApiTestCase
         $this->mockHandler->append(new Response(200, [], json_encode(['access_token' => 'access_token', 'expires_in' => 3600])));
         $this->mockHandler->append(new Response(200));
 
-        $authentication = Authentication::fromCredentials('client_id', 'client_secret', 'redirect_uri');
+        $authentication = new Authentication('client_id', 'client_secret', 'redirect_uri');
         $authenticationApi = new AuthenticationApi($this->httpClient, $authentication);
         $authenticatedHttpClient = new AuthenticatedHttpClient($this->httpClient, $authenticationApi);
 

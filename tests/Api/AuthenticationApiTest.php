@@ -11,21 +11,26 @@ use Mandisma\SpotifyApiClient\Tests\ApiTestCase;
 
 class AuthenticationApiTest extends ApiTestCase
 {
-    private $clientId;
-    private $clientSecret;
-    private $redirectUri;
     private $authorizationCode;
-    private $refreshToken;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->clientId = 'client_id';
-        $this->clientSecret = 'client_secret';
         $this->authorizationCode = 'authorization_code';
-        $this->refreshToken = 'refresh_token';
-        $this->redirectUri = 'https://example.com/callback';
+
+        $this->appAuthentication = new Authentication(
+            'client_id',
+            'client_secret',
+            'redirect_uri',
+        );
+        $this->userAuthentication = new Authentication(
+            'client_id',
+            'client_secret',
+            'redirect_uri',
+            'access_token',
+            'refresh_token'
+        );
     }
 
     public function testRequestCredentialsToken()
@@ -35,8 +40,7 @@ class AuthenticationApiTest extends ApiTestCase
             'expires_in' => 3600
         ])));
 
-        $authentication = Authentication::fromCredentials($this->clientId, $this->clientSecret, $this->redirectUri);
-        $authenticationApi = new AuthenticationApi($this->httpClient, $authentication);
+        $authenticationApi = new AuthenticationApi($this->httpClient, $this->appAuthentication);
         $authentication = $authenticationApi->requestCredentialsToken();
 
         $this->assertInstanceOf(Authentication::class, $authentication);
@@ -52,8 +56,7 @@ class AuthenticationApiTest extends ApiTestCase
             'expires_in' => 3600
         ])));
 
-        $authentication = Authentication::fromCredentials($this->clientId, $this->clientSecret, $this->redirectUri);
-        $authenticationApi = new AuthenticationApi($this->httpClient, $authentication);
+        $authenticationApi = new AuthenticationApi($this->httpClient, $this->appAuthentication);
 
         $authentication = $authenticationApi->requestAccessToken($this->authorizationCode);
 
@@ -65,8 +68,7 @@ class AuthenticationApiTest extends ApiTestCase
 
     public function testRequestAccessTokenWithoutCode()
     {
-        $authentication = Authentication::fromCredentials($this->clientId, $this->clientSecret, $this->redirectUri);
-        $authenticationApi = new AuthenticationApi($this->httpClient, $authentication);
+        $authenticationApi = new AuthenticationApi($this->httpClient, $this->appAuthentication);
 
         $this->expectException(\Exception::class);
 
@@ -81,8 +83,7 @@ class AuthenticationApiTest extends ApiTestCase
             'expires_in' => 3600
         ])));
 
-        $authentication = Authentication::fromTokens($this->clientId, $this->clientSecret, $this->redirectUri, 'access_token', $this->refreshToken);
-        $authenticationApi = new AuthenticationApi($this->httpClient, $authentication);
+        $authenticationApi = new AuthenticationApi($this->httpClient, $this->userAuthentication);
 
         $authentication = $authenticationApi->refreshAccessToken();
 
@@ -93,8 +94,7 @@ class AuthenticationApiTest extends ApiTestCase
 
     public function testRefreshAccessTokenError()
     {
-        $authentication = Authentication::fromCredentials($this->clientId, $this->clientSecret, $this->redirectUri);
-        $authenticationApi = new AuthenticationApi($this->httpClient, $authentication);
+        $authenticationApi = new AuthenticationApi($this->httpClient, $this->appAuthentication);
 
         $this->expectException(\Exception::class);
 
@@ -106,13 +106,12 @@ class AuthenticationApiTest extends ApiTestCase
      */
     public function testRequestAuthorizationCode()
     {
-        $authentication = Authentication::fromTokens($this->clientId, $this->clientSecret, $this->redirectUri, 'access_token', $this->refreshToken);
-        $authenticationApi = new AuthenticationApi($this->httpClient, $authentication);
+        $authenticationApi = new AuthenticationApi($this->httpClient, $this->userAuthentication);
         $scopes = ['user-read-playback-state'];
 
         $authenticationApi->requestAuthorizationCode($scopes);
 
-        $expectedLocation = 'https://accounts.spotify.com/authorize?client_id=client_id&response_type=code&redirect_uri=https%3A%2F%2Fexample.com%2Fcallback&scope=user-read-playback-state';
+        $expectedLocation = 'https://accounts.spotify.com/authorize?client_id=client_id&response_type=code&redirect_uri=redirect_uri&scope=user-read-playback-state';
 
         $this->assertContains(
             'Location: ' . $expectedLocation,
