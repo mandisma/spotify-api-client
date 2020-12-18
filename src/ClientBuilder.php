@@ -21,7 +21,7 @@ use Mandisma\SpotifyApiClient\Api\ShowApi;
 use Mandisma\SpotifyApiClient\Api\TrackApi;
 use Mandisma\SpotifyApiClient\Api\UserProfileApi;
 use Mandisma\SpotifyApiClient\Client\AuthenticatedHttpClient;
-use Mandisma\SpotifyApiClient\Client\ResourceClient;
+use Mandisma\SpotifyApiClient\Client\AuthenticationHttpClient;
 use Mandisma\SpotifyApiClient\Security\AuthenticationInterface;
 
 final class ClientBuilder
@@ -69,26 +69,24 @@ final class ClientBuilder
      */
     public function build(): Client
     {
-        $authenticationApi = new AuthenticationApi($this->httpClient, $this->authentication);
-        $authenticatedHttpClient = new AuthenticatedHttpClient($this->httpClient, $authenticationApi);
-
-        $resourceClient = new ResourceClient($authenticatedHttpClient);
+        $authenticatedHttpClient = new AuthenticatedHttpClient($this->httpClient, $this->authentication);
+        $authenticationHttpClient = new AuthenticationHttpClient($this->httpClient, $this->authentication);
 
         $client = new Client(
-            new AlbumApi($resourceClient),
-            new ArtistApi($resourceClient),
-            $authenticationApi,
-            new BrowseApi($resourceClient),
-            new EpisodeApi($resourceClient),
-            new FollowApi($resourceClient),
-            new LibraryApi($resourceClient),
-            new PersonalizationApi($resourceClient),
-            new PlayerApi($resourceClient),
-            new PlaylistApi($resourceClient),
-            new SearchApi($resourceClient),
-            new ShowApi($resourceClient),
-            new TrackApi($resourceClient),
-            new UserProfileApi($resourceClient)
+            new AlbumApi($authenticatedHttpClient),
+            new ArtistApi($authenticatedHttpClient),
+            new AuthenticationApi($authenticationHttpClient, $this->authentication),
+            new BrowseApi($authenticatedHttpClient),
+            new EpisodeApi($authenticatedHttpClient),
+            new FollowApi($authenticatedHttpClient),
+            new LibraryApi($authenticatedHttpClient),
+            new PersonalizationApi($authenticatedHttpClient),
+            new PlayerApi($authenticatedHttpClient),
+            new PlaylistApi($authenticatedHttpClient),
+            new SearchApi($authenticatedHttpClient),
+            new ShowApi($authenticatedHttpClient),
+            new TrackApi($authenticatedHttpClient),
+            new UserProfileApi($authenticatedHttpClient)
         );
 
         return $client;

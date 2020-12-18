@@ -18,17 +18,17 @@ interface AuthenticationApiInterface
     /**
      * Request an access token using the Authorization Code Flow
      *
-     * @param string|null $code The Authorization Code
+     * @param string $code The Authorization Code
      * @return AuthenticationInterface
      */
-    public function requestAccessToken(string $code = null): AuthenticationInterface;
+    public function requestAccessToken(string $code): AuthenticationInterface;
 
     /**
      * Refresh the access token
      *
      * @return AuthenticationInterface
      */
-    public function refreshAccessToken(): AuthenticationInterface;
+    public function refreshAccessToken(string $refreshToken): AuthenticationInterface;
 
     /**
      * Request an user authorization code

@@ -6,6 +6,7 @@ namespace Mandisma\SpotifyApiClient\Tests;
 
 use GuzzleHttp\Psr7\Response;
 use Mandisma\SpotifyApiClient\Api\AuthenticationApi;
+use Mandisma\SpotifyApiClient\ClientBuilder;
 use Mandisma\SpotifyApiClient\Security\Authentication;
 use Mandisma\SpotifyApiClient\Tests\ApiTestCase;
 
@@ -40,8 +41,8 @@ class AuthenticationApiTest extends ApiTestCase
             'expires_in' => 3600
         ])));
 
-        $authenticationApi = new AuthenticationApi($this->httpClient, $this->appAuthentication);
-        $authentication = $authenticationApi->requestCredentialsToken();
+        $client = $this->getClient($this->appAuthentication);
+        $authentication = $client->getAuthenticationApi()->requestCredentialsToken();
 
         $this->assertInstanceOf(Authentication::class, $authentication);
         $this->assertEquals('foo', $authentication->getAccessToken());
@@ -56,23 +57,13 @@ class AuthenticationApiTest extends ApiTestCase
             'expires_in' => 3600
         ])));
 
-        $authenticationApi = new AuthenticationApi($this->httpClient, $this->appAuthentication);
-
-        $authentication = $authenticationApi->requestAccessToken($this->authorizationCode);
+        $client = $this->getClient($this->appAuthentication);
+        $authentication = $client->getAuthenticationApi()->requestAccessToken($this->authorizationCode);
 
         $this->assertInstanceOf(Authentication::class, $authentication);
         $this->assertEquals('foo', $authentication->getAccessToken());
         $this->assertEquals('bar', $authentication->getRefreshToken());
         $this->assertEquals(3600, $authentication->getExpirationTime());
-    }
-
-    public function testRequestAccessTokenWithoutCode()
-    {
-        $authenticationApi = new AuthenticationApi($this->httpClient, $this->appAuthentication);
-
-        $this->expectException(\Exception::class);
-
-        $authentication = $authenticationApi->requestAccessToken();
     }
 
     public function testRefreshAccessToken()
@@ -83,22 +74,12 @@ class AuthenticationApiTest extends ApiTestCase
             'expires_in' => 3600
         ])));
 
-        $authenticationApi = new AuthenticationApi($this->httpClient, $this->userAuthentication);
-
-        $authentication = $authenticationApi->refreshAccessToken();
+        $client = $this->getClient($this->userAuthentication);
+        $authentication = $client->getAuthenticationApi()->refreshAccessToken($this->userAuthentication->getRefreshToken());
 
         $this->assertInstanceOf(Authentication::class, $authentication);
         $this->assertEquals('foo', $authentication->getAccessToken());
         $this->assertEquals(3600, $authentication->getExpirationTime());
-    }
-
-    public function testRefreshAccessTokenError()
-    {
-        $authenticationApi = new AuthenticationApi($this->httpClient, $this->appAuthentication);
-
-        $this->expectException(\Exception::class);
-
-        $authentication = $authenticationApi->refreshAccessToken();
     }
 
     /**
@@ -106,10 +87,9 @@ class AuthenticationApiTest extends ApiTestCase
      */
     public function testRequestAuthorizationCode()
     {
-        $authenticationApi = new AuthenticationApi($this->httpClient, $this->userAuthentication);
         $scopes = ['user-read-playback-state'];
-
-        $authenticationApi->requestAuthorizationCode($scopes);
+        $client = $this->getClient($this->userAuthentication);
+        $authentication = $client->getAuthenticationApi()->requestAuthorizationCode($scopes);
 
         $expectedLocation = 'https://accounts.spotify.com/authorize?client_id=client_id&response_type=code&redirect_uri=redirect_uri&scope=user-read-playback-state';
 

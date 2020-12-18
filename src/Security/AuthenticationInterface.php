@@ -21,6 +21,13 @@ interface AuthenticationInterface
     public function getClientSecret(): string;
 
     /**
+     * Get the credentials token
+     *
+     * @return string
+     */
+    public function getCredentialsToken(): string;
+
+    /**
      * Initialize an access token
      *
      * @param string $accessToken

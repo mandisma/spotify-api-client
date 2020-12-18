@@ -78,6 +78,14 @@ abstract class AbstractAuthentication implements AuthenticationInterface
     /**
      * {@inheritdoc}
      */
+    public function getCredentialsToken(): string
+    {
+        return base64_encode($this->clientId . ':' . $this->clientSecret);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function setAccessToken(string $accessToken): AuthenticationInterface
     {
         $this->accessToken = $accessToken;

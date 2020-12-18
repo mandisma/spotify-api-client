@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace Mandisma\SpotifyApiClient\Api;
 
-use Exception;
-use GuzzleHttp\ClientInterface;
-use GuzzleHttp\RequestOptions;
+use Mandisma\SpotifyApiClient\Client\HttpClientInterface;
 use Mandisma\SpotifyApiClient\Security\AuthenticationInterface;
 
-final class AuthenticationApi implements AuthenticationApiInterface
+final class AuthenticationApi extends AbstractApi implements AuthenticationApiInterface
 {
     /**
      * The Spotify Account URI
@@ -19,21 +17,17 @@ final class AuthenticationApi implements AuthenticationApiInterface
     public const ACCOUNT_URL = 'https://accounts.spotify.com';
 
     /**
-     * @var ClientInterface
-     */
-    private $httpClient;
-
-    /**
      * @var AuthenticationInterface
      */
     private $authentication;
 
     /**
-     * @param ClientInterface $httpClient
+     * @param HttpClientInterface $resourceClient
+     * @param AuthenticationInterface $authentication
      */
-    public function __construct(ClientInterface $httpClient, AuthenticationInterface $authentication)
+    public function __construct(HttpClientInterface $resourceClient, AuthenticationInterface $authentication)
     {
-        $this->httpClient = $httpClient;
+        parent::__construct($resourceClient);
         $this->authentication = $authentication;
     }
 
@@ -46,20 +40,7 @@ final class AuthenticationApi implements AuthenticationApiInterface
     private function auth(array $parameters = []): array
     {
         $uri = self::ACCOUNT_URL . '/api/token';
-        $token = base64_encode($this->authentication->getClientId() . ':' . $this->authentication->getClientSecret());
-
-        $payload[RequestOptions::FORM_PARAMS] = $parameters;
-
-        $payload['headers'] = [
-            'Authorization' => sprintf('Basic %s', $token),
-            'Content-Type' => 'application/x-www-form-urlencoded'
-        ];
-
-        $response =  $this->httpClient->request('POST', $uri, $payload);
-
-        $responseBody = (string) $response->getBody();
-
-        return json_decode($responseBody, true);
+        return $this->resourceClient->auth($uri, $parameters);
     }
 
     /**
@@ -81,17 +62,8 @@ final class AuthenticationApi implements AuthenticationApiInterface
     /**
      * {@inheritdoc}
      */
-    public function requestAccessToken(string $code = null): AuthenticationInterface
+    public function requestAccessToken(string $code): AuthenticationInterface
     {
-        if (is_null($code)) {
-            $code = $this->authentication->getAuthorizationCode();
-        }
-
-        if (is_null($code)) {
-            // TODO: Use a custom exception
-            throw new Exception("Authorization missing. Request Aborted", 1);
-        }
-
         $parameters = [
             'grant_type' => 'authorization_code',
             'code' => $code,
@@ -110,14 +82,8 @@ final class AuthenticationApi implements AuthenticationApiInterface
     /**
      * {@inheritdoc}
      */
-    public function refreshAccessToken(): AuthenticationInterface
+    public function refreshAccessToken(string $refreshToken): AuthenticationInterface
     {
-        $refreshToken = $this->authentication->getRefreshToken();
-
-        if (is_null($refreshToken)) {
-            throw new Exception("Refresh token missing. Request aborted.", 1);
-        }
-
         $parameters = [
             'grant_type' => 'refresh_token',
             'refresh_token' => $refreshToken,
