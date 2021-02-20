@@ -13,7 +13,7 @@ class LibraryApiTest extends ApiTestCase
 
         $albumsIds = ["4iV5W9uYEdYUVa79Axb7Rh", "1301WleyT98MSxVHPZCA6M"];
 
-        $removed = $this->client->getLibraryApi()->removeCurrentUserSavedAlbums($albumsIds);
+        $removed = $this->client->libraryApi->removeCurrentUserSavedAlbums($albumsIds);
 
         $this->assertTrue($removed);
     }
@@ -22,7 +22,7 @@ class LibraryApiTest extends ApiTestCase
     {
         $this->mockHandler->append(new Response(200, [], load_fixture('tracks')));
 
-        $tracks = $this->client->getLibraryApi()->getCurrentUserSavedTracks();
+        $tracks = $this->client->libraryApi->getCurrentUserSavedTracks();
 
         $this->assertNotEmpty($tracks);
     }
@@ -31,7 +31,7 @@ class LibraryApiTest extends ApiTestCase
     {
         $this->mockHandler->append(new Response(200, [], load_fixture('albums')));
 
-        $albums = $this->client->getLibraryApi()->getCurrentUserSavedAlbums();
+        $albums = $this->client->libraryApi->getCurrentUserSavedAlbums();
 
         $this->assertNotEmpty($albums);
     }
@@ -42,7 +42,7 @@ class LibraryApiTest extends ApiTestCase
 
         $albumsIds = ["4iV5W9uYEdYUVa79Axb7Rh", "1301WleyT98MSxVHPZCA6M"];
 
-        $saved = $this->client->getLibraryApi()->saveCurrentUserAlbums($albumsIds);
+        $saved = $this->client->libraryApi->saveCurrentUserAlbums($albumsIds);
 
         $this->assertTrue($saved);
     }
@@ -53,7 +53,7 @@ class LibraryApiTest extends ApiTestCase
 
         $tracksIds = ['4iV5W9uYEdYUVa79Axb7Rh', '1301WleyT98MSxVHPZCA6M'];
 
-        $saved = $this->client->getLibraryApi()->saveCurrentUserTracks($tracksIds);
+        $saved = $this->client->libraryApi->saveCurrentUserTracks($tracksIds);
 
         $this->assertTrue($saved);
     }
@@ -64,7 +64,7 @@ class LibraryApiTest extends ApiTestCase
 
         $albumsIds = ["4iV5W9uYEdYUVa79Axb7Rh", "1301WleyT98MSxVHPZCA6M"];
 
-        $albums = $this->client->getLibraryApi()->checkCurrentUserSavedAlbums($albumsIds);
+        $albums = $this->client->libraryApi->checkCurrentUserSavedAlbums($albumsIds);
 
         $this->assertNotEmpty($albums);
     }
@@ -75,7 +75,7 @@ class LibraryApiTest extends ApiTestCase
 
         $tracksIds = ['4iV5W9uYEdYUVa79Axb7Rh', '1301WleyT98MSxVHPZCA6M'];
 
-        $removed = $this->client->getLibraryApi()->removeCurrentUserSavedTracks($tracksIds);
+        $removed = $this->client->libraryApi->removeCurrentUserSavedTracks($tracksIds);
 
         $this->assertTrue($removed);
     }
@@ -86,7 +86,7 @@ class LibraryApiTest extends ApiTestCase
 
         $tracksIds = ['4iV5W9uYEdYUVa79Axb7Rh', '1301WleyT98MSxVHPZCA6M'];
 
-        $tracks = $this->client->getLibraryApi()->checkCurrentUserSavedTracks($tracksIds);
+        $tracks = $this->client->libraryApi->checkCurrentUserSavedTracks($tracksIds);
 
         $this->assertNotEmpty($tracks);
     }

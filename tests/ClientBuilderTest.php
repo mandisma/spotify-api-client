@@ -4,22 +4,16 @@ namespace Mandisma\SpotifyApiClient\Tests;
 
 use Mandisma\SpotifyApiClient\Client;
 use Mandisma\SpotifyApiClient\ClientBuilder;
-use Mandisma\SpotifyApiClient\Security\Authentication;
+use Mandisma\SpotifyApiClient\Security\AuthorizationInterface;
 use PHPUnit\Framework\TestCase;
 
 class ClientBuilderTest extends TestCase
 {
     public function testbuildAuthenticated()
     {
-        $authentication = new Authentication(
-            'client_id',
-            'client_secret',
-            'redirect_uri',
-            'access_token',
-            'refresh_token'
-        );
+        $authorization = $this->getMockBuilder(AuthorizationInterface::class)->getMock();
 
-        $client = (new ClientBuilder($authentication))->build();
+        $client = (new ClientBuilder($authorization))->build();
 
         $this->assertInstanceOf(Client::class, $client);
     }

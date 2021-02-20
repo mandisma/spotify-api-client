@@ -8,7 +8,6 @@ use GuzzleHttp\Client as GuzzleHttpClient;
 use GuzzleHttp\ClientInterface as HttpClientInterface;
 use Mandisma\SpotifyApiClient\Api\AlbumApi;
 use Mandisma\SpotifyApiClient\Api\ArtistApi;
-use Mandisma\SpotifyApiClient\Api\AuthenticationApi;
 use Mandisma\SpotifyApiClient\Api\BrowseApi;
 use Mandisma\SpotifyApiClient\Api\EpisodeApi;
 use Mandisma\SpotifyApiClient\Api\FollowApi;
@@ -21,8 +20,7 @@ use Mandisma\SpotifyApiClient\Api\ShowApi;
 use Mandisma\SpotifyApiClient\Api\TrackApi;
 use Mandisma\SpotifyApiClient\Api\UserProfileApi;
 use Mandisma\SpotifyApiClient\Client\AuthenticatedHttpClient;
-use Mandisma\SpotifyApiClient\Client\AuthenticationHttpClient;
-use Mandisma\SpotifyApiClient\Security\AuthenticationInterface;
+use Mandisma\SpotifyApiClient\Security\AuthorizationInterface;
 
 final class ClientBuilder
 {
@@ -32,11 +30,11 @@ final class ClientBuilder
     private $httpClient;
 
     /**
-     * @var AuthenticationInterface
+     * @var AuthorizationInterface
      */
-    private $authentication;
+    private $authorization;
 
-    public function __construct(AuthenticationInterface $authentication)
+    public function __construct(AuthorizationInterface $authorization)
     {
         $this->httpClient = new GuzzleHttpClient([
             'base_uri' => Client::API_URL,
@@ -46,7 +44,7 @@ final class ClientBuilder
             ],
         ]);
 
-        $this->authentication = $authentication;
+        $this->authorization = $authorization;
     }
 
     /**
@@ -63,19 +61,17 @@ final class ClientBuilder
     }
 
     /**
-     * Build a client from an authentication object
+     * Build a client from an authorization object
      *
      * @return Client
      */
     public function build(): Client
     {
-        $authenticatedHttpClient = new AuthenticatedHttpClient($this->httpClient, $this->authentication);
-        $authenticationHttpClient = new AuthenticationHttpClient($this->httpClient, $this->authentication);
+        $authenticatedHttpClient = new AuthenticatedHttpClient($this->httpClient, $this->authorization);
 
         $client = new Client(
             new AlbumApi($authenticatedHttpClient),
             new ArtistApi($authenticatedHttpClient),
-            new AuthenticationApi($authenticationHttpClient, $this->authentication),
             new BrowseApi($authenticatedHttpClient),
             new EpisodeApi($authenticatedHttpClient),
             new FollowApi($authenticatedHttpClient),

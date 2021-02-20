@@ -13,7 +13,7 @@ class TrackApiTest extends ApiTestCase
     {
         $this->mockHandler->append(new Response(200, [], load_fixture('audio-analysis')));
 
-        $audioAnalysis = $this->client->getTrackApi()->getAudioAnalysis('0eGsygTp906u18L0Oimnem');
+        $audioAnalysis = $this->client->trackApi->getAudioAnalysis('0eGsygTp906u18L0Oimnem');
 
         $this->assertNotEmpty($audioAnalysis['track']);
     }
@@ -22,7 +22,7 @@ class TrackApiTest extends ApiTestCase
     {
         $this->mockHandler->append(new Response(200, [], load_fixture('track-audio-features')));
 
-        $audioFeatures = $this->client->getTrackApi()->getAudioFeaturesForTrack('0eGsygTp906u18L0Oimnem');
+        $audioFeatures = $this->client->trackApi->getAudioFeaturesForTrack('0eGsygTp906u18L0Oimnem');
 
         $this->assertNotEmpty($audioFeatures['id']);
     }
@@ -31,7 +31,7 @@ class TrackApiTest extends ApiTestCase
     {
         $this->mockHandler->append(new Response(200, [], load_fixture('tracks-audio-features')));
 
-        $audioFeatures = $this->client->getTrackApi()->getAudioFeaturesForTracks([
+        $audioFeatures = $this->client->trackApi->getAudioFeaturesForTracks([
             '0eGsygTp906u18L0Oimnem',
             'spotify:track:1lDWb6b6ieDQ2xT7ewTC3G',
         ]);
@@ -43,7 +43,7 @@ class TrackApiTest extends ApiTestCase
     {
         $this->mockHandler->append(new Response(200, [], load_fixture('tracks')));
 
-        $audioFeatures = $this->client->getTrackApi()->getTracks([
+        $audioFeatures = $this->client->trackApi->getTracks([
             '0eGsygTp906u18L0Oimnem',
             'spotify:track:1lDWb6b6ieDQ2xT7ewTC3G',
         ]);
@@ -55,7 +55,7 @@ class TrackApiTest extends ApiTestCase
     {
         $this->mockHandler->append(new Response(200, [], load_fixture('track')));
 
-        $audioFeatures = $this->client->getTrackApi()->getTrack('0eGsygTp906u18L0Oimnem');
+        $audioFeatures = $this->client->trackApi->getTrack('0eGsygTp906u18L0Oimnem');
 
         $this->assertNotEmpty($audioFeatures['id']);
     }

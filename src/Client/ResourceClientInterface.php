@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Mandisma\SpotifyApiClient\Client;
 
-interface HttpClientInterface
+interface ResourceClientInterface
 {
     /**
-     * @return mixed
+     * @return array
      */
     public function get(string $uri, array $query = []): array;
 
@@ -25,9 +25,4 @@ interface HttpClientInterface
      * @return mixed
      */
     public function delete(string $uri, array $payload = []);
-
-    /**
-     * @return mixed
-     */
-    public function auth(string $uri, array $ayload);
 }

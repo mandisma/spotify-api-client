@@ -13,7 +13,7 @@ class ShowApiTest extends ApiTestCase
     {
         $this->mockHandler->append(new Response(200, [], load_fixture('show')));
 
-        $show = $this->client->getShowApi()->getShow('38bS44xjbVVZ3No3ByF1dJ');
+        $show = $this->client->showApi->getShow('38bS44xjbVVZ3No3ByF1dJ');
 
         $this->assertNotEmpty($show['id']);
     }
@@ -22,7 +22,7 @@ class ShowApiTest extends ApiTestCase
     {
         $this->mockHandler->append(new Response(200, [], load_fixture('shows')));
 
-        $shows = $this->client->getShowApi()->getShows(['5CfCWKI5pZ28U0uOzXkDHe', '5as3aKmN2k11yfDDDSrvaZ']);
+        $shows = $this->client->showApi->getShows(['5CfCWKI5pZ28U0uOzXkDHe', '5as3aKmN2k11yfDDDSrvaZ']);
 
         $this->assertNotEmpty($shows['shows']);
     }
@@ -31,7 +31,7 @@ class ShowApiTest extends ApiTestCase
     {
         $this->mockHandler->append(new Response(200, [], load_fixture('show-episodes')));
 
-        $episodes = $this->client->getShowApi()->getShowEpisodes('38bS44xjbVVZ3No3ByF1dJ');
+        $episodes = $this->client->showApi->getShowEpisodes('38bS44xjbVVZ3No3ByF1dJ');
 
         $this->assertNotEmpty($episodes['items']);
     }

@@ -13,7 +13,7 @@ class EpisodeApiTest extends ApiTestCase
 
         $episodesIds = ['77o6BIVlYM3msb4MMIL1jH', '0Q86acNRm6V9GYx55SXKwf'];
 
-        $episodes = $this->client->getEpisodeApi()->getEpisodes($episodesIds);
+        $episodes = $this->client->episodeApi->getEpisodes($episodesIds);
 
         $this->assertNotEmpty($episodes);
     }
@@ -24,7 +24,7 @@ class EpisodeApiTest extends ApiTestCase
 
         $episodeId = '512ojhOuo1ktJprKbVcKyQ';
 
-        $episode = $this->client->getEpisodeApi()->getEpisode($episodeId);
+        $episode = $this->client->episodeApi->getEpisode($episodeId);
 
         $this->assertNotEmpty($episode);
     }

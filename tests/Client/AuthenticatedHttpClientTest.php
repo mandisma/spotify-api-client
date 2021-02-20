@@ -1,26 +1,60 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Mandisma\SpotifyApiClient\Tests\Client;
 
 use GuzzleHttp\Psr7\Response;
-use Mandisma\SpotifyApiClient\Api\AuthenticationApi;
 use Mandisma\SpotifyApiClient\Client\AuthenticatedHttpClient;
-use Mandisma\SpotifyApiClient\Security\Authentication;
 use Mandisma\SpotifyApiClient\Tests\ApiTestCase;
 
 class AuthenticatedHttpClientTest extends ApiTestCase
 {
-    // public function testAuthenticate(): void
-    // {
-    //     $this->mockHandler->append(new Response(200, [], json_encode(['access_token' => 'access_token', 'expires_in' => 3600])));
-    //     $this->mockHandler->append(new Response(200));
+    private $authenticatedHttpClient;
 
-    //     $authentication = new Authentication('client_id', 'client_secret', 'redirect_uri');
-    //     $authenticatedHttpClient = new AuthenticatedHttpClient($this->httpClient, $authentication);
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->authenticatedHttpClient = new AuthenticatedHttpClient($this->httpClient, $this->getAuthorization());
+    }
 
-    //     $authenticatedHttpClient->request('GET', 'test');
+    public function testGet(): void
+    {
+        $this->mockHandler->append(new Response(200, [], json_encode(['foo' => 'bar'])));
 
-    //     $this->assertEquals('access_token', $authentication->getAccessToken());
-    //     $this->assertEquals(3600, $authentication->getExpirationTime());
-    // }
+        $data = $this->authenticatedHttpClient->get('test');
+
+        $this->assertIsArray($data);
+        $this->assertArrayHasKey('foo', $data);
+    }
+
+    public function testPost(): void
+    {
+        $this->mockHandler->append(new Response(200, [], json_encode(['foo' => 'bar'])));
+
+        $data = $this->authenticatedHttpClient->post('test');
+
+        $this->assertIsArray($data);
+        $this->assertArrayHasKey('foo', $data);
+    }
+
+    public function testPut(): void
+    {
+        $this->mockHandler->append(new Response(200));
+
+        $data = $this->authenticatedHttpClient->put('test');
+
+        $this->assertIsString($data);
+        $this->assertEmpty($data);
+    }
+
+    public function testDelete(): void
+    {
+        $this->mockHandler->append(new Response(200));
+
+        $data = $this->authenticatedHttpClient->delete('test');
+
+        $this->assertIsString($data);
+        $this->assertEmpty($data);
+    }
 }

@@ -13,7 +13,7 @@ class ArtistApiTest extends ApiTestCase
 
         $artistId = '0OdUWJ0sBjDrqHygGUXeCF';
 
-        $artists = $this->client->getArtistApi()->getRelatedArtists($artistId);
+        $artists = $this->client->artistApi->getRelatedArtists($artistId);
 
         $this->assertNotEmpty($artists);
     }
@@ -24,7 +24,7 @@ class ArtistApiTest extends ApiTestCase
 
         $artistId = '0OdUWJ0sBjDrqHygGUXeCF';
 
-        $albums = $this->client->getArtistApi()->getAlbums($artistId);
+        $albums = $this->client->artistApi->getAlbums($artistId);
 
         $this->assertNotEmpty($albums);
     }
@@ -35,7 +35,7 @@ class ArtistApiTest extends ApiTestCase
 
         $artistId = '0OdUWJ0sBjDrqHygGUXeCF';
 
-        $artist = $this->client->getArtistApi()->getArtist($artistId);
+        $artist = $this->client->artistApi->getArtist($artistId);
 
         $this->assertNotEmpty($artist);
     }
@@ -46,7 +46,7 @@ class ArtistApiTest extends ApiTestCase
 
         $artistsIds = ['0oSGxfWSnnOXhD2fKuz2Gy', '3dBVyJ7JuOMt4GE9607Qin'];
 
-        $artists = $this->client->getArtistApi()->getArtists($artistsIds);
+        $artists = $this->client->artistApi->getArtists($artistsIds);
 
         $this->assertNotEmpty($artists);
     }
@@ -57,7 +57,7 @@ class ArtistApiTest extends ApiTestCase
 
         $artistId = '0OdUWJ0sBjDrqHygGUXeCF';
 
-        $tracks = $this->client->getArtistApi()->getTopTracks($artistId, 'FR');
+        $tracks = $this->client->artistApi->getTopTracks($artistId, 'FR');
 
         $this->assertNotEmpty($tracks);
     }

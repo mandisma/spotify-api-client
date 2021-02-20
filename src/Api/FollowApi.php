@@ -6,12 +6,20 @@ namespace Mandisma\SpotifyApiClient\Api;
 
 final class FollowApi extends AbstractApi implements FollowApiInterface
 {
+    private const TYPE_ARTIST = 'artist';
+    private const TYPE_USER = 'user';
+    
     /**
      * {@inheritdoc}
      */
     public function isFollowingArtists(array $artistIds): array
     {
-        return $this->isFollowingArtistsOrUsers('artist', $artistIds);
+        $params = [
+            'type' => self::TYPE_ARTIST,
+            'ids' => $artistIds,
+        ];
+
+        return $this->resourceClient->get('/v1/me/following/contains', $params);
     }
 
     /**
@@ -19,22 +27,9 @@ final class FollowApi extends AbstractApi implements FollowApiInterface
      */
     public function isFollowingUsers(array $userIds): array
     {
-        return $this->isFollowingArtistsOrUsers('user', $userIds);
-    }
-
-    /**
-     * Check to see if the current user is following one or more artists or other Spotify users
-     * https://developer.spotify.com/documentation/web-api/reference/follow/check-current-user-follows/
-     *
-     * @param string $type The ID type: either artist or user
-     * @param array $personIds List of the artist or the user Spotify IDs to check
-     * @return array
-     */
-    private function isFollowingArtistsOrUsers(string $type, array $personIds): array
-    {
         $params = [
-            'type' => $type,
-            'ids' => $personIds,
+            'type' => self::TYPE_USER,
+            'ids' => $userIds,
         ];
 
         return $this->resourceClient->get('/v1/me/following/contains', $params);
@@ -57,7 +52,14 @@ final class FollowApi extends AbstractApi implements FollowApiInterface
      */
     public function followArtists(array $artistIds): bool
     {
-        return $this->followArtistsOrUsers('artist', $artistIds);
+        $params = [
+            'type' => self::TYPE_ARTIST,
+            'ids' => $artistIds,
+        ];
+
+        $this->resourceClient->put('/v1/me/following', $params);
+
+        return true;
     }
 
     /**
@@ -65,22 +67,9 @@ final class FollowApi extends AbstractApi implements FollowApiInterface
      */
     public function followUsers(array $usersIds): bool
     {
-        return $this->followArtistsOrUsers('user', $usersIds);
-    }
-
-    /**
-     * Add the current user as a follower of one or more artists or other Spotify users
-     * https://developer.spotify.com/documentation/web-api/reference/follow/follow-artists-users/
-     *
-     * @param string $type The ID type: either artist or user
-     * @param array $ids List of the artist or the user Spotify IDs
-     * @return boolean
-     */
-    private function followArtistsOrUsers(string $type, array $ids): bool
-    {
         $params = [
-            'type' => $type,
-            'ids' => $ids,
+            'type' => self::TYPE_USER,
+            'ids' => $usersIds,
         ];
 
         $this->resourceClient->put('/v1/me/following', $params);
@@ -115,7 +104,14 @@ final class FollowApi extends AbstractApi implements FollowApiInterface
      */
     public function unfollowArtists(array $artistIds): bool
     {
-        return $this->unfollowArtistsOrUsers('artist', $artistIds);
+        $params = [
+            'type' => self::TYPE_ARTIST,
+            'ids' => $artistIds,
+        ];
+
+        $this->resourceClient->delete('/v1/me/following', $params);
+
+        return true;
     }
 
     /**
@@ -123,22 +119,9 @@ final class FollowApi extends AbstractApi implements FollowApiInterface
      */
     public function unfollowUsers(array $userIds): bool
     {
-        return $this->unfollowArtistsOrUsers('user', $userIds);
-    }
-
-    /**
-     * Remove the current user as a follower of one or more artists or other Spotify users
-     * https://developer.spotify.com/documentation/web-api/reference/follow/unfollow-artists-users/
-     *
-     * @param string $type The ID type: either artist or user
-     * @param array $personIds List of the artist or the user Spotify IDs
-     * @return bool
-     */
-    private function unfollowArtistsOrUsers(string $type, array $personIds): bool
-    {
         $params = [
-            'type' => $type,
-            'ids' => $personIds,
+            'type' => self::TYPE_USER,
+            'ids' => $userIds,
         ];
 
         $this->resourceClient->delete('/v1/me/following', $params);

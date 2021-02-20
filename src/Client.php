@@ -6,7 +6,6 @@ namespace Mandisma\SpotifyApiClient;
 
 use Mandisma\SpotifyApiClient\Api\AlbumApiInterface;
 use Mandisma\SpotifyApiClient\Api\ArtistApiInterface;
-use Mandisma\SpotifyApiClient\Api\AuthenticationApiInterface;
 use Mandisma\SpotifyApiClient\Api\BrowseApiInterface;
 use Mandisma\SpotifyApiClient\Api\EpisodeApiInterface;
 use Mandisma\SpotifyApiClient\Api\FollowApiInterface;
@@ -24,72 +23,67 @@ final class Client
     /**
      * @var AlbumApiInterface
      */
-    private $albumApi;
+    public $albumApi;
 
     /**
      * @var ArtistApiInterface
      */
-    private $artistApi;
-
-    /**
-     * @var AuthenticationApiInterface
-     */
-    private $authenticationApi;
+    public $artistApi;
 
     /**
      * @var BrowseApiInterface
      */
-    private $browseApi;
+    public $browseApi;
 
     /**
      * @var EpisodeApiInterface
      */
-    private $episodeApi;
+    public $episodeApi;
 
     /**
      * @var FollowApiInterface
      */
-    private $followApi;
+    public $followApi;
 
     /**
      * @var LibraryApiInterface
      */
-    private $libraryApi;
+    public $libraryApi;
 
     /**
      * @var PersonalizationApiInterface
      */
-    private $personalizationApi;
+    public $personalizationApi;
 
     /**
      * @var PlayerApiInterface
      */
-    private $playerApi;
+    public $playerApi;
 
     /**
      * @var PlaylistApiInterface
      */
-    private $playlistApi;
+    public $playlistApi;
 
     /**
      * @var SearchApiInterface
      */
-    private $searchApi;
+    public $searchApi;
 
     /**
      * @var ShowApiInterface
      */
-    private $showApi;
+    public $showApi;
 
     /**
      * @var TrackApiInterface
      */
-    private $trackApi;
+    public $trackApi;
 
     /**
      * @var UserProfileApiInterface
      */
-    private $userProfileApi;
+    public $userProfileApi;
 
     /**
      * The Spotify API URI
@@ -117,7 +111,6 @@ final class Client
     public function __construct(
         AlbumApiInterface $albumApi,
         ArtistApiInterface $artistApi,
-        AuthenticationApiInterface $authenticationApi,
         BrowseApiInterface $browseApi,
         EpisodeApiInterface $episodeApi,
         FollowApiInterface $followApi,
@@ -132,7 +125,6 @@ final class Client
     ) {
         $this->albumApi = $albumApi;
         $this->artistApi = $artistApi;
-        $this->authenticationApi = $authenticationApi;
         $this->browseApi = $browseApi;
         $this->episodeApi = $episodeApi;
         $this->followApi = $followApi;
@@ -144,117 +136,5 @@ final class Client
         $this->showApi = $showApi;
         $this->trackApi = $trackApi;
         $this->userProfileApi = $userProfileApi;
-    }
-
-    /**
-     * @return AlbumApiInterface
-     */
-    public function getAlbumApi(): AlbumApiInterface
-    {
-        return $this->albumApi;
-    }
-
-    /**
-     * @return ArtistApiInterface
-     */
-    public function getArtistApi(): ArtistApiInterface
-    {
-        return $this->artistApi;
-    }
-
-    /**
-     * @return AuthenticationApiInterface
-     */
-    public function getAuthenticationApi(): AuthenticationApiInterface
-    {
-        return $this->authenticationApi;
-    }
-
-    /**
-     * @return BrowseApiInterface
-     */
-    public function getBrowseApi(): BrowseApiInterface
-    {
-        return $this->browseApi;
-    }
-
-    /**
-     * @return EpisodeApiInterface
-     */
-    public function getEpisodeApi(): EpisodeApiInterface
-    {
-        return $this->episodeApi;
-    }
-
-    /**
-     * @return FollowApiInterface
-     */
-    public function getFollowApi(): FollowApiInterface
-    {
-        return $this->followApi;
-    }
-
-    /**
-     * @return LibraryApiInterface
-     */
-    public function getLibraryApi(): LibraryApiInterface
-    {
-        return $this->libraryApi;
-    }
-
-    /**
-     * @return PersonalizationApiInterface
-     */
-    public function getPersonalizationApi(): PersonalizationApiInterface
-    {
-        return $this->personalizationApi;
-    }
-
-    /**
-     * @return PlayerApiInterface
-     */
-    public function getPlayerApi(): PlayerApiInterface
-    {
-        return $this->playerApi;
-    }
-
-    /**
-     * @return PlaylistApiInterface
-     */
-    public function getPlaylistApi(): PlaylistApiInterface
-    {
-        return $this->playlistApi;
-    }
-
-    /**
-     * @return SearchApiInterface
-     */
-    public function getSearchApi(): SearchApiInterface
-    {
-        return $this->searchApi;
-    }
-
-    /**
-     * @return ShowApiInterface
-     */
-    public function getShowApi(): ShowApiInterface
-    {
-        return $this->showApi;
-    }
-
-    /**
-     * @return TrackApiInterface
-     */
-    public function getTrackApi(): TrackApiInterface
-    {
-        return $this->trackApi;
-    }
-
-    /**
-     * @return UserProfileApiInterface
-     */
-    public function getUserProfileApi(): UserProfileApiInterface
-    {
-        return $this->userProfileApi;
     }
 }

@@ -13,7 +13,7 @@ class SearchApiTest extends ApiTestCase
     {
         $this->mockHandler->append(new Response(200, [], load_fixture('search')));
 
-        $search = $this->client->getSearchApi()->search('tania bowra', 'artist');
+        $search = $this->client->searchApi->search('tania bowra', 'artist');
 
         $this->assertNotEmpty($search['artists']);
     }

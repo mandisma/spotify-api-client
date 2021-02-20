@@ -24,7 +24,7 @@ class AlbumApiTest extends ApiTestCase
     {
         $this->mockHandler->append(new Response(200, [], load_fixture('album')));
 
-        $album = $this->client->getAlbumApi()->getAlbum($this->albumIds[0]);
+        $album = $this->client->albumApi->getAlbum($this->albumIds[0]);
 
         $this->assertNotEmpty($album);
         $this->assertEquals($this->albumIds[0], $album['id']);
@@ -34,7 +34,7 @@ class AlbumApiTest extends ApiTestCase
     {
         $this->mockHandler->append(new Response(200, [], load_fixture('album')));
 
-        $albums = $this->client->getAlbumApi()->getAlbums($this->albumIds);
+        $albums = $this->client->albumApi->getAlbums($this->albumIds);
 
         $this->assertNotEmpty($albums);
     }
@@ -43,7 +43,7 @@ class AlbumApiTest extends ApiTestCase
     {
         $this->mockHandler->append(new Response(200, [], load_fixture('tracks')));
 
-        $response = $this->client->getAlbumApi()->getTracks($this->albumIds[0]);
+        $response = $this->client->albumApi->getTracks($this->albumIds[0]);
 
         $this->assertNotEmpty($response);
     }

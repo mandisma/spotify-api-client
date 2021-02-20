@@ -13,7 +13,7 @@ class FollowApiTest extends ApiTestCase
 
         $usersIds = ['exampleuser01'];
 
-        $followed = $this->client->getFollowApi()->isFollowingUsers($usersIds);
+        $followed = $this->client->followApi->isFollowingUsers($usersIds);
 
         $this->assertContains(true, $followed);
     }
@@ -24,7 +24,7 @@ class FollowApiTest extends ApiTestCase
 
         $artistsIds = ['74ASZWbe4lXaubB36ztrGX'];
 
-        $followed = $this->client->getFollowApi()->isFollowingArtists($artistsIds);
+        $followed = $this->client->followApi->isFollowingArtists($artistsIds);
 
         $this->assertContains(false, $followed);
     }
@@ -35,7 +35,7 @@ class FollowApiTest extends ApiTestCase
 
         $usersIds = ['exampleuser01'];
 
-        $followed = $this->client->getFollowApi()->followUsers($usersIds);
+        $followed = $this->client->followApi->followUsers($usersIds);
 
         $this->assertTrue($followed);
     }
@@ -46,7 +46,7 @@ class FollowApiTest extends ApiTestCase
 
         $artistsIds = ['74ASZWbe4lXaubB36ztrGX'];
 
-        $followed = $this->client->getFollowApi()->followArtists($artistsIds);
+        $followed = $this->client->followApi->followArtists($artistsIds);
 
         $this->assertTrue($followed);
     }
@@ -58,7 +58,7 @@ class FollowApiTest extends ApiTestCase
         $playlistId = '2v3iNvBX8Ay1Gt2uXtUKUT';
         $usersIds = ['exampleuser01'];
 
-        $followed = $this->client->getFollowApi()->isFollowingPlaylists($playlistId, $usersIds);
+        $followed = $this->client->followApi->isFollowingPlaylists($playlistId, $usersIds);
 
         $this->assertContains(true, $followed);
     }
@@ -69,7 +69,7 @@ class FollowApiTest extends ApiTestCase
 
         $playlistId = '2v3iNvBX8Ay1Gt2uXtUKUT';
 
-        $followed = $this->client->getFollowApi()->followPlaylists($playlistId);
+        $followed = $this->client->followApi->followPlaylists($playlistId);
 
         $this->assertTrue($followed);
     }
@@ -78,7 +78,7 @@ class FollowApiTest extends ApiTestCase
     {
         $this->mockHandler->append(new Response(200, [], load_fixture('artists')));
 
-        $artists = $this->client->getFollowApi()->getCurrentUserFollowedArtists('artist');
+        $artists = $this->client->followApi->getCurrentUserFollowedArtists('artist');
 
         $this->assertNotEmpty($artists);
     }
@@ -89,7 +89,7 @@ class FollowApiTest extends ApiTestCase
 
         $artistsIds = ['74ASZWbe4lXaubB36ztrGX'];
 
-        $unfollowed = $this->client->getFollowApi()->unfollowArtists($artistsIds);
+        $unfollowed = $this->client->followApi->unfollowArtists($artistsIds);
 
         $this->assertTrue($unfollowed);
     }
@@ -100,7 +100,7 @@ class FollowApiTest extends ApiTestCase
 
         $usersIds = ['exampleuser01'];
 
-        $unfollowed = $this->client->getFollowApi()->unfollowUsers($usersIds);
+        $unfollowed = $this->client->followApi->unfollowUsers($usersIds);
 
         $this->assertTrue($unfollowed);
     }
@@ -111,7 +111,7 @@ class FollowApiTest extends ApiTestCase
 
         $playlistId = '2v3iNvBX8Ay1Gt2uXtUKUT';
 
-        $unfollowed = $this->client->getFollowApi()->unfollowPlaylist($playlistId);
+        $unfollowed = $this->client->followApi->unfollowPlaylist($playlistId);
 
         $this->assertTrue($unfollowed);
     }

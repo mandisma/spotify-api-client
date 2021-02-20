@@ -18,7 +18,7 @@ class UsersProfileApiTest extends ApiTestCase
 
     public function testGetCurrentUserProfile()
     {
-        $userProfile = $this->client->getUserProfileApi()->getCurrentUserProfile();
+        $userProfile = $this->client->userProfileApi->getCurrentUserProfile();
 
         $this->assertNotEmpty($userProfile);
         $this->assertEquals('wizzler', $userProfile['id']);
@@ -26,7 +26,7 @@ class UsersProfileApiTest extends ApiTestCase
 
     public function testGetUserProfile()
     {
-        $userProfile = $this->client->getUserProfileApi()->getUserProfile('wizzler');
+        $userProfile = $this->client->userProfileApi->getUserProfile('wizzler');
 
         $this->assertNotEmpty($userProfile);
         $this->assertEquals('wizzler', $userProfile['id']);

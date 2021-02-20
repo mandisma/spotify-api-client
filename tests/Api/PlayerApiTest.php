@@ -13,7 +13,7 @@ class PlayerApiTest extends ApiTestCase
     {
         $this->mockHandler->append(new Response(200, [], load_fixture('devices')));
 
-        $devices = $this->client->getPlayerApi()->getAvailableDevices();
+        $devices = $this->client->playerApi->getAvailableDevices();
 
         $this->assertNotEmpty($devices['devices']);
     }
@@ -22,7 +22,7 @@ class PlayerApiTest extends ApiTestCase
     {
         $this->mockHandler->append(new Response(200, [], load_fixture('player')));
 
-        $playback = $this->client->getPlayerApi()->getPlayback();
+        $playback = $this->client->playerApi->getPlayback();
 
         $this->assertNotEmpty($playback);
     }
@@ -31,7 +31,7 @@ class PlayerApiTest extends ApiTestCase
     {
         $this->mockHandler->append(new Response(200, [], load_fixture('tracks')));
 
-        $tracks = $this->client->getPlayerApi()->getRecentlyPlayedTracks();
+        $tracks = $this->client->playerApi->getRecentlyPlayedTracks();
 
         $this->assertNotEmpty($tracks);
     }
@@ -40,7 +40,7 @@ class PlayerApiTest extends ApiTestCase
     {
         $this->mockHandler->append(new Response(200, [], load_fixture('track')));
 
-        $track = $this->client->getPlayerApi()->getCurrentlyPlayingTrack();
+        $track = $this->client->playerApi->getCurrentlyPlayingTrack();
 
         $this->assertNotEmpty($track['id']);
     }
@@ -49,7 +49,7 @@ class PlayerApiTest extends ApiTestCase
     {
         $this->mockHandler->append(new Response(200, []));
 
-        $paused = $this->client->getPlayerApi()->pausePlayback();
+        $paused = $this->client->playerApi->pausePlayback();
 
         $this->assertTrue($paused);
     }
@@ -58,7 +58,7 @@ class PlayerApiTest extends ApiTestCase
     {
         $this->mockHandler->append(new Response(200, []));
 
-        $seeked = $this->client->getPlayerApi()->seekToPosition(5);
+        $seeked = $this->client->playerApi->seekToPosition(5);
 
         $this->assertTrue($seeked);
     }
@@ -67,7 +67,7 @@ class PlayerApiTest extends ApiTestCase
     {
         $this->mockHandler->append(new Response(200, []));
 
-        $set = $this->client->getPlayerApi()->setRepeatMode('off');
+        $set = $this->client->playerApi->setRepeatMode('off');
 
         $this->assertTrue($set);
     }
@@ -76,7 +76,7 @@ class PlayerApiTest extends ApiTestCase
     {
         $this->mockHandler->append(new Response(200));
 
-        $set = $this->client->getPlayerApi()->setVolume(24);
+        $set = $this->client->playerApi->setVolume(24);
 
         $this->assertTrue($set);
     }
@@ -85,7 +85,7 @@ class PlayerApiTest extends ApiTestCase
     {
         $this->mockHandler->append(new Response(200));
 
-        $skipped = $this->client->getPlayerApi()->skipToNextTrack();
+        $skipped = $this->client->playerApi->skipToNextTrack();
 
         $this->assertTrue($skipped);
     }
@@ -94,7 +94,7 @@ class PlayerApiTest extends ApiTestCase
     {
         $this->mockHandler->append(new Response(200));
 
-        $skipped = $this->client->getPlayerApi()->skipToPreviousTrack();
+        $skipped = $this->client->playerApi->skipToPreviousTrack();
 
         $this->assertTrue($skipped);
     }
@@ -103,7 +103,7 @@ class PlayerApiTest extends ApiTestCase
     {
         $this->mockHandler->append(new Response(200));
 
-        $started = $this->client->getPlayerApi()->startPlayback();
+        $started = $this->client->playerApi->startPlayback();
 
         $this->assertTrue($started);
     }
@@ -112,7 +112,7 @@ class PlayerApiTest extends ApiTestCase
     {
         $this->mockHandler->append(new Response(200));
 
-        $toggled = $this->client->getPlayerApi()->toggleShuffle(true);
+        $toggled = $this->client->playerApi->toggleShuffle(true);
 
         $this->assertTrue($toggled);
     }
@@ -121,7 +121,7 @@ class PlayerApiTest extends ApiTestCase
     {
         $this->mockHandler->append(new Response(200));
 
-        $transfered = $this->client->getPlayerApi()->transferPlayback(['74ASZWbe4lXaubB36ztrGX']);
+        $transfered = $this->client->playerApi->transferPlayback(['74ASZWbe4lXaubB36ztrGX']);
 
         $this->assertTrue($transfered);
     }

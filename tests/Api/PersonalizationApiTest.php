@@ -11,7 +11,7 @@ class PersonalizationApiTest extends ApiTestCase
     {
         $this->mockHandler->append(new Response(200, [], load_fixture('tracks')));
 
-        $tracks = $this->client->getPersonalizationApi()->getCurrentUserTopTracks();
+        $tracks = $this->client->personalizationApi->getCurrentUserTopTracks();
         $this->assertNotEmpty($tracks);
     }
 
@@ -19,7 +19,7 @@ class PersonalizationApiTest extends ApiTestCase
     {
         $this->mockHandler->append(new Response(200, [], load_fixture('artists')));
 
-        $artists = $this->client->getPersonalizationApi()->getCurrentUserTopArtists();
+        $artists = $this->client->personalizationApi->getCurrentUserTopArtists();
         $this->assertNotEmpty($artists);
     }
 }

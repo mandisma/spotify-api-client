@@ -13,7 +13,7 @@ class BrowseApiTest extends ApiTestCase
 
         $categoryId = 'party';
 
-        $playlists = $this->client->getBrowseApi()->getPlaylistsByCategory($categoryId);
+        $playlists = $this->client->browseApi->getPlaylistsByCategory($categoryId);
 
         $this->assertNotEmpty($playlists);
     }
@@ -22,7 +22,7 @@ class BrowseApiTest extends ApiTestCase
     {
         $this->mockHandler->append(new Response(200, [], load_fixture('tracks')));
 
-        $recommendations = $this->client->getBrowseApi()->getRecommendations();
+        $recommendations = $this->client->browseApi->getRecommendations();
 
         $this->assertNotEmpty($recommendations);
     }
@@ -31,7 +31,7 @@ class BrowseApiTest extends ApiTestCase
     {
         $this->mockHandler->append(new Response(200, [], load_fixture('categories')));
 
-        $categories = $this->client->getBrowseApi()->getCategories();
+        $categories = $this->client->browseApi->getCategories();
 
         $this->assertNotEmpty($categories);
     }
@@ -40,7 +40,7 @@ class BrowseApiTest extends ApiTestCase
     {
         $this->mockHandler->append(new Response(200, [], load_fixture('albums')));
 
-        $releases = $this->client->getBrowseApi()->getNewReleases();
+        $releases = $this->client->browseApi->getNewReleases();
 
         $this->assertNotEmpty($releases);
     }
@@ -49,7 +49,7 @@ class BrowseApiTest extends ApiTestCase
     {
         $this->mockHandler->append(new Response(200, [], load_fixture('playlists')));
 
-        $playlists = $this->client->getBrowseApi()->getFeaturedPlaylists();
+        $playlists = $this->client->browseApi->getFeaturedPlaylists();
 
         $this->assertNotEmpty($playlists);
     }
@@ -60,7 +60,7 @@ class BrowseApiTest extends ApiTestCase
 
         $categoryId = 'party';
 
-        $category = $this->client->getBrowseApi()->getCategory($categoryId);
+        $category = $this->client->browseApi->getCategory($categoryId);
 
         $this->assertNotEmpty($category);
     }
