@@ -8,7 +8,7 @@ final class FollowApi extends AbstractApi implements FollowApiInterface
 {
     private const TYPE_ARTIST = 'artist';
     private const TYPE_USER = 'user';
-    
+
     /**
      * {@inheritdoc}
      */
