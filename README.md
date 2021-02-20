@@ -1,71 +1,49 @@
 # SpotifyApiClient
 
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/mandisma/spotify-api-client.svg?style=flat-square)](https://packagist.org/packages/mandisma/spotify-api-client)
+[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/mandisma/spotify-api-client/PHP%20Composer?label=tests)](https://github.com/mandisma/spotify-api-client/actions?query=workflow%3A"PHP+Composer"+branch%3Amaster)
+[![Total Downloads](https://img.shields.io/packagist/dt/mandisma/spotify-api-client.svg?style=flat-square)](https://packagist.org/packages/mandisma/spotify-api-client)
+
 PHP Wrapper for the Spotify Api.
 
 The library follow the structure from the Spotify Web Api Reference : https://developer.spotify.com/documentation/web-api/reference/
 
-## Get the library
+## Installation
+
+You can install the package via composer:
 
 ```bash
 composer require mandisma/spotify-api-client
 ```
 
-## How to use
+## Usage
+
+The OAuth2 authentication is not provided by this library. You have to do it or your own or use an existing library.
+
+Then you have to create a class which implements the `AuthorizationInterface` before you can start.
+This interface is needed to initialize the client.
 
 **Initialize the client :**
 
 ```php
-$clientBuilder = new \Mandisma\SpotifyApiClient\ClientBuilder();
+$clientBuilder = new \Mandisma\SpotifyApiClient\ClientBuilder(/*AuthorizationInterface*/ $authorization);
 
-// Refreshable app authorization. Tokens are automaticaly get before the request. Only works for non user request.
-$client = $clientBuilder->buildByCredentials('your_client_id', 'your_client_secret', 'your_redirect_uri');
+$client = $clientBuilder->build();
 
-// or Refreshable user authorization
-$client = $clientBuilder->buildByTokens('your_client_id', 'your_client_secret', 'your_redirect_uri', 'access_token', 'refresh_token');
+$playedTracks = $client->playerApi->getRecentlyPlayedTracks();
 ```
 
-**Request an authorization code :**
+## Testing
 
-```php
-// Create the client.
-$clientBuilder = new \Mandisma\SpotifyApiClient\ClientBuilder();
-$client = $clientBuilder->buildByCredentials('your_client_id', 'your_client_secret', 'your_redirect_uri');
-
-// Define which scopes are necessary.
-$scopes = ['user-read-playback-state'];
-
-// Request the authorization code.
-// It will redirect to the spotify authorization url and after the validation to your redirect url
-$client->getAuthenticationApi()->requestAuthorizationCode($scopes);
+```bash
+composer test
 ```
 
-**Request an access token from an authorization code :**
+## Credits
 
-```php
-// Create the client
-$clientBuilder = new \Mandisma\SpotifyApiClient\ClientBuilder();
-$client = $clientBuilder->buildByCredentials('your_client_id', 'your_client_secret', 'your_redirect_uri');
+- [mandisma](https://github.com/mandisma)
+- [All Contributors](../../contributors)
 
-// Request the access token.
-$authentication = $client->getAuthenticationApi()->requestAccessToken('the_authorization_code');
-```
+## License
 
-After the operation below access_token and refresh_token will automatically set to the client for the current execution.
-I recommended you to save the tokens for the next initialization.
-
-You can get tokens like this :
-
-```php
-$authentication->getAccessToken();
-$authentication->getRefreshToken();
-```
-
-**And enjoy :**
-
-```php
-$playedTracks = $client->getPlayerApi()->getRecentlyPlayedTracks();
-```
-
-## Test
-
-Run PHPUnit : `./vendor/bin/phpunit`
+The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
