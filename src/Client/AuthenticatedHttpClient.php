@@ -70,7 +70,7 @@ final class AuthenticatedHttpClient implements ResourceClientInterface
      */
     private function request(string $method, string $uri = '', array $payload = [])
     {
-        $params[RequestOptions::HEADERS] = $this->getHeaders();
+        $payload[RequestOptions::HEADERS] = $this->getHeaders();
 
         $response = $this->baseHttpClient->request($method, $uri, $payload);
 

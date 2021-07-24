@@ -18,6 +18,15 @@ class AuthenticatedHttpClientTest extends ApiTestCase
         $this->authenticatedHttpClient = new AuthenticatedHttpClient($this->httpClient, $this->getAuthorization());
     }
 
+    public function testRequestHasAuthorization(): void
+    {
+        $this->mockHandler->append(new Response(200, [], json_encode(['foo' => 'bar'])));
+
+        $this->authenticatedHttpClient->get('test');
+
+        $this->assertTrue($this->mockHandler->getLastRequest()->hasHeader('Authorization'));
+    }
+
     public function testGet(): void
     {
         $this->mockHandler->append(new Response(200, [], json_encode(['foo' => 'bar'])));
