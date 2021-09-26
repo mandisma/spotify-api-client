@@ -4,3 +4,4 @@
 build/*
 TODO
 vendor
+.php-cs-fixer.cache
