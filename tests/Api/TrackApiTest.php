@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Mandisma\SpotifyApiClient\Tests;
 
 use GuzzleHttp\Psr7\Response;
-use Mandisma\SpotifyApiClient\Tests\ApiTestCase;
 
 class TrackApiTest extends ApiTestCase
 {

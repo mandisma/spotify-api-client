@@ -13,9 +13,6 @@ abstract class AbstractApi
      */
     protected $resourceClient;
 
-    /**
-     * @param ResourceClientInterface $resourceClient
-     */
     public function __construct(ResourceClientInterface $resourceClient)
     {
         $this->resourceClient = $resourceClient;

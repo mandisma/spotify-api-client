@@ -8,8 +8,6 @@ final class PlayerApi extends AbstractApi implements PlayerApiInterface
 {
     /**
      * URI suffix for the player endpoint
-     *
-     * @var string
      */
     public const PLAYER_URI = '/v1/artists';
 

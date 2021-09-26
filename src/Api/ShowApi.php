@@ -8,8 +8,6 @@ final class ShowApi extends AbstractApi implements ShowApiInterface
 {
     /**
      * URI suffix for the show endpoint
-     *
-     * @var string
      */
     public const SHOW_URI = '/v1/shows';
 

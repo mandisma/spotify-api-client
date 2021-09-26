@@ -129,9 +129,6 @@ final class FollowApi extends AbstractApi implements FollowApiInterface
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function unfollowPlaylist(string $playlistId): bool
     {
         $this->resourceClient->delete('/v1/playlists/' . $playlistId . '/followers');

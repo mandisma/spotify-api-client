@@ -80,7 +80,7 @@ final class LibraryApi extends AbstractApi implements LibraryApiInterface
     public function saveCurrentUserAlbums(array $albumIds): bool
     {
         $params = [
-            'ids' => $albumIds
+            'ids' => $albumIds,
         ];
 
         $this->resourceClient->put('/v1/me/albums', $params);

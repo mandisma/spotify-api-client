@@ -19,12 +19,8 @@ final class AuthenticatedHttpClient implements ResourceClientInterface
     /**
      * @var AuthorizationInterface
      */
-    protected $authorization;
+    private $authorization;
 
-    /**
-     * @param ClientInterface $baseHttpClient
-     * @param AuthorizationInterface $authorization
-     */
     public function __construct(
         ClientInterface $baseHttpClient,
         AuthorizationInterface $authorization
@@ -74,9 +70,9 @@ final class AuthenticatedHttpClient implements ResourceClientInterface
 
         $response = $this->baseHttpClient->request($method, $uri, $payload);
 
-        if (!in_array($response->getStatusCode(), [200, 201, 204])) {
+        if (! in_array($response->getStatusCode(), [200, 201, 204])) {
             throw new ResponseException(
-                sprintf('Spotify Api Error (%d) : %s', $response->getStatusCode(), $response->getBody())
+                sprintf('Spotify Api Error (%d) : %s', $response->getStatusCode(), (string) $response->getBody())
             );
         }
 
@@ -90,7 +86,7 @@ final class AuthenticatedHttpClient implements ResourceClientInterface
      *
      * @return array
      */
-    protected function getHeaders(): array
+    private function getHeaders(): array
     {
         return [
             'Authorization' => sprintf('Bearer %s', $this->authorization->getAccessToken()),

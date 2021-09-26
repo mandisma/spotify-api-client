@@ -14,6 +14,7 @@ interface PersonalizationApiInterface
      * - int limit The number of entities to return
      * - int offset The index of the first entity to return
      * - string time_range Over what time frame the affinities are computed
+     *
      * @return array
      */
     public function getCurrentUserTopArtists(array $options = []): array;
@@ -26,6 +27,7 @@ interface PersonalizationApiInterface
      * - int limit The number of entities to return
      * - int offset The index of the first entity to return
      * - string time_range Over what time frame the affinities are computed
+     *
      * @return array
      */
     public function getCurrentUserTopTracks(array $options = []): array;

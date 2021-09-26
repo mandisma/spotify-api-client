@@ -13,6 +13,7 @@ interface ShowApiInterface
      * @param string $showId The Spotify ID for the show.
      * @param array $options
      * - string market An ISO 3166-1 alpha-2 country code or the string from_token
+     *
      * @return array
      */
     public function getShow(string $showId, array $options = []): array;
@@ -24,6 +25,7 @@ interface ShowApiInterface
      * @param array $showsIds A comma-separated list of the Spotify IDs for the shows. Maximum: 50 IDs.
      * @param array $options
      * - string market An ISO 3166-1 alpha-2 country code or the string from_token
+     *
      * @return array
      */
     public function getShows(array $showsIds, array $options = []): array;
@@ -38,6 +40,7 @@ interface ShowApiInterface
      * - int limit The number of album objects to return
      * - int offset The index of the first album to return
      * - string market An ISO 3166-1 alpha-2 country code or the string from_token
+     *
      * @return array
      */
     public function getShowEpisodes(string $showId, array $options = []): array;

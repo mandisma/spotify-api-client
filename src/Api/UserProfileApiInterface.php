@@ -19,6 +19,7 @@ interface UserProfileApiInterface
      * https://developer.spotify.com/documentation/web-api/reference/users-profile/get-users-profile/
      *
      * @param string $userId The user's Spotify user ID
+     *
      * @return array
      */
     public function getUserProfile(string $userId): array;

@@ -8,8 +8,6 @@ final class EpisodeApi extends AbstractApi implements EpisodeApiInterface
 {
     /**
      * URI suffix for the episode endpoint
-     *
-     * @var string
      */
     public const EPISODE_URI = '/v1/episodes';
 
@@ -18,7 +16,7 @@ final class EpisodeApi extends AbstractApi implements EpisodeApiInterface
      */
     public function getEpisode(string $episodeId, array $options = []): array
     {
-        return $this->resourceClient->get(self::EPISODE_URI . "/$episodeId", $options);
+        return $this->resourceClient->get(self::EPISODE_URI . "/${episodeId}", $options);
     }
 
     /**

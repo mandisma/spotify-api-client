@@ -14,6 +14,7 @@ interface PlaylistApiInterface
      * @param array $options
      * - string|array uris A comma-separated list of Spotify URIs to add, can be track or episode URIs.
      * - int position The position to insert the items, a zero-based index.
+     *
      * @return array
      */
     public function addItem(string $playlistId, array $options = []): array;
@@ -29,7 +30,6 @@ interface PlaylistApiInterface
      * - bool collaborative  If true , the playlist will become collaborative and other users will be able to modify
      *                       the playlist in their Spotify client.
      * - string description Value for playlist description as displayed in Spotify Clients and in the Web API.
-     * @return boolean
      */
     public function changeDetails(string $playlistId, array $options = []): bool;
 
@@ -44,6 +44,7 @@ interface PlaylistApiInterface
      * - bool collaborative  If true , the playlist will become collaborative and other users will be able to modify
      *                       the playlist in their Spotify client.
      * - string description Value for playlist description as displayed in Spotify Clients and in the Web API.
+     *
      * @return array
      */
     public function create(string $userId, string $playlistName, array $options = []): array;
@@ -55,6 +56,7 @@ interface PlaylistApiInterface
      * @param array $options
      * - integer limit  The maximum number of playlists to return. Default: 20. Minimum: 1. Maximum: 50.
      * - integer offset The index of the first playlist to return. Default: 0 (the first object).
+     *
      * @return array
      */
     public function getCurrentUserPlaylists(array $options = []): array;
@@ -67,6 +69,7 @@ interface PlaylistApiInterface
      * @param array $options
      * - integer limit  The maximum number of playlists to return. Default: 20. Minimum: 1. Maximum: 50.
      * - integer offset The index of the first playlist to return. Default: 0 (the first object).
+     *
      * @return array
      */
     public function getUserPlaylists(string $userId, array $options = []): array;
@@ -82,6 +85,7 @@ interface PlaylistApiInterface
      * - string market An ISO 3166-1 alpha-2 country code or the string from_token
      * - string additional_types A comma-separated list of item types that your client supports.
      *      Valid types are: track and episode.
+     *
      * @return array
      */
     public function getPlaylist(string $playlistId, array $options = []): array;
@@ -91,6 +95,7 @@ interface PlaylistApiInterface
      * https://developer.spotify.com/documentation/web-api/reference/playlists/get-playlist-cover/
      *
      * @param string $playlistId The Spotify ID for the playlist.
+     *
      * @return array
      */
     public function getCoverImage(string $playlistId): array;
@@ -108,6 +113,7 @@ interface PlaylistApiInterface
      * - string market An ISO 3166-1 alpha-2 country code or the string from_token
      * - string additional_types A comma-separated list of item types that your client supports.
      *      Valid types are: track and episode.
+     *
      * @return array
      */
     public function getItems(string $playlistId, array $options = []): array;
@@ -120,6 +126,7 @@ interface PlaylistApiInterface
      * @param array $tracks An array of objects containing Spotify URIs of the tracks and episodes to remove.
      * @param array $options
      * - string snapshot The playlist’s snapshot ID against which you want to make the changes.
+     *
      * @return array
      */
     public function removeItems(string $playlistId, array $tracks, array $options = []): array;
@@ -129,11 +136,12 @@ interface PlaylistApiInterface
      * https://developer.spotify.com/documentation/web-api/reference/playlists/reorder-playlists-tracks/
      *
      * @param string $playlistId The Spotify ID for the playlist.
-     * @param integer $rangeStart The position of the first item to be reordered.
-     * @param integer $insertBefore The position where the items should be inserted.
+     * @param int $rangeStart The position of the first item to be reordered.
+     * @param int $insertBefore The position where the items should be inserted.
      * @param array $options
      * - integer range_length The amount of items to be reordered. Defaults to 1 if not set.
      * - string snapshot The playlist’s snapshot ID against which you want to make the changes.
+     *
      * @return array
      */
     public function reorderItems(string $playlistId, int $rangeStart, int $insertBefore, array $options = []): array;
@@ -146,7 +154,6 @@ interface PlaylistApiInterface
      * @param string $playlistId    The Spotify ID for the playlist.
      * @param array $options
      * - array|string uris A list of Spotify URIs to set, can be track or episode URIs.
-     * @return boolean
      */
     public function replaceItems(string $playlistId, array $options = []): bool;
 
@@ -157,7 +164,6 @@ interface PlaylistApiInterface
      *
      * @param string $playlistId    The Spotify ID for the playlist.
      * @param string $image Base64 encoded JPEG image data, maximum payload size is 256 KB
-     * @return boolean
      */
     public function uploadCover(string $playlistId, string $image): bool;
 }

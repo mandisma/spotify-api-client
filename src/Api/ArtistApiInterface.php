@@ -11,6 +11,7 @@ interface ArtistApiInterface
      * https://developer.spotify.com/documentation/web-api/reference/artists/get-artist/
      *
      * @param string $artistId The Spotify ID for the artist
+     *
      * @return array
      */
     public function getArtist(string $artistId): array;
@@ -25,6 +26,7 @@ interface ArtistApiInterface
      * - string market An ISO 3166-1 alpha-2 country code or the string from_token
      * - int limit The number of album objects to return
      * - int offset The index of the first album to return
+     *
      * @return array
      */
     public function getAlbums(string $artistId, array $options = []): array;
@@ -35,6 +37,7 @@ interface ArtistApiInterface
      *
      * @param string $artistId The Spotify ID for the artist
      * @param string $country An ISO 3166-1 alpha-2 country code or the string from_token.
+     *
      * @return array
      */
     public function getTopTracks(string $artistId, string $country): array;
@@ -45,6 +48,7 @@ interface ArtistApiInterface
      * https://developer.spotify.com/documentation/web-api/reference/artists/get-related-artists/
      *
      * @param string $artistId The Spotify ID for the artist
+     *
      * @return array
      */
     public function getRelatedArtists(string $artistId): array;
@@ -54,6 +58,7 @@ interface ArtistApiInterface
      * https://developer.spotify.com/documentation/web-api/reference/artists/get-several-artists/
      *
      * @param array $artistIds List of the Spotify IDs for the artists
+     *
      * @return array
      */
     public function getArtists(array $artistIds): array;

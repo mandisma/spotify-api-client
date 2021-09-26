@@ -8,8 +8,6 @@ final class ArtistApi extends AbstractApi implements ArtistApiInterface
 {
     /**
      * URI suffix for the artists endpoint
-     *
-     * @var string
      */
     public const ARTIST_URI = '/v1/artists';
 

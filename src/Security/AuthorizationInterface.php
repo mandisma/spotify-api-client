@@ -8,8 +8,6 @@ interface AuthorizationInterface
 {
     /**
      * Get the access token.
-     *
-     * @return string
      */
     public function getAccessToken(): string;
 }

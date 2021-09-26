@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Mandisma\SpotifyApiClient\Tests;
 
 use GuzzleHttp\Psr7\Response;
-use Mandisma\SpotifyApiClient\Tests\ApiTestCase;
 
 class PlaylistApiTest extends ApiTestCase
 {
@@ -14,7 +13,7 @@ class PlaylistApiTest extends ApiTestCase
         $this->mockHandler->append(new Response(200, [], load_fixture('snapshot')));
 
         $added = $this->client->playlistApi->addItem('7oi0w0SLbJ4YyjrOxhZbUv', [
-            'uris' => 'spotify:track:4iV5W9uYEdYUVa79Axb7Rh, spotify:track:1301WleyT98MSxVHPZCA6M,spotify:episode:512ojhOuo1ktJprKbVcKyQ'
+            'uris' => 'spotify:track:4iV5W9uYEdYUVa79Axb7Rh, spotify:track:1301WleyT98MSxVHPZCA6M,spotify:episode:512ojhOuo1ktJprKbVcKyQ',
         ]);
 
         $this->assertNotEmpty($added);
@@ -26,7 +25,7 @@ class PlaylistApiTest extends ApiTestCase
 
         $changed = $this->client->playlistApi->changeDetails('6Df19VKaShrdWrAnHinwVO', [
             'name' => 'Playlist Name',
-            'public' => true
+            'public' => true,
         ]);
 
         $this->assertEquals(true, $changed);
@@ -95,7 +94,7 @@ class PlaylistApiTest extends ApiTestCase
         $tracks = [
             ["uri" => "spotify:track:4iV5W9uYEdYUVa79Axb7Rh"],
             ["uri" => "spotify:track:1301WleyT98MSxVHPZCA6M"],
-            ["uri" => "spotify:episode:512ojhOuo1ktJprKbVcKyQ"]
+            ["uri" => "spotify:episode:512ojhOuo1ktJprKbVcKyQ"],
         ];
 
         $removed = $this->client->playlistApi->removeItems('71m0QB5fUFrnqfnxVerUup', $tracks);

@@ -29,14 +29,9 @@ final class ClientBuilder
      */
     private $httpClient;
 
-    /**
-     * Change the default http client.
-     */
-    public function withHttpClient(HttpClientInterface $httpClient): self
+    public function __construct(?HttpClientInterface $httpClient = null)
     {
-        $this->httpClient = $httpClient;
-
-        return $this;
+        $this->httpClient = $httpClient ?? $this->defaultHttpClient();
     }
 
     /**
@@ -44,9 +39,7 @@ final class ClientBuilder
      */
     public function build(AuthorizationInterface $authorization): Client
     {
-        $httpClient = $this->httpClient ?? $this->defaultHttpClient();
-
-        $authenticatedHttpClient = new AuthenticatedHttpClient($httpClient, $authorization);
+        $authenticatedHttpClient = new AuthenticatedHttpClient($this->httpClient, $authorization);
 
         return new Client(
             new AlbumApi($authenticatedHttpClient),
@@ -68,9 +61,9 @@ final class ClientBuilder
     /**
      * Get default http client.
      *
-     * @return HttpClientInterface
+     * @return GuzzleHttpClient
      */
-    private function defaultHttpClient(): HttpClientInterface
+    private function defaultHttpClient(): GuzzleHttpClient
     {
         return new GuzzleHttpClient([
             'base_uri' => Client::API_URL,

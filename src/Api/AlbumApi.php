@@ -8,8 +8,6 @@ final class AlbumApi extends AbstractApi implements AlbumApiInterface
 {
     /**
      * URI suffix for album's endpoint
-     *
-     * @var string
      */
     public const ALBUM_URI = '/v1/albums';
 
