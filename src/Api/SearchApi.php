@@ -9,11 +9,13 @@ final class SearchApi extends AbstractApi implements SearchApiInterface
     /**
      * {@inheritdoc}
      */
-    public function search(string $query, string $type, array $options = []): array
+    public function search(string $query, $type, array $options = []): array
     {
+        $type = is_array($type) ? $type : [$type];
+
         $params = array_merge($options, [
             'q' => $query,
-            'type' => $type,
+            'type' => implode(',', $type),
         ]);
 
         return $this->resourceClient->get('/v1/search', $params);
