@@ -26,9 +26,9 @@ This interface is needed to initialize the client.
 **Initialize the client :**
 
 ```php
-$clientBuilder = new \Mandisma\SpotifyApiClient\ClientBuilder(/*AuthorizationInterface*/ $authorization);
+$clientBuilder = new \Mandisma\SpotifyApiClient\ClientBuilder();
 
-$client = $clientBuilder->build();
+$client = $clientBuilder->build(/*AuthorizationInterface*/ $authorization);
 
 $playedTracks = $client->playerApi->getRecentlyPlayedTracks();
 ```

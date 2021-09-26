@@ -30,28 +30,7 @@ final class ClientBuilder
     private $httpClient;
 
     /**
-     * @var AuthorizationInterface
-     */
-    private $authorization;
-
-    public function __construct(AuthorizationInterface $authorization)
-    {
-        $this->httpClient = new GuzzleHttpClient([
-            'base_uri' => Client::API_URL,
-            'http_errors' => false,
-            'headers' => [
-                'Accept' => 'application/json',
-            ],
-        ]);
-
-        $this->authorization = $authorization;
-    }
-
-    /**
      * Change the default http client.
-     *
-     * @param HttpClientInterface $httpClient
-     * @return self
      */
     public function withHttpClient(HttpClientInterface $httpClient): self
     {
@@ -62,14 +41,14 @@ final class ClientBuilder
 
     /**
      * Build a client from an authorization object
-     *
-     * @return Client
      */
-    public function build(): Client
+    public function build(AuthorizationInterface $authorization): Client
     {
-        $authenticatedHttpClient = new AuthenticatedHttpClient($this->httpClient, $this->authorization);
+        $httpClient = $this->httpClient ?? $this->defaultHttpClient();
 
-        $client = new Client(
+        $authenticatedHttpClient = new AuthenticatedHttpClient($httpClient, $authorization);
+
+        return new Client(
             new AlbumApi($authenticatedHttpClient),
             new ArtistApi($authenticatedHttpClient),
             new BrowseApi($authenticatedHttpClient),
@@ -84,7 +63,21 @@ final class ClientBuilder
             new TrackApi($authenticatedHttpClient),
             new UserProfileApi($authenticatedHttpClient)
         );
+    }
 
-        return $client;
+    /**
+     * Get default http client.
+     *
+     * @return HttpClientInterface
+     */
+    private function defaultHttpClient(): HttpClientInterface
+    {
+        return new GuzzleHttpClient([
+            'base_uri' => Client::API_URL,
+            'http_errors' => false,
+            'headers' => [
+                'Accept' => 'application/json',
+            ],
+        ]);
     }
 }

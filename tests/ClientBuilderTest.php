@@ -13,7 +13,7 @@ class ClientBuilderTest extends TestCase
     {
         $authorization = $this->getMockBuilder(AuthorizationInterface::class)->getMock();
 
-        $client = (new ClientBuilder($authorization))->build();
+        $client = (new ClientBuilder())->build($authorization);
 
         $this->assertInstanceOf(Client::class, $client);
     }

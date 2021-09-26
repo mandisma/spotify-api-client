@@ -21,6 +21,11 @@ use Mandisma\SpotifyApiClient\Api\UserProfileApiInterface;
 final class Client
 {
     /**
+     * The Spotify API URI
+     */
+    public const API_URL = 'https://api.spotify.com';
+
+    /**
      * @var AlbumApiInterface
      */
     public $albumApi;
@@ -86,27 +91,7 @@ final class Client
     public $userProfileApi;
 
     /**
-     * The Spotify API URI
-     *
-     * @var string
-     */
-    public const API_URL = 'https://api.spotify.com';
-
-    /**
      * Client constructor.
-     * @param AlbumApiInterface $albumApi
-     * @param ArtistApiInterface $artistApi
-     * @param BrowseApiInterface $browseApi
-     * @param EpisodeApiInterface $episodeApi
-     * @param FollowApiInterface $followApi
-     * @param LibraryApiInterface $libraryApi
-     * @param PersonalizationApiInterface $personalizationApi
-     * @param PlayerApiInterface $playerApi
-     * @param PlaylistApiInterface $playlistApi
-     * @param SearchApiInterface $searchApi
-     * @param ShowApiInterface $showApi
-     * @param TrackApiInterface $trackApi
-     * @param UserProfileApiInterface $userProfileApi
      */
     public function __construct(
         AlbumApiInterface $albumApi,

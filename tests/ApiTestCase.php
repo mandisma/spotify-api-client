@@ -49,9 +49,9 @@ abstract class ApiTestCase extends TestCase
 
     protected function getClient(AuthorizationInterface $authorization)
     {
-        return (new ClientBuilder($authorization))
+        return (new ClientBuilder())
             ->withHttpClient($this->httpClient)
-            ->build();
+            ->build($authorization);
     }
 
     /**
