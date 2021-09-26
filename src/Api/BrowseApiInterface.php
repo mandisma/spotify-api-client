@@ -15,6 +15,7 @@ interface BrowseApiInterface
      * - string country A country: an ISO 3166-1 alpha-2 country code
      * - string locale The desired language consisting of an ISO 639-1 language code
      *                  and an ISO 3166-1 alpha-2 country code
+     *
      * @return array
      */
     public function getCategory(string $categoryId, array $options = []): array;
@@ -28,6 +29,7 @@ interface BrowseApiInterface
      * - integer limit The maximum number of items to return
      * - integer offset The index of the first item to return
      * - string country A country: an ISO 3166-1 alpha-2 country code
+     *
      * @return array
      */
     public function getPlaylistsByCategory(string $categoryId, array $options = []): array;
@@ -42,6 +44,7 @@ interface BrowseApiInterface
      *                 and an ISO 3166-1 alpha-2 country code
      * - int limit The maximum number of categories to return
      * - int offset The index of the first item to return
+     *
      * @return array
      */
     public function getCategories(array $options = []): array;
@@ -58,6 +61,7 @@ interface BrowseApiInterface
      * - string timestamp A timestamp in ISO 8601 format: yyyy-MM-ddTHH:mm:ss. Use this parameter to specify
      * - int limit The maximum number of items to return
      * - int offset The index of the first item to return
+     *
      * @return array
      */
     public function getFeaturedPlaylists(array $options = []): array;
@@ -70,6 +74,7 @@ interface BrowseApiInterface
      * - string country A country: an ISO 3166-1 alpha-2 country code
      * - int limit The maximum number of items to return
      * - int offset The index of the first item to return
+     *
      * @return array
      */
     public function getNewReleases(array $options = []): array;
@@ -78,6 +83,9 @@ interface BrowseApiInterface
      * Create a playlist-style listening experience based on seed artists, tracks and genres
      * https://developer.spotify.com/documentation/web-api/reference/browse/get-recommendations/
      *
+     * @param array $seedArtists
+     * @param array $seedGenres
+     * @param array $seedTracks
      * @param array $options
      * - int limit The target size of the list of recommended tracks
      * - string market An ISO 3166-1 alpha-2 country code or the string from_token
@@ -85,11 +93,9 @@ interface BrowseApiInterface
      *               on the selected track attribute’s value can be provided
      * - mixed min_* For each tunable track attribute, a hard floor
      *                on the selected track attribute’s value can be provided
-     * - array seedGenres List of any genres in the set of available genre seeds
-     * - array seedTracks List of Spotify IDs for a seed track
-     * - array seedArtists List of Spotify IDs for seed artists
      * - target_* For each of the tunable track attributes (below) a target value may be provided
+     *
      * @return array
      */
-    public function getRecommendations(array $options = []): array;
+    public function getRecommendations(array $seedArtists, array $seedGenres, array $seedTracks, array $options = []): array;
 }

@@ -8,8 +8,6 @@ final class BrowseApi extends AbstractApi implements BrowseApiInterface
 {
     /**
      * URI suffix for the browse endpoint
-     *
-     * @var string
      */
     public const BROWSE_URI = '/v1/browse';
 
@@ -56,8 +54,14 @@ final class BrowseApi extends AbstractApi implements BrowseApiInterface
     /**
      * {@inheritdoc}
      */
-    public function getRecommendations(array $options = []): array
+    public function getRecommendations(array $seedArtists, array $seedGenres, array $seedTracks, array $options = []): array
     {
-        return $this->resourceClient->get('/recommendations', $options);
+        $options = array_merge($options, [
+            'seed_artists' => implode(',', $seedArtists),
+            'seed_genres' => implode(',', $seedGenres),
+            'seed_tracks' => implode(',', $seedTracks),
+        ]);
+
+        return $this->resourceClient->get('/v1/recommendations', $options);
     }
 }
