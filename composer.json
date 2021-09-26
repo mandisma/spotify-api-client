@@ -24,7 +24,8 @@
         "phpunit/phpunit": "^9.3.3",
         "phpstan/phpstan": "^0.12.19",
         "phpmetrics/phpmetrics": "^2.7",
-        "friendsofphp/php-cs-fixer": "^3.1"
+        "friendsofphp/php-cs-fixer": "^3.1",
+        "vimeo/psalm": "^4.10"
     },
     "autoload": {
         "psr-4": {
@@ -39,7 +40,7 @@
     "scripts": {
         "test": "phpunit",
         "test:coverage": "XDEBUG_MODE=coverage phpunit --coverage-html=build/coverage",
-        "phpstan": "phpstan analyze",
+        "psalm": "psalm",
         "lint": "php-cs-fixer fix --config=.php_cs.dist.php -v --dry-run",
         "lint:fix": "php-cs-fixer fix --config=.php_cs.dist.php -v"
     }
