@@ -22,7 +22,11 @@ class BrowseApiTest extends ApiTestCase
     {
         $this->mockHandler->append(new Response(200, [], load_fixture('tracks')));
 
-        $recommendations = $this->client->browseApi->getRecommendations();
+        $recommendations = $this->client->browseApi->getRecommendations(
+            ['4NHQUGzhtTLFvgF5SZesLK'],
+            ['classical'],
+            ['0c6xIDDpzE81m2q797ordA']
+        );
 
         $this->assertNotEmpty($recommendations);
     }
