@@ -29,7 +29,7 @@ abstract class ApiTestCase extends TestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->mockHandler = new MockHandler();
 
