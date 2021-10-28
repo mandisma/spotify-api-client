@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Mandisma\SpotifyApiClient\Tests;
+namespace Mandisma\SpotifyApiClient\Tests\Api;
 
 use GuzzleHttp\Psr7\Response;
+use Mandisma\SpotifyApiClient\Tests\ApiTestCase;
 
 class PlaylistApiTest extends ApiTestCase
 {
