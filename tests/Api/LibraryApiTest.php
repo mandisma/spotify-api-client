@@ -15,6 +15,10 @@ class LibraryApiTest extends ApiTestCase
 
         $removed = $this->client->libraryApi->removeCurrentUserSavedAlbums($albumsIds);
 
+        $requestUri = '/v1/me/albums';
+
+        $this->assertEquals($requestUri, $this->getLastRequestUri());
+        $this->assertEquals(['ids' => $albumsIds], $this->lastRequestJson());
         $this->assertTrue($removed);
     }
 
@@ -24,6 +28,9 @@ class LibraryApiTest extends ApiTestCase
 
         $tracks = $this->client->libraryApi->getCurrentUserSavedTracks();
 
+        $requestUri = '/v1/me/tracks';
+
+        $this->assertEquals($requestUri, $this->getLastRequestUri());
         $this->assertNotEmpty($tracks);
     }
 
@@ -33,6 +40,9 @@ class LibraryApiTest extends ApiTestCase
 
         $albums = $this->client->libraryApi->getCurrentUserSavedAlbums();
 
+        $requestUri = '/v1/me/albums';
+
+        $this->assertEquals($requestUri, $this->getLastRequestUri());
         $this->assertNotEmpty($albums);
     }
 
@@ -44,6 +54,10 @@ class LibraryApiTest extends ApiTestCase
 
         $saved = $this->client->libraryApi->saveCurrentUserAlbums($albumsIds);
 
+        $requestUri = '/v1/me/albums';
+
+        $this->assertEquals($requestUri, $this->getLastRequestUri());
+        $this->assertEquals(['ids' => $albumsIds], $this->lastRequestJson());
         $this->assertTrue($saved);
     }
 
@@ -55,6 +69,10 @@ class LibraryApiTest extends ApiTestCase
 
         $saved = $this->client->libraryApi->saveCurrentUserTracks($tracksIds);
 
+        $requestUri = '/v1/me/tracks';
+
+        $this->assertEquals($requestUri, $this->getLastRequestUri());
+        $this->assertEquals(['ids' => $tracksIds], $this->lastRequestJson());
         $this->assertTrue($saved);
     }
 
@@ -66,6 +84,9 @@ class LibraryApiTest extends ApiTestCase
 
         $albums = $this->client->libraryApi->checkCurrentUserSavedAlbums($albumsIds);
 
+        $requestUri = '/v1/me/albums/contains?' . http_build_query(['ids' => $albumsIds]);
+
+        $this->assertEquals($requestUri, $this->getLastRequestUri());
         $this->assertNotEmpty($albums);
     }
 
@@ -77,6 +98,10 @@ class LibraryApiTest extends ApiTestCase
 
         $removed = $this->client->libraryApi->removeCurrentUserSavedTracks($tracksIds);
 
+        $requestUri = '/v1/me/tracks';
+
+        $this->assertEquals($requestUri, $this->getLastRequestUri());
+        $this->assertEquals(['ids' => $tracksIds], $this->lastRequestJson());
         $this->assertTrue($removed);
     }
 
@@ -88,6 +113,9 @@ class LibraryApiTest extends ApiTestCase
 
         $tracks = $this->client->libraryApi->checkCurrentUserSavedTracks($tracksIds);
 
+        $requestUri = '/v1/me/tracks/contains?' . http_build_query(['ids' => $tracksIds]);
+
+        $this->assertEquals($requestUri, $this->getLastRequestUri());
         $this->assertNotEmpty($tracks);
     }
 }

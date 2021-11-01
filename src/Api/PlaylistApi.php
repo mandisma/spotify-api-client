@@ -9,14 +9,14 @@ final class PlaylistApi extends AbstractApi implements PlaylistApiInterface
     /**
      * URI suffix for the playlist endpoint
      */
-    public const PLAYER_URI = '/v1/playlists';
+    public const PLAYLIST_URI = '/v1/playlists';
 
     /**
      * {@inheritdoc}
      */
     public function addItem(string $playlistId, array $options = []): array
     {
-        return $this->resourceClient->post(self::PLAYER_URI . "/${playlistId}/tracks", $options);
+        return $this->resourceClient->post(self::PLAYLIST_URI . "/${playlistId}/tracks", $options);
     }
 
     /**
@@ -24,7 +24,7 @@ final class PlaylistApi extends AbstractApi implements PlaylistApiInterface
      */
     public function changeDetails(string $playlistId, array $options = []): bool
     {
-        $this->resourceClient->post(self::PLAYER_URI . "/${playlistId}", $options);
+        $this->resourceClient->post(self::PLAYLIST_URI . "/${playlistId}", $options);
 
         return true;
     }
@@ -62,7 +62,7 @@ final class PlaylistApi extends AbstractApi implements PlaylistApiInterface
      */
     public function getPlaylist(string $playlistId, array $options = []): array
     {
-        return $this->resourceClient->get(self::PLAYER_URI . "/${playlistId}", $options);
+        return $this->resourceClient->get(self::PLAYLIST_URI . "/${playlistId}", $options);
     }
 
     /**
@@ -70,7 +70,7 @@ final class PlaylistApi extends AbstractApi implements PlaylistApiInterface
      */
     public function getCoverImage(string $playlistId): array
     {
-        return $this->resourceClient->get(self::PLAYER_URI . "/${playlistId}/images");
+        return $this->resourceClient->get(self::PLAYLIST_URI . "/${playlistId}/images");
     }
 
     /**
@@ -78,7 +78,7 @@ final class PlaylistApi extends AbstractApi implements PlaylistApiInterface
      */
     public function getItems(string $playlistId, array $options = []): array
     {
-        return $this->resourceClient->get(self::PLAYER_URI . "/${playlistId}/tracks", $options);
+        return $this->resourceClient->get(self::PLAYLIST_URI . "/${playlistId}/tracks", $options);
     }
 
     /**
@@ -90,7 +90,7 @@ final class PlaylistApi extends AbstractApi implements PlaylistApiInterface
             'tracks' => $tracks,
         ]);
 
-        return $this->resourceClient->delete(self::PLAYER_URI . "/${playlistId}/tracks", $params);
+        return $this->resourceClient->delete(self::PLAYLIST_URI . "/${playlistId}/tracks", $params);
     }
 
     /**
@@ -103,7 +103,7 @@ final class PlaylistApi extends AbstractApi implements PlaylistApiInterface
             'insert_before' => $insertBefore,
         ]);
 
-        return $this->resourceClient->put(self::PLAYER_URI . "/${playlistId}/tracks", $params);
+        return $this->resourceClient->put(self::PLAYLIST_URI . "/${playlistId}/tracks", $params);
     }
 
     /**
@@ -111,7 +111,7 @@ final class PlaylistApi extends AbstractApi implements PlaylistApiInterface
      */
     public function replaceItems(string $playlistId, array $options = []): bool
     {
-        $this->resourceClient->put(self::PLAYER_URI . "/${playlistId}/tracks", $options);
+        $this->resourceClient->put(self::PLAYLIST_URI . "/${playlistId}/tracks", $options);
 
         return true;
     }
@@ -126,6 +126,8 @@ final class PlaylistApi extends AbstractApi implements PlaylistApiInterface
      */
     public function uploadCover(string $playlistId, string $image): bool
     {
-        return $this->resourceClient->put(self::PLAYER_URI . "/${playlistId}/images");
+        $this->resourceClient->put(self::PLAYLIST_URI . "/${playlistId}/images");
+
+        return true;
     }
 }

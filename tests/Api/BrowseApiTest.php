@@ -3,6 +3,7 @@
 namespace Mandisma\SpotifyApiClient\Tests\Actions;
 
 use GuzzleHttp\Psr7\Response;
+use Mandisma\SpotifyApiClient\Api\BrowseApi;
 use Mandisma\SpotifyApiClient\Tests\ApiTestCase;
 
 class BrowseApiTest extends ApiTestCase
@@ -15,6 +16,9 @@ class BrowseApiTest extends ApiTestCase
 
         $playlists = $this->client->browseApi->getPlaylistsByCategory($categoryId);
 
+        $requestUri = BrowseApi::BROWSE_URI . '/categories/' . $categoryId . '/playlists';
+
+        $this->assertEquals($requestUri, $this->getLastRequestUri());
         $this->assertNotEmpty($playlists);
     }
 
@@ -25,9 +29,20 @@ class BrowseApiTest extends ApiTestCase
         $recommendations = $this->client->browseApi->getRecommendations(
             ['4NHQUGzhtTLFvgF5SZesLK'],
             ['classical'],
-            ['0c6xIDDpzE81m2q797ordA']
+            ['0c6xIDDpzE81m2q797ordA'],
+            [
+                'market' => 'FR',
+            ]
         );
 
+        $requestUri = '/v1/recommendations?' . http_build_query([
+            'market' => 'FR',
+            'seed_artists' => '4NHQUGzhtTLFvgF5SZesLK',
+            'seed_genres' => 'classical',
+            'seed_tracks' => '0c6xIDDpzE81m2q797ordA',
+        ]);
+
+        $this->assertEquals($requestUri, $this->getLastRequestUri());
         $this->assertNotEmpty($recommendations);
     }
 
@@ -37,6 +52,9 @@ class BrowseApiTest extends ApiTestCase
 
         $categories = $this->client->browseApi->getCategories();
 
+        $requestUri = BrowseApi::BROWSE_URI . '/categories';
+
+        $this->assertEquals($requestUri, $this->getLastRequestUri());
         $this->assertNotEmpty($categories);
     }
 
@@ -46,6 +64,9 @@ class BrowseApiTest extends ApiTestCase
 
         $releases = $this->client->browseApi->getNewReleases();
 
+        $requestUri = BrowseApi::BROWSE_URI . '/new-releases';
+
+        $this->assertEquals($requestUri, $this->getLastRequestUri());
         $this->assertNotEmpty($releases);
     }
 
@@ -55,6 +76,9 @@ class BrowseApiTest extends ApiTestCase
 
         $playlists = $this->client->browseApi->getFeaturedPlaylists();
 
+        $requestUri = BrowseApi::BROWSE_URI . '/featured-playlists';
+
+        $this->assertEquals($requestUri, $this->getLastRequestUri());
         $this->assertNotEmpty($playlists);
     }
 
@@ -66,6 +90,9 @@ class BrowseApiTest extends ApiTestCase
 
         $category = $this->client->browseApi->getCategory($categoryId);
 
+        $requestUri = BrowseApi::BROWSE_URI . '/categories/' . $categoryId;
+
+        $this->assertEquals($requestUri, $this->getLastRequestUri());
         $this->assertNotEmpty($category);
     }
 }

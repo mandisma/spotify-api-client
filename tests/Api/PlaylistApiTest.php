@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Mandisma\SpotifyApiClient\Tests\Api;
 
 use GuzzleHttp\Psr7\Response;
+use Mandisma\SpotifyApiClient\Api\PlaylistApi;
 use Mandisma\SpotifyApiClient\Tests\ApiTestCase;
 
 class PlaylistApiTest extends ApiTestCase
@@ -13,10 +14,15 @@ class PlaylistApiTest extends ApiTestCase
     {
         $this->mockHandler->append(new Response(200, [], load_fixture('snapshot')));
 
-        $added = $this->client->playlistApi->addItem('7oi0w0SLbJ4YyjrOxhZbUv', [
+        $playlistId = '7oi0w0SLbJ4YyjrOxhZbUv';
+
+        $added = $this->client->playlistApi->addItem($playlistId, [
             'uris' => 'spotify:track:4iV5W9uYEdYUVa79Axb7Rh, spotify:track:1301WleyT98MSxVHPZCA6M,spotify:episode:512ojhOuo1ktJprKbVcKyQ',
         ]);
 
+        $requestUri = PlaylistApi::PLAYLIST_URI . "/${playlistId}/tracks";
+
+        $this->assertEquals($requestUri, $this->getLastRequestUri());
         $this->assertNotEmpty($added);
     }
 
@@ -24,11 +30,16 @@ class PlaylistApiTest extends ApiTestCase
     {
         $this->mockHandler->append(new Response(200, [], load_fixture('search')));
 
-        $changed = $this->client->playlistApi->changeDetails('6Df19VKaShrdWrAnHinwVO', [
+        $playlistId = '6Df19VKaShrdWrAnHinwVO';
+
+        $changed = $this->client->playlistApi->changeDetails($playlistId, [
             'name' => 'Playlist Name',
             'public' => true,
         ]);
 
+        $requestUri = PlaylistApi::PLAYLIST_URI . "/${playlistId}";
+
+        $this->assertEquals($requestUri, $this->getLastRequestUri());
         $this->assertEquals(true, $changed);
     }
 
@@ -36,8 +47,15 @@ class PlaylistApiTest extends ApiTestCase
     {
         $this->mockHandler->append(new Response(200, [], load_fixture('playlist')));
 
-        $createdPlaylist = $this->client->playlistApi->create('thelinmichael', 'New Playlist');
+        $userId = 'thelinmichael';
+        $playlistName = 'New Playlist';
 
+        $createdPlaylist = $this->client->playlistApi->create($userId, $playlistName, ['public' => true]);
+
+        $requestUri = "/v1/users/${userId}/playlists";
+
+        $this->assertEquals($requestUri, $this->getLastRequestUri());
+        $this->assertEquals(['public' => true, 'name' => $playlistName], $this->lastRequestJson());
         $this->assertNotEmpty($createdPlaylist);
     }
 
@@ -47,6 +65,9 @@ class PlaylistApiTest extends ApiTestCase
 
         $playlists = $this->client->playlistApi->getCurrentUserPlaylists();
 
+        $requestUri = "/v1/me/playlists";
+
+        $this->assertEquals($requestUri, $this->getLastRequestUri());
         $this->assertNotEmpty($playlists['items']);
     }
 
@@ -58,6 +79,9 @@ class PlaylistApiTest extends ApiTestCase
 
         $playlists = $this->client->playlistApi->getUserPlaylists($userId);
 
+        $requestUri = "/v1/users/${userId}/playlists";
+
+        $this->assertEquals($requestUri, $this->getLastRequestUri());
         $this->assertNotEmpty($playlists['items']);
     }
 
@@ -65,8 +89,13 @@ class PlaylistApiTest extends ApiTestCase
     {
         $this->mockHandler->append(new Response(200, [], load_fixture('playlist')));
 
-        $playlist = $this->client->playlistApi->getPlaylist('59ZbFPES4DQwEjBpWHzrtC');
+        $playlistId = '59ZbFPES4DQwEjBpWHzrtC';
 
+        $playlist = $this->client->playlistApi->getPlaylist($playlistId);
+
+        $requestUri = PlaylistApi::PLAYLIST_URI . "/${playlistId}";
+
+        $this->assertEquals($requestUri, $this->getLastRequestUri());
         $this->assertNotEmpty($playlist['id']);
     }
 
@@ -74,8 +103,13 @@ class PlaylistApiTest extends ApiTestCase
     {
         $this->mockHandler->append(new Response(200, [], load_fixture('cover')));
 
-        $cover = $this->client->playlistApi->getCoverImage('59ZbFPES4DQwEjBpWHzrtC');
+        $playlistId = '59ZbFPES4DQwEjBpWHzrtC';
 
+        $cover = $this->client->playlistApi->getCoverImage($playlistId);
+
+        $requestUri = PlaylistApi::PLAYLIST_URI . "/${playlistId}/images";
+
+        $this->assertEquals($requestUri, $this->getLastRequestUri());
         $this->assertNotEmpty($cover);
     }
 
@@ -83,8 +117,13 @@ class PlaylistApiTest extends ApiTestCase
     {
         $this->mockHandler->append(new Response(200, [], load_fixture('playlist-items')));
 
-        $items = $this->client->playlistApi->getItems('59ZbFPES4DQwEjBpWHzrtC');
+        $playlistId = '59ZbFPES4DQwEjBpWHzrtC';
 
+        $items = $this->client->playlistApi->getItems($playlistId);
+
+        $requestUri = PlaylistApi::PLAYLIST_URI . "/${playlistId}/tracks";
+
+        $this->assertEquals($requestUri, $this->getLastRequestUri());
         $this->assertNotEmpty($items['items']);
     }
 
@@ -98,8 +137,14 @@ class PlaylistApiTest extends ApiTestCase
             ["uri" => "spotify:episode:512ojhOuo1ktJprKbVcKyQ"],
         ];
 
-        $removed = $this->client->playlistApi->removeItems('71m0QB5fUFrnqfnxVerUup', $tracks);
+        $playlistId = '71m0QB5fUFrnqfnxVerUup';
 
+        $removed = $this->client->playlistApi->removeItems($playlistId, $tracks, ['snapshot' => 'snapshot']);
+
+        $requestUri = PlaylistApi::PLAYLIST_URI . "/${playlistId}/tracks";
+
+        $this->assertEquals($requestUri, $this->getLastRequestUri());
+        $this->assertEquals(['snapshot' => 'snapshot', 'tracks' => $tracks], $this->lastRequestJson());
         $this->assertNotEmpty($removed);
     }
 
@@ -107,8 +152,14 @@ class PlaylistApiTest extends ApiTestCase
     {
         $this->mockHandler->append(new Response(200, [], load_fixture('snapshot')));
 
-        $reordered = $this->client->playlistApi->reorderItems('0vXtvEeftmc2aVQD9QBWrQ', 0, 4);
+        $playlistId = '0vXtvEeftmc2aVQD9QBWrQ';
 
+        $reordered = $this->client->playlistApi->reorderItems($playlistId, 0, 4, ['snapshot' => 'snapshot']);
+
+        $requestUri = PlaylistApi::PLAYLIST_URI . "/${playlistId}/tracks";
+
+        $this->assertEquals($requestUri, $this->getLastRequestUri());
+        $this->assertEquals(['snapshot' => 'snapshot', 'range_start' => 0, 'insert_before' => 4], $this->lastRequestJson());
         $this->assertNotEmpty($reordered);
     }
 
@@ -116,17 +167,27 @@ class PlaylistApiTest extends ApiTestCase
     {
         $this->mockHandler->append(new Response(200, []));
 
-        $replaced = $this->client->playlistApi->replaceItems('0vXtvEeftmc2aVQD9QBWrQ');
+        $playlistId = '0vXtvEeftmc2aVQD9QBWrQ';
 
+        $replaced = $this->client->playlistApi->replaceItems($playlistId);
+
+        $requestUri = PlaylistApi::PLAYLIST_URI . "/${playlistId}/tracks";
+
+        $this->assertEquals($requestUri, $this->getLastRequestUri());
         $this->assertEquals(true, $replaced);
     }
 
-    // public function testuploadCover()
-    // {
-    //     $this->mockHandler->append(new Response(200, []));
+    public function testuploadCover()
+    {
+        $this->mockHandler->append(new Response(200, []));
 
-    //     $uploaded = $this->client->playlistApi->uploadCover('0vXtvEeftmc2aVQD9QBWrQ');
+        $playlistId = '0vXtvEeftmc2aVQD9QBWrQ';
 
-    //     $this->assertEquals(true, $uploaded);
-    // }
+        $uploaded = $this->client->playlistApi->uploadCover($playlistId, base64_encode('cover'));
+
+        $requestUri = PlaylistApi::PLAYLIST_URI . "/${playlistId}/images";
+
+        $this->assertEquals($requestUri, $this->getLastRequestUri());
+        $this->assertEquals(true, $uploaded);
+    }
 }

@@ -13,8 +13,13 @@ class TrackApiTest extends ApiTestCase
     {
         $this->mockHandler->append(new Response(200, [], load_fixture('audio-analysis')));
 
-        $audioAnalysis = $this->client->trackApi->getAudioAnalysis('0eGsygTp906u18L0Oimnem');
+        $trackId = '0eGsygTp906u18L0Oimnem';
 
+        $audioAnalysis = $this->client->trackApi->getAudioAnalysis($trackId);
+
+        $requestUri = "/v1/audio-analysis/${trackId}";
+
+        $this->assertEquals($requestUri, $this->getLastRequestUri());
         $this->assertNotEmpty($audioAnalysis['track']);
     }
 
@@ -22,8 +27,13 @@ class TrackApiTest extends ApiTestCase
     {
         $this->mockHandler->append(new Response(200, [], load_fixture('track-audio-features')));
 
-        $audioFeatures = $this->client->trackApi->getAudioFeaturesForTrack('0eGsygTp906u18L0Oimnem');
+        $trackId = '0eGsygTp906u18L0Oimnem';
 
+        $audioFeatures = $this->client->trackApi->getAudioFeaturesForTrack($trackId);
+
+        $requestUri = "/v1/audio-features/${trackId}";
+
+        $this->assertEquals($requestUri, $this->getLastRequestUri());
         $this->assertNotEmpty($audioFeatures['id']);
     }
 
@@ -31,11 +41,16 @@ class TrackApiTest extends ApiTestCase
     {
         $this->mockHandler->append(new Response(200, [], load_fixture('tracks-audio-features')));
 
-        $audioFeatures = $this->client->trackApi->getAudioFeaturesForTracks([
+        $trackIds = [
             '0eGsygTp906u18L0Oimnem',
             'spotify:track:1lDWb6b6ieDQ2xT7ewTC3G',
-        ]);
+        ];
 
+        $audioFeatures = $this->client->trackApi->getAudioFeaturesForTracks($trackIds);
+
+        $requestUri = "/v1/audio-features?" . http_build_query(['ids' => $trackIds]);
+
+        $this->assertEquals($requestUri, $this->getLastRequestUri());
         $this->assertNotEmpty($audioFeatures['audio_features']);
     }
 
@@ -43,11 +58,16 @@ class TrackApiTest extends ApiTestCase
     {
         $this->mockHandler->append(new Response(200, [], load_fixture('tracks')));
 
-        $audioFeatures = $this->client->trackApi->getTracks([
+        $trackIds = [
             '0eGsygTp906u18L0Oimnem',
             'spotify:track:1lDWb6b6ieDQ2xT7ewTC3G',
-        ]);
+        ];
 
+        $audioFeatures = $this->client->trackApi->getTracks($trackIds, ['market' => 'FR']);
+
+        $requestUri = "/v1/tracks?" . http_build_query(['market' => 'FR', 'ids' => implode(',', $trackIds)]);
+
+        $this->assertEquals($requestUri, $this->getLastRequestUri());
         $this->assertNotEmpty($audioFeatures['tracks']);
     }
 
@@ -55,8 +75,13 @@ class TrackApiTest extends ApiTestCase
     {
         $this->mockHandler->append(new Response(200, [], load_fixture('track')));
 
-        $audioFeatures = $this->client->trackApi->getTrack('0eGsygTp906u18L0Oimnem');
+        $trackId = '0eGsygTp906u18L0Oimnem';
 
+        $audioFeatures = $this->client->trackApi->getTrack($trackId);
+
+        $requestUri = "/v1/tracks/$trackId";
+
+        $this->assertEquals($requestUri, $this->getLastRequestUri());
         $this->assertNotEmpty($audioFeatures['id']);
     }
 }

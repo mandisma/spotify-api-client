@@ -3,6 +3,7 @@
 namespace Mandisma\SpotifyApiClient\Tests\Actions;
 
 use GuzzleHttp\Psr7\Response;
+use Mandisma\SpotifyApiClient\Api\FollowApi;
 use Mandisma\SpotifyApiClient\Tests\ApiTestCase;
 
 class FollowApiTest extends ApiTestCase
@@ -15,6 +16,12 @@ class FollowApiTest extends ApiTestCase
 
         $followed = $this->client->followApi->isFollowingUsers($usersIds);
 
+        $requestUri = '/v1/me/following/contains?' . http_build_query([
+            'type' => FollowApi::TYPE_USER,
+            'ids' => $usersIds,
+        ]);
+
+        $this->assertEquals($requestUri, $this->getLastRequestUri());
         $this->assertContains(true, $followed);
     }
 
@@ -26,6 +33,12 @@ class FollowApiTest extends ApiTestCase
 
         $followed = $this->client->followApi->isFollowingArtists($artistsIds);
 
+        $requestUri = '/v1/me/following/contains?' . http_build_query([
+            'type' => FollowApi::TYPE_ARTIST,
+            'ids' => $artistsIds,
+        ]);
+
+        $this->assertEquals($requestUri, $this->getLastRequestUri());
         $this->assertContains(false, $followed);
     }
 
@@ -37,6 +50,10 @@ class FollowApiTest extends ApiTestCase
 
         $followed = $this->client->followApi->followUsers($usersIds);
 
+        $requestUri = '/v1/me/following';
+
+        $this->assertEquals($requestUri, $this->getLastRequestUri());
+        $this->assertEquals(['type' => 'user', 'ids' => ['exampleuser01']], $this->lastRequestJson());
         $this->assertTrue($followed);
     }
 
@@ -48,6 +65,10 @@ class FollowApiTest extends ApiTestCase
 
         $followed = $this->client->followApi->followArtists($artistsIds);
 
+        $requestUri = '/v1/me/following';
+
+        $this->assertEquals($requestUri, $this->getLastRequestUri());
+        $this->assertEquals(['type' => 'artist', 'ids' => ['74ASZWbe4lXaubB36ztrGX']], $this->lastRequestJson());
         $this->assertTrue($followed);
     }
 
@@ -60,6 +81,11 @@ class FollowApiTest extends ApiTestCase
 
         $followed = $this->client->followApi->isFollowingPlaylists($playlistId, $usersIds);
 
+        $requestUri = '/v1/playlists/' . $playlistId . '/followers/contains?' . http_build_query([
+            'ids' => $usersIds,
+        ]);
+
+        $this->assertEquals($requestUri, $this->getLastRequestUri());
         $this->assertContains(true, $followed);
     }
 
@@ -71,6 +97,9 @@ class FollowApiTest extends ApiTestCase
 
         $followed = $this->client->followApi->followPlaylists($playlistId);
 
+        $requestUri = '/v1/playlists/' . $playlistId . '/followers';
+
+        $this->assertEquals($requestUri, $this->getLastRequestUri());
         $this->assertTrue($followed);
     }
 
@@ -78,8 +107,11 @@ class FollowApiTest extends ApiTestCase
     {
         $this->mockHandler->append(new Response(200, [], load_fixture('artists')));
 
-        $artists = $this->client->followApi->getCurrentUserFollowedArtists('artist');
+        $artists = $this->client->followApi->getCurrentUserFollowedArtists('artist', ['limit' => 5]);
 
+        $requestUri = '/v1/me/following?' . http_build_query(['limit' => 5, 'type' => 'artist']);
+
+        $this->assertEquals($requestUri, $this->getLastRequestUri());
         $this->assertNotEmpty($artists);
     }
 
@@ -91,6 +123,10 @@ class FollowApiTest extends ApiTestCase
 
         $unfollowed = $this->client->followApi->unfollowArtists($artistsIds);
 
+        $requestUri = '/v1/me/following';
+
+        $this->assertEquals($requestUri, $this->getLastRequestUri());
+        $this->assertEquals(['type' => 'artist', 'ids' => $artistsIds], $this->lastRequestJson());
         $this->assertTrue($unfollowed);
     }
 
@@ -102,6 +138,10 @@ class FollowApiTest extends ApiTestCase
 
         $unfollowed = $this->client->followApi->unfollowUsers($usersIds);
 
+        $requestUri = '/v1/me/following';
+
+        $this->assertEquals($requestUri, $this->getLastRequestUri());
+        $this->assertEquals(['type' => 'user', 'ids' => $usersIds], $this->lastRequestJson());
         $this->assertTrue($unfollowed);
     }
 
@@ -113,6 +153,9 @@ class FollowApiTest extends ApiTestCase
 
         $unfollowed = $this->client->followApi->unfollowPlaylist($playlistId);
 
+        $requestUri = '/v1/playlists/' . $playlistId . '/followers';
+
+        $this->assertEquals($requestUri, $this->getLastRequestUri());
         $this->assertTrue($unfollowed);
     }
 }

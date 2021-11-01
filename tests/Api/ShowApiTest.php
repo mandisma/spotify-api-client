@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Mandisma\SpotifyApiClient\Tests\Api;
 
 use GuzzleHttp\Psr7\Response;
+use Mandisma\SpotifyApiClient\Api\ShowApi;
 use Mandisma\SpotifyApiClient\Tests\ApiTestCase;
 
 class ShowApiTest extends ApiTestCase
@@ -13,8 +14,13 @@ class ShowApiTest extends ApiTestCase
     {
         $this->mockHandler->append(new Response(200, [], load_fixture('show')));
 
-        $show = $this->client->showApi->getShow('38bS44xjbVVZ3No3ByF1dJ');
+        $showId = '38bS44xjbVVZ3No3ByF1dJ';
 
+        $show = $this->client->showApi->getShow($showId);
+
+        $requestUri = ShowApi::SHOW_URI . "/${showId}";
+
+        $this->assertEquals($requestUri, $this->getLastRequestUri());
         $this->assertNotEmpty($show['id']);
     }
 
@@ -22,8 +28,13 @@ class ShowApiTest extends ApiTestCase
     {
         $this->mockHandler->append(new Response(200, [], load_fixture('shows')));
 
-        $shows = $this->client->showApi->getShows(['5CfCWKI5pZ28U0uOzXkDHe', '5as3aKmN2k11yfDDDSrvaZ']);
+        $showIds = ['5CfCWKI5pZ28U0uOzXkDHe', '5as3aKmN2k11yfDDDSrvaZ'];
 
+        $shows = $this->client->showApi->getShows($showIds, ['market' => 'FR']);
+
+        $requestUri = ShowApi::SHOW_URI . '?' . http_build_query(['market' => 'FR', 'ids' => $showIds]);
+
+        $this->assertEquals($requestUri, $this->getLastRequestUri());
         $this->assertNotEmpty($shows['shows']);
     }
 
@@ -31,8 +42,13 @@ class ShowApiTest extends ApiTestCase
     {
         $this->mockHandler->append(new Response(200, [], load_fixture('show-episodes')));
 
-        $episodes = $this->client->showApi->getShowEpisodes('38bS44xjbVVZ3No3ByF1dJ');
+        $showId = '38bS44xjbVVZ3No3ByF1dJ';
 
+        $episodes = $this->client->showApi->getShowEpisodes($showId);
+
+        $requestUri = ShowApi::SHOW_URI . "/${showId}/episodes";
+
+        $this->assertEquals($requestUri, $this->getLastRequestUri());
         $this->assertNotEmpty($episodes['items']);
     }
 }

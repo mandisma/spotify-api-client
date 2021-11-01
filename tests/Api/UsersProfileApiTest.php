@@ -20,14 +20,22 @@ class UsersProfileApiTest extends ApiTestCase
     {
         $userProfile = $this->client->userProfileApi->getCurrentUserProfile();
 
+        $requestUri = "/v1/me";
+
+        $this->assertEquals($requestUri, $this->getLastRequestUri());
         $this->assertNotEmpty($userProfile);
         $this->assertEquals('wizzler', $userProfile['id']);
     }
 
     public function testGetUserProfile()
     {
-        $userProfile = $this->client->userProfileApi->getUserProfile('wizzler');
+        $userId = 'wizzler';
 
+        $userProfile = $this->client->userProfileApi->getUserProfile($userId);
+
+        $requestUri = "/v1/users/$userId";
+
+        $this->assertEquals($requestUri, $this->getLastRequestUri());
         $this->assertNotEmpty($userProfile);
         $this->assertEquals('wizzler', $userProfile['id']);
     }

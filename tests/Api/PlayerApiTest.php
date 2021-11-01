@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Mandisma\SpotifyApiClient\Tests\Api;
 
 use GuzzleHttp\Psr7\Response;
+use Mandisma\SpotifyApiClient\Api\PlayerApi;
 use Mandisma\SpotifyApiClient\Tests\ApiTestCase;
 
 class PlayerApiTest extends ApiTestCase
@@ -15,6 +16,9 @@ class PlayerApiTest extends ApiTestCase
 
         $devices = $this->client->playerApi->getAvailableDevices();
 
+        $requestUri = PlayerApi::PLAYER_URI . '/devices';
+
+        $this->assertEquals($requestUri, $this->getLastRequestUri());
         $this->assertNotEmpty($devices['devices']);
     }
 
@@ -24,6 +28,9 @@ class PlayerApiTest extends ApiTestCase
 
         $playback = $this->client->playerApi->getPlayback();
 
+        $requestUri = PlayerApi::PLAYER_URI;
+
+        $this->assertEquals($requestUri, $this->getLastRequestUri());
         $this->assertNotEmpty($playback);
     }
 
@@ -33,6 +40,9 @@ class PlayerApiTest extends ApiTestCase
 
         $tracks = $this->client->playerApi->getRecentlyPlayedTracks();
 
+        $requestUri = PlayerApi::PLAYER_URI . '/recently-played';
+
+        $this->assertEquals($requestUri, $this->getLastRequestUri());
         $this->assertNotEmpty($tracks);
     }
 
@@ -42,6 +52,9 @@ class PlayerApiTest extends ApiTestCase
 
         $track = $this->client->playerApi->getCurrentlyPlayingTrack();
 
+        $requestUri = PlayerApi::PLAYER_URI . '/currently-playing';
+
+        $this->assertEquals($requestUri, $this->getLastRequestUri());
         $this->assertNotEmpty($track['id']);
     }
 
@@ -51,6 +64,9 @@ class PlayerApiTest extends ApiTestCase
 
         $paused = $this->client->playerApi->pausePlayback();
 
+        $requestUri = PlayerApi::PLAYER_URI . '/pause';
+
+        $this->assertEquals($requestUri, $this->getLastRequestUri());
         $this->assertTrue($paused);
     }
 
@@ -58,8 +74,12 @@ class PlayerApiTest extends ApiTestCase
     {
         $this->mockHandler->append(new Response(200, []));
 
-        $seeked = $this->client->playerApi->seekToPosition(5);
+        $seeked = $this->client->playerApi->seekToPosition(5, ['device_id' => 'device_id']);
 
+        $requestUri = PlayerApi::PLAYER_URI . '/seek';
+
+        $this->assertEquals($requestUri, $this->getLastRequestUri()->__toString());
+        $this->assertEquals(['device_id' => 'device_id', 'position_ms' => 5], $this->lastRequestJson());
         $this->assertTrue($seeked);
     }
 
@@ -67,8 +87,12 @@ class PlayerApiTest extends ApiTestCase
     {
         $this->mockHandler->append(new Response(200, []));
 
-        $set = $this->client->playerApi->setRepeatMode('off');
+        $set = $this->client->playerApi->setRepeatMode('off', ['device_id' => 'device_id']);
 
+        $requestUri = PlayerApi::PLAYER_URI . '/repeat';
+
+        $this->assertEquals($requestUri, $this->getLastRequestUri());
+        $this->assertEquals(['device_id' => 'device_id', 'state' => 'off'], $this->lastRequestJson());
         $this->assertTrue($set);
     }
 
@@ -76,8 +100,12 @@ class PlayerApiTest extends ApiTestCase
     {
         $this->mockHandler->append(new Response(200));
 
-        $set = $this->client->playerApi->setVolume(24);
+        $set = $this->client->playerApi->setVolume(24, ['device_id' => 'device_id']);
 
+        $requestUri = PlayerApi::PLAYER_URI . '/volume';
+
+        $this->assertEquals($requestUri, $this->getLastRequestUri());
+        $this->assertEquals(['device_id' => 'device_id', 'volume_percent' => 24], $this->lastRequestJson());
         $this->assertTrue($set);
     }
 
@@ -87,6 +115,9 @@ class PlayerApiTest extends ApiTestCase
 
         $skipped = $this->client->playerApi->skipToNextTrack();
 
+        $requestUri = PlayerApi::PLAYER_URI . '/next';
+
+        $this->assertEquals($requestUri, $this->getLastRequestUri());
         $this->assertTrue($skipped);
     }
 
@@ -96,6 +127,9 @@ class PlayerApiTest extends ApiTestCase
 
         $skipped = $this->client->playerApi->skipToPreviousTrack();
 
+        $requestUri = PlayerApi::PLAYER_URI . '/previous';
+
+        $this->assertEquals($requestUri, $this->getLastRequestUri());
         $this->assertTrue($skipped);
     }
 
@@ -105,6 +139,9 @@ class PlayerApiTest extends ApiTestCase
 
         $started = $this->client->playerApi->startPlayback();
 
+        $requestUri = PlayerApi::PLAYER_URI . '/play';
+
+        $this->assertEquals($requestUri, $this->getLastRequestUri());
         $this->assertTrue($started);
     }
 
@@ -112,8 +149,12 @@ class PlayerApiTest extends ApiTestCase
     {
         $this->mockHandler->append(new Response(200));
 
-        $toggled = $this->client->playerApi->toggleShuffle(true);
+        $toggled = $this->client->playerApi->toggleShuffle(true, ['device_id' => 'device_id']);
 
+        $requestUri = PlayerApi::PLAYER_URI . '/shuffle';
+
+        $this->assertEquals($requestUri, $this->getLastRequestUri());
+        $this->assertEquals(['device_id' => 'device_id', 'state' => true], $this->lastRequestJson());
         $this->assertTrue($toggled);
     }
 
@@ -121,8 +162,12 @@ class PlayerApiTest extends ApiTestCase
     {
         $this->mockHandler->append(new Response(200));
 
-        $transfered = $this->client->playerApi->transferPlayback(['74ASZWbe4lXaubB36ztrGX']);
+        $transfered = $this->client->playerApi->transferPlayback(['74ASZWbe4lXaubB36ztrGX'], ['play' => true]);
 
+        $requestUri = PlayerApi::PLAYER_URI;
+
+        $this->assertEquals($requestUri, $this->getLastRequestUri());
+        $this->assertEquals(['play' => true, 'device_ids' => ['74ASZWbe4lXaubB36ztrGX']], $this->lastRequestJson());
         $this->assertTrue($transfered);
     }
 }

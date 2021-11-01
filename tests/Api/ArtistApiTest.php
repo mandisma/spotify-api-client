@@ -3,6 +3,7 @@
 namespace Mandisma\SpotifyApiClient\Tests\Actions;
 
 use GuzzleHttp\Psr7\Response;
+use Mandisma\SpotifyApiClient\Api\ArtistApi;
 use Mandisma\SpotifyApiClient\Tests\ApiTestCase;
 
 class ArtistApiTest extends ApiTestCase
@@ -15,6 +16,9 @@ class ArtistApiTest extends ApiTestCase
 
         $artists = $this->client->artistApi->getRelatedArtists($artistId);
 
+        $requestUri = ArtistApi::ARTIST_URI . '/' . $artistId . '/related-artists';
+
+        $this->assertEquals($requestUri, $this->getLastRequestUri());
         $this->assertNotEmpty($artists);
     }
 
@@ -26,6 +30,9 @@ class ArtistApiTest extends ApiTestCase
 
         $albums = $this->client->artistApi->getAlbums($artistId);
 
+        $requestUri = ArtistApi::ARTIST_URI . '/' . $artistId . '/albums';
+
+        $this->assertEquals($requestUri, $this->getLastRequestUri());
         $this->assertNotEmpty($albums);
     }
 
@@ -37,6 +44,9 @@ class ArtistApiTest extends ApiTestCase
 
         $artist = $this->client->artistApi->getArtist($artistId);
 
+        $requestUri = ArtistApi::ARTIST_URI . '/' . $artistId;
+
+        $this->assertEquals($requestUri, $this->getLastRequestUri());
         $this->assertNotEmpty($artist);
     }
 
@@ -48,6 +58,9 @@ class ArtistApiTest extends ApiTestCase
 
         $artists = $this->client->artistApi->getArtists($artistsIds);
 
+        $requestUri = ArtistApi::ARTIST_URI . '?' . http_build_query(['ids' => $artistsIds]);
+
+        $this->assertEquals($requestUri, $this->getLastRequestUri());
         $this->assertNotEmpty($artists);
     }
 
@@ -59,6 +72,9 @@ class ArtistApiTest extends ApiTestCase
 
         $tracks = $this->client->artistApi->getTopTracks($artistId, 'FR');
 
+        $requestUri = ArtistApi::ARTIST_URI . '/' . $artistId . '/top-tracks?country=FR';
+
+        $this->assertEquals($requestUri, $this->getLastRequestUri());
         $this->assertNotEmpty($tracks);
     }
 }
