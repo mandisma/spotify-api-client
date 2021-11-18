@@ -1,42 +1,29 @@
 <?php
 
-declare(strict_types=1);
-
-namespace Mandisma\SpotifyApiClient\Tests\Api;
-
 use GuzzleHttp\Psr7\Response;
-use Mandisma\SpotifyApiClient\Tests\ApiTestCase;
 
-class UsersProfileApiTest extends ApiTestCase
-{
-    public function setUp(): void
-    {
-        parent::setUp();
+beforeEach(function () {
+    mockHandler()->append(new Response(200, [], load_fixture('user-profile')));
+});
 
-        $this->mockHandler->append(new Response(200, [], load_fixture('user-profile')));
-    }
+it('can get current user profile', function () {
+    $userProfile = client()->userProfileApi->getCurrentUserProfile();
 
-    public function testGetCurrentUserProfile()
-    {
-        $userProfile = $this->client->userProfileApi->getCurrentUserProfile();
+    $requestUri = "/v1/me";
 
-        $requestUri = "/v1/me";
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect($userProfile)->not->toBeEmpty();
+    expect($userProfile['id'])->toEqual('wizzler');
+});
 
-        $this->assertEquals($requestUri, $this->getLastRequestUri());
-        $this->assertNotEmpty($userProfile);
-        $this->assertEquals('wizzler', $userProfile['id']);
-    }
+it('can get user profile', function () {
+    $userId = 'wizzler';
 
-    public function testGetUserProfile()
-    {
-        $userId = 'wizzler';
+    $userProfile = client()->userProfileApi->getUserProfile($userId);
 
-        $userProfile = $this->client->userProfileApi->getUserProfile($userId);
+    $requestUri = "/v1/users/$userId";
 
-        $requestUri = "/v1/users/$userId";
-
-        $this->assertEquals($requestUri, $this->getLastRequestUri());
-        $this->assertNotEmpty($userProfile);
-        $this->assertEquals('wizzler', $userProfile['id']);
-    }
-}
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect($userProfile)->not->toBeEmpty();
+    expect($userProfile['id'])->toEqual('wizzler');
+});

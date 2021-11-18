@@ -11,9 +11,7 @@ use Mandisma\SpotifyApiClient\Client;
 use Mandisma\SpotifyApiClient\ClientBuilder;
 use Mandisma\SpotifyApiClient\Security\AuthorizationInterface;
 use PHPUnit\Framework\TestCase;
-use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
-use Psr\Http\Message\UriInterface;
 
 abstract class ApiTestCase extends TestCase
 {
@@ -37,6 +35,41 @@ abstract class ApiTestCase extends TestCase
      */
     protected $client;
 
+    public function getClient(): Client
+    {
+        return $this->client;
+    }
+
+    public function getMockHandler(): MockHandler
+    {
+        return $this->mockHandler;
+    }
+
+    public function getContainer(): array
+    {
+        return $this->container;
+    }
+
+    public function getLastRequest(): Request
+    {
+        return $this->mockHandler->getLastRequest();
+    }
+
+    public function getLastRequestBody(): StreamInterface
+    {
+        return $this->getLastRequest()->getBody();
+    }
+
+    public function getAuthorization()
+    {
+        return $this->getMockBuilder(AuthorizationInterface::class)->getMock();
+    }
+
+    public function getHttpClient(): GuzzleHttpClient
+    {
+        return $this->httpClient;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -56,43 +89,13 @@ abstract class ApiTestCase extends TestCase
 
         $authorization = $this->getAuthorization();
 
-        $this->client = $this->getClient($authorization);
+        $this->client = $this->buildClient($authorization);
     }
 
-    protected function getAuthorization()
-    {
-        return $this->getMockBuilder(AuthorizationInterface::class)->getMock();
-    }
-
-    protected function getClient(AuthorizationInterface $authorization)
+    protected function buildClient(AuthorizationInterface $authorization)
     {
         return (new ClientBuilder($this->httpClient))
             ->build($authorization);
-    }
-
-    protected function getLastRequest(): Request
-    {
-        return $this->mockHandler->getLastRequest();
-    }
-
-    protected function getLastRequestUri(): UriInterface
-    {
-        return $this->getLastRequest()->getUri();
-    }
-
-    protected function getLastRequestBody(): StreamInterface
-    {
-        return $this->getLastRequest()->getBody();
-    }
-
-    protected function lastRequestJson(): array
-    {
-        return json_decode($this->getLastRequestBody()->getContents(), true);
-    }
-
-    protected function getLastResponse(): ResponseInterface
-    {
-        return end($this->container)['response'];
     }
 
     /**

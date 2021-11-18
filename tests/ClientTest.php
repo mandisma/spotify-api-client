@@ -1,7 +1,5 @@
 <?php
 
-namespace Mandisma\SpotifyApiClient\Tests;
-
 use Mandisma\SpotifyApiClient\Api\AlbumApi;
 use Mandisma\SpotifyApiClient\Api\ArtistApi;
 use Mandisma\SpotifyApiClient\Api\BrowseApi;
@@ -15,83 +13,56 @@ use Mandisma\SpotifyApiClient\Api\ShowApi;
 use Mandisma\SpotifyApiClient\Api\TrackApi;
 use Mandisma\SpotifyApiClient\Api\UserProfileApi;
 
-class ClientTest extends ApiTestCase
-{
-    public function testGetSearchApi()
-    {
-        $searchApi = $this->client->searchApi;
-        $this->assertInstanceOf(SearchApi::class, $searchApi);
-    }
+uses(\Mandisma\SpotifyApiClient\Tests\ApiTestCase::class);
 
-    public function testGetBrowseApi()
-    {
-        $browseApi = $this->client->browseApi;
-        $this->assertInstanceOf(BrowseApi::class, $browseApi);
-    }
+test('get search api', function () {
+    expect(client()->searchApi)->toBeInstanceOf(SearchApi::class);
+});
 
-    public function testGetEpisodeApi()
-    {
-        $episodeApi = $this->client->episodeApi;
-        $this->assertInstanceOf(EpisodeApi::class, $episodeApi);
-    }
+test('get browse api', function () {
+    expect(client()->browseApi)->toBeInstanceOf(BrowseApi::class);
+});
 
-    public function testGetPlayerApi()
-    {
-        $playerApi = $this->client->playerApi;
-        $this->assertInstanceOf(PlayerApi::class, $playerApi);
-    }
+test('get episode api', function () {
+    expect(client()->episodeApi)->toBeInstanceOf(EpisodeApi::class);
+});
 
-    public function testGetFollowApi()
-    {
-        $followApi = $this->client->followApi;
-        $this->assertInstanceOf(FollowApi::class, $followApi);
-    }
+test('get player api', function () {
+    expect(client()->playerApi)->toBeInstanceOf(PlayerApi::class);
+});
 
-    public function testGetPlaylistApi()
-    {
-        $playerApi = $this->client->playerApi;
-        $this->assertInstanceOf(PlayerApi::class, $playerApi);
-    }
+test('get follow api', function () {
+    expect(client()->followApi)->toBeInstanceOf(FollowApi::class);
+});
 
-    public function testGetArtistApi()
-    {
-        $artistApi = $this->client->artistApi;
-        $this->assertInstanceOf(ArtistApi::class, $artistApi);
-    }
+test('get playlist api', function () {
+    expect(client()->playerApi)->toBeInstanceOf(PlayerApi::class);
+});
 
-    public function testGetUserProfileApi()
-    {
-        $userProfileApi = $this->client->userProfileApi;
-        $this->assertInstanceOf(UserProfileApi::class, $userProfileApi);
-    }
+test('get artist api', function () {
+    expect(client()->artistApi)->toBeInstanceOf(ArtistApi::class);
+});
 
-    public function testGetAlbumApi()
-    {
-        $albumApi = $this->client->albumApi;
-        $this->assertInstanceOf(AlbumApi::class, $albumApi);
-    }
+test('get user profile api', function () {
+    expect(client()->userProfileApi)->toBeInstanceOf(UserProfileApi::class);
+});
 
-    public function testGetPersonalizationApi()
-    {
-        $personalizationApi = $this->client->personalizationApi;
-        $this->assertInstanceOf(PersonalizationApi::class, $personalizationApi);
-    }
+test('get album api', function () {
+    expect(client()->albumApi)->toBeInstanceOf(AlbumApi::class);
+});
 
-    public function testGetLibraryApi()
-    {
-        $libraryApi = $this->client->libraryApi;
-        $this->assertInstanceOf(LibraryApi::class, $libraryApi);
-    }
+test('get personalization api', function () {
+    expect(client()->personalizationApi)->toBeInstanceOf(PersonalizationApi::class);
+});
 
-    public function testGetShowApi()
-    {
-        $showApi = $this->client->showApi;
-        $this->assertInstanceOf(ShowApi::class, $showApi);
-    }
+test('get library api', function () {
+    expect(client()->libraryApi)->toBeInstanceOf(LibraryApi::class);
+});
 
-    public function testGetTrackApi()
-    {
-        $trackApi = $this->client->trackApi;
-        $this->assertInstanceOf(TrackApi::class, $trackApi);
-    }
-}
+test('get show api', function () {
+    expect(client()->showApi)->toBeInstanceOf(ShowApi::class);
+});
+
+test('get track api', function () {
+    expect(client()->trackApi)->toBeInstanceOf(TrackApi::class);
+});

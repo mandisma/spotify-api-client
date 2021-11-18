@@ -2,53 +2,44 @@
 
 declare(strict_types=1);
 
-namespace Mandisma\SpotifyApiClient\Tests\Api;
-
 use GuzzleHttp\Psr7\Response;
 use Mandisma\SpotifyApiClient\Api\ShowApi;
-use Mandisma\SpotifyApiClient\Tests\ApiTestCase;
 
-class ShowApiTest extends ApiTestCase
-{
-    public function testGetShow()
-    {
-        $this->mockHandler->append(new Response(200, [], load_fixture('show')));
+it('can get show', function () {
+    mockHandler()->append(new Response(200, [], load_fixture('show')));
 
-        $showId = '38bS44xjbVVZ3No3ByF1dJ';
+    $showId = '38bS44xjbVVZ3No3ByF1dJ';
 
-        $show = $this->client->showApi->getShow($showId);
+    $show = client()->showApi->getShow($showId);
 
-        $requestUri = ShowApi::SHOW_URI . "/${showId}";
+    $requestUri = ShowApi::SHOW_URI . "/${showId}";
 
-        $this->assertEquals($requestUri, $this->getLastRequestUri());
-        $this->assertNotEmpty($show['id']);
-    }
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect($show['id'])->not->toBeEmpty();
+});
 
-    public function testGetShows()
-    {
-        $this->mockHandler->append(new Response(200, [], load_fixture('shows')));
+it('can get shows', function () {
+    mockHandler()->append(new Response(200, [], load_fixture('shows')));
 
-        $showIds = ['5CfCWKI5pZ28U0uOzXkDHe', '5as3aKmN2k11yfDDDSrvaZ'];
+    $showIds = ['5CfCWKI5pZ28U0uOzXkDHe', '5as3aKmN2k11yfDDDSrvaZ'];
 
-        $shows = $this->client->showApi->getShows($showIds, ['market' => 'FR']);
+    $shows = client()->showApi->getShows($showIds, ['market' => 'FR']);
 
-        $requestUri = ShowApi::SHOW_URI . '?' . http_build_query(['market' => 'FR', 'ids' => $showIds]);
+    $requestUri = ShowApi::SHOW_URI . '?' . http_build_query(['market' => 'FR', 'ids' => $showIds]);
 
-        $this->assertEquals($requestUri, $this->getLastRequestUri());
-        $this->assertNotEmpty($shows['shows']);
-    }
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect($shows['shows'])->not->toBeEmpty();
+});
 
-    public function testGetShowEpisodes()
-    {
-        $this->mockHandler->append(new Response(200, [], load_fixture('show-episodes')));
+it('can get show episodes', function () {
+    mockHandler()->append(new Response(200, [], load_fixture('show-episodes')));
 
-        $showId = '38bS44xjbVVZ3No3ByF1dJ';
+    $showId = '38bS44xjbVVZ3No3ByF1dJ';
 
-        $episodes = $this->client->showApi->getShowEpisodes($showId);
+    $episodes = client()->showApi->getShowEpisodes($showId);
 
-        $requestUri = ShowApi::SHOW_URI . "/${showId}/episodes";
+    $requestUri = ShowApi::SHOW_URI . "/${showId}/episodes";
 
-        $this->assertEquals($requestUri, $this->getLastRequestUri());
-        $this->assertNotEmpty($episodes['items']);
-    }
-}
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect($episodes['items'])->not->toBeEmpty();
+});

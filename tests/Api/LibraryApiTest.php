@@ -1,121 +1,107 @@
 <?php
 
-namespace Mandisma\SpotifyApiClient\Tests\Actions;
-
 use GuzzleHttp\Psr7\Response;
-use Mandisma\SpotifyApiClient\Tests\ApiTestCase;
 
-class LibraryApiTest extends ApiTestCase
-{
-    public function testRemoveCurrentUserSavedAlbums()
-    {
-        $this->mockHandler->append(new Response(200, []));
+it('can remove current user saved albums', function () {
+    mockHandler()->append(new Response(200, []));
 
-        $albumsIds = ["4iV5W9uYEdYUVa79Axb7Rh", "1301WleyT98MSxVHPZCA6M"];
+    $albumsIds = ["4iV5W9uYEdYUVa79Axb7Rh", "1301WleyT98MSxVHPZCA6M"];
 
-        $removed = $this->client->libraryApi->removeCurrentUserSavedAlbums($albumsIds);
+    $removed = client()->libraryApi->removeCurrentUserSavedAlbums($albumsIds);
 
-        $requestUri = '/v1/me/albums';
+    $requestUri = '/v1/me/albums';
 
-        $this->assertEquals($requestUri, $this->getLastRequestUri());
-        $this->assertEquals(['ids' => $albumsIds], $this->lastRequestJson());
-        $this->assertTrue($removed);
-    }
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect(lastRequestJson())->toEqual(['ids' => $albumsIds]);
+    expect($removed)->toBeTrue();
+});
 
-    public function testGetCurrentUserSavedTracks()
-    {
-        $this->mockHandler->append(new Response(200, [], load_fixture('tracks')));
+it('can get current user saved tracks', function () {
+    mockHandler()->append(new Response(200, [], load_fixture('tracks')));
 
-        $tracks = $this->client->libraryApi->getCurrentUserSavedTracks();
+    $tracks = client()->libraryApi->getCurrentUserSavedTracks();
 
-        $requestUri = '/v1/me/tracks';
+    $requestUri = '/v1/me/tracks';
 
-        $this->assertEquals($requestUri, $this->getLastRequestUri());
-        $this->assertNotEmpty($tracks);
-    }
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect($tracks)->not->toBeEmpty();
+});
 
-    public function testGetCurrentUserSavedAlbums()
-    {
-        $this->mockHandler->append(new Response(200, [], load_fixture('albums')));
+it('can get current user saved albums', function () {
+    mockHandler()->append(new Response(200, [], load_fixture('albums')));
 
-        $albums = $this->client->libraryApi->getCurrentUserSavedAlbums();
+    $albums = client()->libraryApi->getCurrentUserSavedAlbums();
 
-        $requestUri = '/v1/me/albums';
+    $requestUri = '/v1/me/albums';
 
-        $this->assertEquals($requestUri, $this->getLastRequestUri());
-        $this->assertNotEmpty($albums);
-    }
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect($albums)->not->toBeEmpty();
+});
 
-    public function testSaveCurrentUserAlbums()
-    {
-        $this->mockHandler->append(new Response(200, []));
+it('can save current user albums', function () {
+    mockHandler()->append(new Response(200, []));
 
-        $albumsIds = ["4iV5W9uYEdYUVa79Axb7Rh", "1301WleyT98MSxVHPZCA6M"];
+    $albumsIds = ["4iV5W9uYEdYUVa79Axb7Rh", "1301WleyT98MSxVHPZCA6M"];
 
-        $saved = $this->client->libraryApi->saveCurrentUserAlbums($albumsIds);
+    $saved = client()->libraryApi->saveCurrentUserAlbums($albumsIds);
 
-        $requestUri = '/v1/me/albums';
+    $requestUri = '/v1/me/albums';
 
-        $this->assertEquals($requestUri, $this->getLastRequestUri());
-        $this->assertEquals(['ids' => $albumsIds], $this->lastRequestJson());
-        $this->assertTrue($saved);
-    }
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect(lastRequestJson())->toEqual(['ids' => $albumsIds]);
+    expect($saved)->toBeTrue();
+});
 
-    public function testSaveCurrentUserTracks()
-    {
-        $this->mockHandler->append(new Response(200, []));
+it('can save current user tracks', function () {
+    mockHandler()->append(new Response(200, []));
 
-        $tracksIds = ['4iV5W9uYEdYUVa79Axb7Rh', '1301WleyT98MSxVHPZCA6M'];
+    $tracksIds = ['4iV5W9uYEdYUVa79Axb7Rh', '1301WleyT98MSxVHPZCA6M'];
 
-        $saved = $this->client->libraryApi->saveCurrentUserTracks($tracksIds);
+    $saved = client()->libraryApi->saveCurrentUserTracks($tracksIds);
 
-        $requestUri = '/v1/me/tracks';
+    $requestUri = '/v1/me/tracks';
 
-        $this->assertEquals($requestUri, $this->getLastRequestUri());
-        $this->assertEquals(['ids' => $tracksIds], $this->lastRequestJson());
-        $this->assertTrue($saved);
-    }
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect(lastRequestJson())->toEqual(['ids' => $tracksIds]);
+    expect($saved)->toBeTrue();
+});
 
-    public function testCheckCurrentUserSavedAlbums()
-    {
-        $this->mockHandler->append(new Response(200, [], load_fixture('albums')));
+it('can check current user saved albums', function () {
+    mockHandler()->append(new Response(200, [], load_fixture('albums')));
 
-        $albumsIds = ["4iV5W9uYEdYUVa79Axb7Rh", "1301WleyT98MSxVHPZCA6M"];
+    $albumsIds = ["4iV5W9uYEdYUVa79Axb7Rh", "1301WleyT98MSxVHPZCA6M"];
 
-        $albums = $this->client->libraryApi->checkCurrentUserSavedAlbums($albumsIds);
+    $albums = client()->libraryApi->checkCurrentUserSavedAlbums($albumsIds);
 
-        $requestUri = '/v1/me/albums/contains?' . http_build_query(['ids' => $albumsIds]);
+    $requestUri = '/v1/me/albums/contains?' . http_build_query(['ids' => $albumsIds]);
 
-        $this->assertEquals($requestUri, $this->getLastRequestUri());
-        $this->assertNotEmpty($albums);
-    }
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect($albums)->not->toBeEmpty();
+});
 
-    public function testRemoveCurrentUserSavedTracks()
-    {
-        $this->mockHandler->append(new Response(200, []));
+it('can remove current user saved tracks', function () {
+    mockHandler()->append(new Response(200, []));
 
-        $tracksIds = ['4iV5W9uYEdYUVa79Axb7Rh', '1301WleyT98MSxVHPZCA6M'];
+    $tracksIds = ['4iV5W9uYEdYUVa79Axb7Rh', '1301WleyT98MSxVHPZCA6M'];
 
-        $removed = $this->client->libraryApi->removeCurrentUserSavedTracks($tracksIds);
+    $removed = client()->libraryApi->removeCurrentUserSavedTracks($tracksIds);
 
-        $requestUri = '/v1/me/tracks';
+    $requestUri = '/v1/me/tracks';
 
-        $this->assertEquals($requestUri, $this->getLastRequestUri());
-        $this->assertEquals(['ids' => $tracksIds], $this->lastRequestJson());
-        $this->assertTrue($removed);
-    }
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect(lastRequestJson())->toEqual(['ids' => $tracksIds]);
+    expect($removed)->toBeTrue();
+});
 
-    public function testCheckCurrentUserSavedTracks()
-    {
-        $this->mockHandler->append(new Response(200, [], load_fixture('tracks')));
+it('can check current user saved tracks', function () {
+    mockHandler()->append(new Response(200, [], load_fixture('tracks')));
 
-        $tracksIds = ['4iV5W9uYEdYUVa79Axb7Rh', '1301WleyT98MSxVHPZCA6M'];
+    $tracksIds = ['4iV5W9uYEdYUVa79Axb7Rh', '1301WleyT98MSxVHPZCA6M'];
 
-        $tracks = $this->client->libraryApi->checkCurrentUserSavedTracks($tracksIds);
+    $tracks = client()->libraryApi->checkCurrentUserSavedTracks($tracksIds);
 
-        $requestUri = '/v1/me/tracks/contains?' . http_build_query(['ids' => $tracksIds]);
+    $requestUri = '/v1/me/tracks/contains?' . http_build_query(['ids' => $tracksIds]);
 
-        $this->assertEquals($requestUri, $this->getLastRequestUri());
-        $this->assertNotEmpty($tracks);
-    }
-}
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect($tracks)->not->toBeEmpty();
+});

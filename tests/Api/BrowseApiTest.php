@@ -1,98 +1,86 @@
 <?php
 
-namespace Mandisma\SpotifyApiClient\Tests\Actions;
-
 use GuzzleHttp\Psr7\Response;
 use Mandisma\SpotifyApiClient\Api\BrowseApi;
-use Mandisma\SpotifyApiClient\Tests\ApiTestCase;
 
-class BrowseApiTest extends ApiTestCase
-{
-    public function testPlaylistsWithCategory()
-    {
-        $this->mockHandler->append(new Response(200, [], load_fixture('playlists')));
+it('can playlists with category', function () {
+    mockHandler()->append(new Response(200, [], load_fixture('playlists')));
 
-        $categoryId = 'party';
+    $categoryId = 'party';
 
-        $playlists = $this->client->browseApi->getPlaylistsByCategory($categoryId);
+    $playlists = client()->browseApi->getPlaylistsByCategory($categoryId);
 
-        $requestUri = BrowseApi::BROWSE_URI . '/categories/' . $categoryId . '/playlists';
+    $requestUri = BrowseApi::BROWSE_URI . '/categories/' . $categoryId . '/playlists';
 
-        $this->assertEquals($requestUri, $this->getLastRequestUri());
-        $this->assertNotEmpty($playlists);
-    }
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect($playlists)->not->toBeEmpty();
+});
 
-    public function testGetRecommendations()
-    {
-        $this->mockHandler->append(new Response(200, [], load_fixture('tracks')));
+it('can get recommendations', function () {
+    mockHandler()->append(new Response(200, [], load_fixture('tracks')));
 
-        $recommendations = $this->client->browseApi->getRecommendations(
-            ['4NHQUGzhtTLFvgF5SZesLK'],
-            ['classical'],
-            ['0c6xIDDpzE81m2q797ordA'],
-            [
-                'market' => 'FR',
-            ]
-        );
-
-        $requestUri = '/v1/recommendations?' . http_build_query([
+    $recommendations = client()->browseApi->getRecommendations(
+        ['4NHQUGzhtTLFvgF5SZesLK'],
+        ['classical'],
+        ['0c6xIDDpzE81m2q797ordA'],
+        [
             'market' => 'FR',
-            'seed_artists' => '4NHQUGzhtTLFvgF5SZesLK',
-            'seed_genres' => 'classical',
-            'seed_tracks' => '0c6xIDDpzE81m2q797ordA',
-        ]);
+        ]
+    );
 
-        $this->assertEquals($requestUri, $this->getLastRequestUri());
-        $this->assertNotEmpty($recommendations);
-    }
+    $requestUri = '/v1/recommendations?' . http_build_query([
+        'market' => 'FR',
+        'seed_artists' => '4NHQUGzhtTLFvgF5SZesLK',
+        'seed_genres' => 'classical',
+        'seed_tracks' => '0c6xIDDpzE81m2q797ordA',
+    ]);
 
-    public function testGetCategories()
-    {
-        $this->mockHandler->append(new Response(200, [], load_fixture('categories')));
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect($recommendations)->not->toBeEmpty();
+});
 
-        $categories = $this->client->browseApi->getCategories();
+it('can get categories', function () {
+    mockHandler()->append(new Response(200, [], load_fixture('categories')));
 
-        $requestUri = BrowseApi::BROWSE_URI . '/categories';
+    $categories = client()->browseApi->getCategories();
 
-        $this->assertEquals($requestUri, $this->getLastRequestUri());
-        $this->assertNotEmpty($categories);
-    }
+    $requestUri = BrowseApi::BROWSE_URI . '/categories';
 
-    public function testGetNewReleases()
-    {
-        $this->mockHandler->append(new Response(200, [], load_fixture('albums')));
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect($categories)->not->toBeEmpty();
+});
 
-        $releases = $this->client->browseApi->getNewReleases();
+it('can get new releases', function () {
+    mockHandler()->append(new Response(200, [], load_fixture('albums')));
 
-        $requestUri = BrowseApi::BROWSE_URI . '/new-releases';
+    $releases = client()->browseApi->getNewReleases();
 
-        $this->assertEquals($requestUri, $this->getLastRequestUri());
-        $this->assertNotEmpty($releases);
-    }
+    $requestUri = BrowseApi::BROWSE_URI . '/new-releases';
 
-    public function testGetFeaturedPlaylists()
-    {
-        $this->mockHandler->append(new Response(200, [], load_fixture('playlists')));
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect($releases)->not->toBeEmpty();
+});
 
-        $playlists = $this->client->browseApi->getFeaturedPlaylists();
+it('can get featured playlists', function () {
+    mockHandler()->append(new Response(200, [], load_fixture('playlists')));
 
-        $requestUri = BrowseApi::BROWSE_URI . '/featured-playlists';
+    $playlists = client()->browseApi->getFeaturedPlaylists();
 
-        $this->assertEquals($requestUri, $this->getLastRequestUri());
-        $this->assertNotEmpty($playlists);
-    }
+    $requestUri = BrowseApi::BROWSE_URI . '/featured-playlists';
 
-    public function testGetCategory()
-    {
-        $this->mockHandler->append(new Response(200, [], load_fixture('category')));
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect($playlists)->not->toBeEmpty();
+});
 
-        $categoryId = 'party';
+it('can get category', function () {
+    mockHandler()->append(new Response(200, [], load_fixture('category')));
 
-        $category = $this->client->browseApi->getCategory($categoryId);
+    $categoryId = 'party';
 
-        $requestUri = BrowseApi::BROWSE_URI . '/categories/' . $categoryId;
+    $category = client()->browseApi->getCategory($categoryId);
 
-        $this->assertEquals($requestUri, $this->getLastRequestUri());
-        $this->assertNotEmpty($category);
-    }
-}
+    $requestUri = BrowseApi::BROWSE_URI . '/categories/' . $categoryId;
+
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect($category)->not->toBeEmpty();
+});
