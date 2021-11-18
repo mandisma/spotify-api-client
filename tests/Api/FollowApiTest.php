@@ -1,118 +1,145 @@
 <?php
 
-namespace Mandisma\SpotifyApiClient\Tests\Actions;
-
 use GuzzleHttp\Psr7\Response;
-use Mandisma\SpotifyApiClient\Tests\ApiTestCase;
+use Mandisma\SpotifyApiClient\Api\FollowApi;
 
-class FollowApiTest extends ApiTestCase
-{
-    public function testIsFollowingUsers()
-    {
-        $this->mockHandler->append(new Response(200, [], json_encode([true])));
+it('can is following users', function () {
+    mockHandler()->append(new Response(200, [], json_encode([true])));
 
-        $usersIds = ['exampleuser01'];
+    $usersIds = ['exampleuser01'];
 
-        $followed = $this->client->followApi->isFollowingUsers($usersIds);
+    $followed = client()->followApi->isFollowingUsers($usersIds);
 
-        $this->assertContains(true, $followed);
-    }
+    $requestUri = '/v1/me/following/contains?' . http_build_query([
+        'type' => FollowApi::TYPE_USER,
+        'ids' => $usersIds,
+    ]);
 
-    public function testIsFollowingArtists()
-    {
-        $this->mockHandler->append(new Response(200, [], json_encode([false])));
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect($followed)->toContain(true);
+});
 
-        $artistsIds = ['74ASZWbe4lXaubB36ztrGX'];
+it('can is following artists', function () {
+    mockHandler()->append(new Response(200, [], json_encode([false])));
 
-        $followed = $this->client->followApi->isFollowingArtists($artistsIds);
+    $artistsIds = ['74ASZWbe4lXaubB36ztrGX'];
 
-        $this->assertContains(false, $followed);
-    }
+    $followed = client()->followApi->isFollowingArtists($artistsIds);
 
-    public function testFollowUsers()
-    {
-        $this->mockHandler->append(new Response(204, []));
+    $requestUri = '/v1/me/following/contains?' . http_build_query([
+        'type' => FollowApi::TYPE_ARTIST,
+        'ids' => $artistsIds,
+    ]);
 
-        $usersIds = ['exampleuser01'];
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect($followed)->toContain(false);
+});
 
-        $followed = $this->client->followApi->followUsers($usersIds);
+it('can follow users', function () {
+    mockHandler()->append(new Response(204, []));
 
-        $this->assertTrue($followed);
-    }
+    $usersIds = ['exampleuser01'];
 
-    public function testFollowArtists()
-    {
-        $this->mockHandler->append(new Response(204, []));
+    $followed = client()->followApi->followUsers($usersIds);
 
-        $artistsIds = ['74ASZWbe4lXaubB36ztrGX'];
+    $requestUri = '/v1/me/following';
 
-        $followed = $this->client->followApi->followArtists($artistsIds);
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect(lastRequestJson())->toEqual(['type' => 'user', 'ids' => ['exampleuser01']]);
+    expect($followed)->toBeTrue();
+});
 
-        $this->assertTrue($followed);
-    }
+it('can follow artists', function () {
+    mockHandler()->append(new Response(204, []));
 
-    public function testIsFollowingPlaylists()
-    {
-        $this->mockHandler->append(new Response(200, [], json_encode([true])));
+    $artistsIds = ['74ASZWbe4lXaubB36ztrGX'];
 
-        $playlistId = '2v3iNvBX8Ay1Gt2uXtUKUT';
-        $usersIds = ['exampleuser01'];
+    $followed = client()->followApi->followArtists($artistsIds);
 
-        $followed = $this->client->followApi->isFollowingPlaylists($playlistId, $usersIds);
+    $requestUri = '/v1/me/following';
 
-        $this->assertContains(true, $followed);
-    }
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect(lastRequestJson())->toEqual(['type' => 'artist', 'ids' => ['74ASZWbe4lXaubB36ztrGX']]);
+    expect($followed)->toBeTrue();
+});
 
-    public function testFollowPlaylists()
-    {
-        $this->mockHandler->append(new Response(200, [], json_encode([true])));
+it('can is following playlists', function () {
+    mockHandler()->append(new Response(200, [], json_encode([true])));
 
-        $playlistId = '2v3iNvBX8Ay1Gt2uXtUKUT';
+    $playlistId = '2v3iNvBX8Ay1Gt2uXtUKUT';
+    $usersIds = ['exampleuser01'];
 
-        $followed = $this->client->followApi->followPlaylists($playlistId);
+    $followed = client()->followApi->isFollowingPlaylists($playlistId, $usersIds);
 
-        $this->assertTrue($followed);
-    }
+    $requestUri = '/v1/playlists/' . $playlistId . '/followers/contains?' . http_build_query([
+        'ids' => $usersIds,
+    ]);
 
-    public function testGetUserFollowedArtists()
-    {
-        $this->mockHandler->append(new Response(200, [], load_fixture('artists')));
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect($followed)->toContain(true);
+});
 
-        $artists = $this->client->followApi->getCurrentUserFollowedArtists('artist');
+it('can follow playlists', function () {
+    mockHandler()->append(new Response(200, [], json_encode([true])));
 
-        $this->assertNotEmpty($artists);
-    }
+    $playlistId = '2v3iNvBX8Ay1Gt2uXtUKUT';
 
-    public function testUnfollowArtists()
-    {
-        $this->mockHandler->append(new Response(204, []));
+    $followed = client()->followApi->followPlaylists($playlistId);
 
-        $artistsIds = ['74ASZWbe4lXaubB36ztrGX'];
+    $requestUri = '/v1/playlists/' . $playlistId . '/followers';
 
-        $unfollowed = $this->client->followApi->unfollowArtists($artistsIds);
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect($followed)->toBeTrue();
+});
 
-        $this->assertTrue($unfollowed);
-    }
+it('can get user followed artists', function () {
+    mockHandler()->append(new Response(200, [], load_fixture('artists')));
 
-    public function testUnfollowUsers()
-    {
-        $this->mockHandler->append(new Response(204, []));
+    $artists = client()->followApi->getCurrentUserFollowedArtists('artist', ['limit' => 5]);
 
-        $usersIds = ['exampleuser01'];
+    $requestUri = '/v1/me/following?' . http_build_query(['limit' => 5, 'type' => 'artist']);
 
-        $unfollowed = $this->client->followApi->unfollowUsers($usersIds);
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect($artists)->not->toBeEmpty();
+});
 
-        $this->assertTrue($unfollowed);
-    }
+it('can unfollow artists', function () {
+    mockHandler()->append(new Response(204, []));
 
-    public function testUnfollowPlaylist()
-    {
-        $this->mockHandler->append(new Response(204, []));
+    $artistsIds = ['74ASZWbe4lXaubB36ztrGX'];
 
-        $playlistId = '2v3iNvBX8Ay1Gt2uXtUKUT';
+    $unfollowed = client()->followApi->unfollowArtists($artistsIds);
 
-        $unfollowed = $this->client->followApi->unfollowPlaylist($playlistId);
+    $requestUri = '/v1/me/following';
 
-        $this->assertTrue($unfollowed);
-    }
-}
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect(lastRequestJson())->toEqual(['type' => 'artist', 'ids' => $artistsIds]);
+    expect($unfollowed)->toBeTrue();
+});
+
+it('can unfollow users', function () {
+    mockHandler()->append(new Response(204, []));
+
+    $usersIds = ['exampleuser01'];
+
+    $unfollowed = client()->followApi->unfollowUsers($usersIds);
+
+    $requestUri = '/v1/me/following';
+
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect(lastRequestJson())->toEqual(['type' => 'user', 'ids' => $usersIds]);
+    expect($unfollowed)->toBeTrue();
+});
+
+it('can unfollow playlist', function () {
+    mockHandler()->append(new Response(204, []));
+
+    $playlistId = '2v3iNvBX8Ay1Gt2uXtUKUT';
+
+    $unfollowed = client()->followApi->unfollowPlaylist($playlistId);
+
+    $requestUri = '/v1/playlists/' . $playlistId . '/followers';
+
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect($unfollowed)->toBeTrue();
+});

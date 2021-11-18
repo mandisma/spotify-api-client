@@ -1,25 +1,25 @@
 <?php
 
-namespace Mandisma\SpotifyApiClient\Tests\Actions;
-
 use GuzzleHttp\Psr7\Response;
-use Mandisma\SpotifyApiClient\Tests\ApiTestCase;
 
-class PersonalizationApiTest extends ApiTestCase
-{
-    public function testGetUserTopTracks()
-    {
-        $this->mockHandler->append(new Response(200, [], load_fixture('tracks')));
+it('can get user top tracks', function () {
+    mockHandler()->append(new Response(200, [], load_fixture('tracks')));
 
-        $tracks = $this->client->personalizationApi->getCurrentUserTopTracks();
-        $this->assertNotEmpty($tracks);
-    }
+    $tracks = client()->personalizationApi->getCurrentUserTopTracks();
 
-    public function testGetUserTopArtists()
-    {
-        $this->mockHandler->append(new Response(200, [], load_fixture('artists')));
+    $requestUri = '/v1/me/top/tracks';
 
-        $artists = $this->client->personalizationApi->getCurrentUserTopArtists();
-        $this->assertNotEmpty($artists);
-    }
-}
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect($tracks)->not->toBeEmpty();
+});
+
+it('can get user top artists', function () {
+    mockHandler()->append(new Response(200, [], load_fixture('artists')));
+
+    $artists = client()->personalizationApi->getCurrentUserTopArtists();
+
+    $requestUri = '/v1/me/top/artists';
+
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect($artists)->not->toBeEmpty();
+});

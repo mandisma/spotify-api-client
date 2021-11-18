@@ -2,36 +2,44 @@
 
 declare(strict_types=1);
 
-namespace Mandisma\SpotifyApiClient\Tests;
-
 use GuzzleHttp\Psr7\Response;
+use Mandisma\SpotifyApiClient\Api\ShowApi;
 
-class ShowApiTest extends ApiTestCase
-{
-    public function testGetShow()
-    {
-        $this->mockHandler->append(new Response(200, [], load_fixture('show')));
+it('can get show', function () {
+    mockHandler()->append(new Response(200, [], load_fixture('show')));
 
-        $show = $this->client->showApi->getShow('38bS44xjbVVZ3No3ByF1dJ');
+    $showId = '38bS44xjbVVZ3No3ByF1dJ';
 
-        $this->assertNotEmpty($show['id']);
-    }
+    $show = client()->showApi->getShow($showId);
 
-    public function testGetShows()
-    {
-        $this->mockHandler->append(new Response(200, [], load_fixture('shows')));
+    $requestUri = ShowApi::SHOW_URI . "/${showId}";
 
-        $shows = $this->client->showApi->getShows(['5CfCWKI5pZ28U0uOzXkDHe', '5as3aKmN2k11yfDDDSrvaZ']);
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect($show['id'])->not->toBeEmpty();
+});
 
-        $this->assertNotEmpty($shows['shows']);
-    }
+it('can get shows', function () {
+    mockHandler()->append(new Response(200, [], load_fixture('shows')));
 
-    public function testGetShowEpisodes()
-    {
-        $this->mockHandler->append(new Response(200, [], load_fixture('show-episodes')));
+    $showIds = ['5CfCWKI5pZ28U0uOzXkDHe', '5as3aKmN2k11yfDDDSrvaZ'];
 
-        $episodes = $this->client->showApi->getShowEpisodes('38bS44xjbVVZ3No3ByF1dJ');
+    $shows = client()->showApi->getShows($showIds, ['market' => 'FR']);
 
-        $this->assertNotEmpty($episodes['items']);
-    }
-}
+    $requestUri = ShowApi::SHOW_URI . '?' . http_build_query(['market' => 'FR', 'ids' => $showIds]);
+
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect($shows['shows'])->not->toBeEmpty();
+});
+
+it('can get show episodes', function () {
+    mockHandler()->append(new Response(200, [], load_fixture('show-episodes')));
+
+    $showId = '38bS44xjbVVZ3No3ByF1dJ';
+
+    $episodes = client()->showApi->getShowEpisodes($showId);
+
+    $requestUri = ShowApi::SHOW_URI . "/${showId}/episodes";
+
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect($episodes['items'])->not->toBeEmpty();
+});

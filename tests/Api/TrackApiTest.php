@@ -2,60 +2,75 @@
 
 declare(strict_types=1);
 
-namespace Mandisma\SpotifyApiClient\Tests;
-
 use GuzzleHttp\Psr7\Response;
 
-class TrackApiTest extends ApiTestCase
-{
-    public function testGetAudioAnalysis()
-    {
-        $this->mockHandler->append(new Response(200, [], load_fixture('audio-analysis')));
+it('can get audio analysis', function () {
+    mockHandler()->append(new Response(200, [], load_fixture('audio-analysis')));
 
-        $audioAnalysis = $this->client->trackApi->getAudioAnalysis('0eGsygTp906u18L0Oimnem');
+    $trackId = '0eGsygTp906u18L0Oimnem';
 
-        $this->assertNotEmpty($audioAnalysis['track']);
-    }
+    $audioAnalysis = client()->trackApi->getAudioAnalysis($trackId);
 
-    public function testGetAudioFeaturesForTrack()
-    {
-        $this->mockHandler->append(new Response(200, [], load_fixture('track-audio-features')));
+    $requestUri = "/v1/audio-analysis/${trackId}";
 
-        $audioFeatures = $this->client->trackApi->getAudioFeaturesForTrack('0eGsygTp906u18L0Oimnem');
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect($audioAnalysis['track'])->not->toBeEmpty();
+});
 
-        $this->assertNotEmpty($audioFeatures['id']);
-    }
+it('can get audio features for track', function () {
+    mockHandler()->append(new Response(200, [], load_fixture('track-audio-features')));
 
-    public function testGetAudioFeaturesForTracks()
-    {
-        $this->mockHandler->append(new Response(200, [], load_fixture('tracks-audio-features')));
+    $trackId = '0eGsygTp906u18L0Oimnem';
 
-        $audioFeatures = $this->client->trackApi->getAudioFeaturesForTracks([
-            '0eGsygTp906u18L0Oimnem',
-            'spotify:track:1lDWb6b6ieDQ2xT7ewTC3G',
-        ]);
+    $audioFeatures = client()->trackApi->getAudioFeaturesForTrack($trackId);
 
-        $this->assertNotEmpty($audioFeatures['audio_features']);
-    }
+    $requestUri = "/v1/audio-features/${trackId}";
 
-    public function testGetTracks()
-    {
-        $this->mockHandler->append(new Response(200, [], load_fixture('tracks')));
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect($audioFeatures['id'])->not->toBeEmpty();
+});
 
-        $audioFeatures = $this->client->trackApi->getTracks([
-            '0eGsygTp906u18L0Oimnem',
-            'spotify:track:1lDWb6b6ieDQ2xT7ewTC3G',
-        ]);
+it('can get audio features for tracks', function () {
+    mockHandler()->append(new Response(200, [], load_fixture('tracks-audio-features')));
 
-        $this->assertNotEmpty($audioFeatures['tracks']);
-    }
+    $trackIds = [
+        '0eGsygTp906u18L0Oimnem',
+        'spotify:track:1lDWb6b6ieDQ2xT7ewTC3G',
+    ];
 
-    public function testGetTrack()
-    {
-        $this->mockHandler->append(new Response(200, [], load_fixture('track')));
+    $audioFeatures = client()->trackApi->getAudioFeaturesForTracks($trackIds);
 
-        $audioFeatures = $this->client->trackApi->getTrack('0eGsygTp906u18L0Oimnem');
+    $requestUri = "/v1/audio-features?" . http_build_query(['ids' => $trackIds]);
 
-        $this->assertNotEmpty($audioFeatures['id']);
-    }
-}
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect($audioFeatures['audio_features'])->not->toBeEmpty();
+});
+
+it('can get tracks', function () {
+    mockHandler()->append(new Response(200, [], load_fixture('tracks')));
+
+    $trackIds = [
+        '0eGsygTp906u18L0Oimnem',
+        'spotify:track:1lDWb6b6ieDQ2xT7ewTC3G',
+    ];
+
+    $audioFeatures = client()->trackApi->getTracks($trackIds, ['market' => 'FR']);
+
+    $requestUri = "/v1/tracks?" . http_build_query(['market' => 'FR', 'ids' => implode(',', $trackIds)]);
+
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect($audioFeatures['tracks'])->not->toBeEmpty();
+});
+
+it('can get track', function () {
+    mockHandler()->append(new Response(200, [], load_fixture('track')));
+
+    $trackId = '0eGsygTp906u18L0Oimnem';
+
+    $audioFeatures = client()->trackApi->getTrack($trackId);
+
+    $requestUri = "/v1/tracks/$trackId";
+
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect($audioFeatures['id'])->not->toBeEmpty();
+});

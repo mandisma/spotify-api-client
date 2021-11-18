@@ -2,130 +2,174 @@
 
 declare(strict_types=1);
 
-namespace Mandisma\SpotifyApiClient\Tests;
-
 use GuzzleHttp\Psr7\Response;
+use Mandisma\SpotifyApiClient\Api\PlaylistApi;
 
-class PlaylistApiTest extends ApiTestCase
-{
-    public function testAddItem()
-    {
-        $this->mockHandler->append(new Response(200, [], load_fixture('snapshot')));
+it('can add item', function () {
+    mockHandler()->append(new Response(200, [], load_fixture('snapshot')));
 
-        $added = $this->client->playlistApi->addItem('7oi0w0SLbJ4YyjrOxhZbUv', [
-            'uris' => 'spotify:track:4iV5W9uYEdYUVa79Axb7Rh, spotify:track:1301WleyT98MSxVHPZCA6M,spotify:episode:512ojhOuo1ktJprKbVcKyQ',
-        ]);
+    $playlistId = '7oi0w0SLbJ4YyjrOxhZbUv';
 
-        $this->assertNotEmpty($added);
-    }
+    $added = client()->playlistApi->addItem($playlistId, [
+        'uris' => 'spotify:track:4iV5W9uYEdYUVa79Axb7Rh, spotify:track:1301WleyT98MSxVHPZCA6M,spotify:episode:512ojhOuo1ktJprKbVcKyQ',
+    ]);
 
-    public function testChangeDetails()
-    {
-        $this->mockHandler->append(new Response(200, [], load_fixture('search')));
+    $requestUri = PlaylistApi::PLAYLIST_URI . "/${playlistId}/tracks";
 
-        $changed = $this->client->playlistApi->changeDetails('6Df19VKaShrdWrAnHinwVO', [
-            'name' => 'Playlist Name',
-            'public' => true,
-        ]);
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect($added)->not->toBeEmpty();
+});
 
-        $this->assertEquals(true, $changed);
-    }
+it('can change details', function () {
+    mockHandler()->append(new Response(200, [], load_fixture('search')));
 
-    public function testCreate()
-    {
-        $this->mockHandler->append(new Response(200, [], load_fixture('playlist')));
+    $playlistId = '6Df19VKaShrdWrAnHinwVO';
 
-        $createdPlaylist = $this->client->playlistApi->create('thelinmichael', 'New Playlist');
+    $changed = client()->playlistApi->changeDetails($playlistId, [
+        'name' => 'Playlist Name',
+        'public' => true,
+    ]);
 
-        $this->assertNotEmpty($createdPlaylist);
-    }
+    $requestUri = PlaylistApi::PLAYLIST_URI . "/${playlistId}";
 
-    public function testGetCurrentUserPlaylists()
-    {
-        $this->mockHandler->append(new Response(200, [], load_fixture('playlists')));
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect($changed)->toEqual(true);
+});
 
-        $playlists = $this->client->playlistApi->getCurrentUserPlaylists();
+it('can create', function () {
+    mockHandler()->append(new Response(200, [], load_fixture('playlist')));
 
-        $this->assertNotEmpty($playlists['items']);
-    }
+    $userId = 'thelinmichael';
+    $playlistName = 'New Playlist';
 
-    public function testGetUserPlaylists()
-    {
-        $this->mockHandler->append(new Response(200, [], load_fixture('playlists')));
+    $createdPlaylist = client()->playlistApi->create($userId, $playlistName, ['public' => true]);
 
-        $userId = 'user001';
+    $requestUri = "/v1/users/${userId}/playlists";
 
-        $playlists = $this->client->playlistApi->getUserPlaylists($userId);
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect(lastRequestJson())->toEqual(['public' => true, 'name' => $playlistName]);
+    expect($createdPlaylist)->not->toBeEmpty();
+});
 
-        $this->assertNotEmpty($playlists['items']);
-    }
+it('can get current user playlists', function () {
+    mockHandler()->append(new Response(200, [], load_fixture('playlists')));
 
-    public function testGetPlaylist()
-    {
-        $this->mockHandler->append(new Response(200, [], load_fixture('playlist')));
+    $playlists = client()->playlistApi->getCurrentUserPlaylists();
 
-        $playlist = $this->client->playlistApi->getPlaylist('59ZbFPES4DQwEjBpWHzrtC');
+    $requestUri = "/v1/me/playlists";
 
-        $this->assertNotEmpty($playlist['id']);
-    }
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect($playlists['items'])->not->toBeEmpty();
+});
 
-    public function testGetCoverImage()
-    {
-        $this->mockHandler->append(new Response(200, [], load_fixture('cover')));
+it('can get user playlists', function () {
+    mockHandler()->append(new Response(200, [], load_fixture('playlists')));
 
-        $cover = $this->client->playlistApi->getCoverImage('59ZbFPES4DQwEjBpWHzrtC');
+    $userId = 'user001';
 
-        $this->assertNotEmpty($cover);
-    }
+    $playlists = client()->playlistApi->getUserPlaylists($userId);
 
-    public function testGetItems()
-    {
-        $this->mockHandler->append(new Response(200, [], load_fixture('playlist-items')));
+    $requestUri = "/v1/users/${userId}/playlists";
 
-        $items = $this->client->playlistApi->getItems('59ZbFPES4DQwEjBpWHzrtC');
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect($playlists['items'])->not->toBeEmpty();
+});
 
-        $this->assertNotEmpty($items['items']);
-    }
+it('can get playlist', function () {
+    mockHandler()->append(new Response(200, [], load_fixture('playlist')));
 
-    public function testRemoveItems()
-    {
-        $this->mockHandler->append(new Response(200, [], load_fixture('snapshot')));
+    $playlistId = '59ZbFPES4DQwEjBpWHzrtC';
 
-        $tracks = [
-            ["uri" => "spotify:track:4iV5W9uYEdYUVa79Axb7Rh"],
-            ["uri" => "spotify:track:1301WleyT98MSxVHPZCA6M"],
-            ["uri" => "spotify:episode:512ojhOuo1ktJprKbVcKyQ"],
-        ];
+    $playlist = client()->playlistApi->getPlaylist($playlistId);
 
-        $removed = $this->client->playlistApi->removeItems('71m0QB5fUFrnqfnxVerUup', $tracks);
+    $requestUri = PlaylistApi::PLAYLIST_URI . "/${playlistId}";
 
-        $this->assertNotEmpty($removed);
-    }
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect($playlist['id'])->not->toBeEmpty();
+});
 
-    public function testReorderItems()
-    {
-        $this->mockHandler->append(new Response(200, [], load_fixture('snapshot')));
+it('can get cover image', function () {
+    mockHandler()->append(new Response(200, [], load_fixture('cover')));
 
-        $reordered = $this->client->playlistApi->reorderItems('0vXtvEeftmc2aVQD9QBWrQ', 0, 4);
+    $playlistId = '59ZbFPES4DQwEjBpWHzrtC';
 
-        $this->assertNotEmpty($reordered);
-    }
+    $cover = client()->playlistApi->getCoverImage($playlistId);
 
-    public function testReplaceItems()
-    {
-        $this->mockHandler->append(new Response(200, []));
+    $requestUri = PlaylistApi::PLAYLIST_URI . "/${playlistId}/images";
 
-        $replaced = $this->client->playlistApi->replaceItems('0vXtvEeftmc2aVQD9QBWrQ');
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect($cover)->not->toBeEmpty();
+});
 
-        $this->assertEquals(true, $replaced);
-    }
+it('can get items', function () {
+    mockHandler()->append(new Response(200, [], load_fixture('playlist-items')));
 
-    // public function testuploadCover()
-    // {
-    //     $this->mockHandler->append(new Response(200, []));
+    $playlistId = '59ZbFPES4DQwEjBpWHzrtC';
 
-    //     $uploaded = $this->client->playlistApi->uploadCover('0vXtvEeftmc2aVQD9QBWrQ');
+    $items = client()->playlistApi->getItems($playlistId);
 
-    //     $this->assertEquals(true, $uploaded);
-    // }
-}
+    $requestUri = PlaylistApi::PLAYLIST_URI . "/${playlistId}/tracks";
+
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect($items['items'])->not->toBeEmpty();
+});
+
+it('can remove items', function () {
+    mockHandler()->append(new Response(200, [], load_fixture('snapshot')));
+
+    $tracks = [
+        ["uri" => "spotify:track:4iV5W9uYEdYUVa79Axb7Rh"],
+        ["uri" => "spotify:track:1301WleyT98MSxVHPZCA6M"],
+        ["uri" => "spotify:episode:512ojhOuo1ktJprKbVcKyQ"],
+    ];
+
+    $playlistId = '71m0QB5fUFrnqfnxVerUup';
+
+    $removed = client()->playlistApi->removeItems($playlistId, $tracks, ['snapshot' => 'snapshot']);
+
+    $requestUri = PlaylistApi::PLAYLIST_URI . "/${playlistId}/tracks";
+
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect(lastRequestJson())->toEqual(['snapshot' => 'snapshot', 'tracks' => $tracks]);
+    expect($removed)->not->toBeEmpty();
+});
+
+it('can reorder items', function () {
+    mockHandler()->append(new Response(200, [], load_fixture('snapshot')));
+
+    $playlistId = '0vXtvEeftmc2aVQD9QBWrQ';
+
+    $reordered = client()->playlistApi->reorderItems($playlistId, 0, 4, ['snapshot' => 'snapshot']);
+
+    $requestUri = PlaylistApi::PLAYLIST_URI . "/${playlistId}/tracks";
+
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect(lastRequestJson())->toEqual(['snapshot' => 'snapshot', 'range_start' => 0, 'insert_before' => 4]);
+    expect($reordered)->not->toBeEmpty();
+});
+
+it('can replace items', function () {
+    mockHandler()->append(new Response(200, []));
+
+    $playlistId = '0vXtvEeftmc2aVQD9QBWrQ';
+
+    $replaced = client()->playlistApi->replaceItems($playlistId);
+
+    $requestUri = PlaylistApi::PLAYLIST_URI . "/${playlistId}/tracks";
+
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect($replaced)->toEqual(true);
+});
+
+it('can upload cover', function () {
+    mockHandler()->append(new Response(200, []));
+
+    $playlistId = '0vXtvEeftmc2aVQD9QBWrQ';
+
+    $uploaded = client()->playlistApi->uploadCover($playlistId, base64_encode('cover'));
+
+    $requestUri = PlaylistApi::PLAYLIST_URI . "/${playlistId}/images";
+
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect($uploaded)->toEqual(true);
+});

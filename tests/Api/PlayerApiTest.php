@@ -2,126 +2,153 @@
 
 declare(strict_types=1);
 
-namespace Mandisma\SpotifyApiClient\Tests;
-
 use GuzzleHttp\Psr7\Response;
+use Mandisma\SpotifyApiClient\Api\PlayerApi;
 
-class PlayerApiTest extends ApiTestCase
-{
-    public function testGetUserAvailableDevice()
-    {
-        $this->mockHandler->append(new Response(200, [], load_fixture('devices')));
+it('can get user available device', function () {
+    mockHandler()->append(new Response(200, [], load_fixture('devices')));
 
-        $devices = $this->client->playerApi->getAvailableDevices();
+    $devices = client()->playerApi->getAvailableDevices();
 
-        $this->assertNotEmpty($devices['devices']);
-    }
+    $requestUri = PlayerApi::PLAYER_URI . '/devices';
 
-    public function testGetPlayback()
-    {
-        $this->mockHandler->append(new Response(200, [], load_fixture('player')));
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect($devices['devices'])->not->toBeEmpty();
+});
 
-        $playback = $this->client->playerApi->getPlayback();
+it('can get playback', function () {
+    mockHandler()->append(new Response(200, [], load_fixture('player')));
 
-        $this->assertNotEmpty($playback);
-    }
+    $playback = client()->playerApi->getPlayback();
 
-    public function testGetRecentlyPlayedTracks()
-    {
-        $this->mockHandler->append(new Response(200, [], load_fixture('tracks')));
+    $requestUri = PlayerApi::PLAYER_URI;
 
-        $tracks = $this->client->playerApi->getRecentlyPlayedTracks();
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect($playback)->not->toBeEmpty();
+});
 
-        $this->assertNotEmpty($tracks);
-    }
+it('can get recently played tracks', function () {
+    mockHandler()->append(new Response(200, [], load_fixture('tracks')));
 
-    public function testGetCurrentlyPlayingTrack()
-    {
-        $this->mockHandler->append(new Response(200, [], load_fixture('track')));
+    $tracks = client()->playerApi->getRecentlyPlayedTracks();
 
-        $track = $this->client->playerApi->getCurrentlyPlayingTrack();
+    $requestUri = PlayerApi::PLAYER_URI . '/recently-played';
 
-        $this->assertNotEmpty($track['id']);
-    }
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect($tracks)->not->toBeEmpty();
+});
 
-    public function testPausePlayback()
-    {
-        $this->mockHandler->append(new Response(200, []));
+it('can get currently playing track', function () {
+    mockHandler()->append(new Response(200, [], load_fixture('track')));
 
-        $paused = $this->client->playerApi->pausePlayback();
+    $track = client()->playerApi->getCurrentlyPlayingTrack();
 
-        $this->assertTrue($paused);
-    }
+    $requestUri = PlayerApi::PLAYER_URI . '/currently-playing';
 
-    public function testSeekToPosition()
-    {
-        $this->mockHandler->append(new Response(200, []));
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect($track['id'])->not->toBeEmpty();
+});
 
-        $seeked = $this->client->playerApi->seekToPosition(5);
+it('can pause playback', function () {
+    mockHandler()->append(new Response(200, []));
 
-        $this->assertTrue($seeked);
-    }
+    $paused = client()->playerApi->pausePlayback();
 
-    public function testSetRepeatMode()
-    {
-        $this->mockHandler->append(new Response(200, []));
+    $requestUri = PlayerApi::PLAYER_URI . '/pause';
 
-        $set = $this->client->playerApi->setRepeatMode('off');
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect($paused)->toBeTrue();
+});
 
-        $this->assertTrue($set);
-    }
+it('can seek to position', function () {
+    mockHandler()->append(new Response(200, []));
 
-    public function testSetVolume()
-    {
-        $this->mockHandler->append(new Response(200));
+    $seeked = client()->playerApi->seekToPosition(5, ['device_id' => 'device_id']);
 
-        $set = $this->client->playerApi->setVolume(24);
+    $requestUri = PlayerApi::PLAYER_URI . '/seek';
 
-        $this->assertTrue($set);
-    }
+    expect(lastRequestUri()->__toString())->toEqual($requestUri);
+    expect(lastRequestJson())->toEqual(['device_id' => 'device_id', 'position_ms' => 5]);
+    expect($seeked)->toBeTrue();
+});
 
-    public function testSkipToNextTrack()
-    {
-        $this->mockHandler->append(new Response(200));
+it('can set repeat mode', function () {
+    mockHandler()->append(new Response(200, []));
 
-        $skipped = $this->client->playerApi->skipToNextTrack();
+    $set = client()->playerApi->setRepeatMode('off', ['device_id' => 'device_id']);
 
-        $this->assertTrue($skipped);
-    }
+    $requestUri = PlayerApi::PLAYER_URI . '/repeat';
 
-    public function testSkipToPreviousTrack()
-    {
-        $this->mockHandler->append(new Response(200));
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect(lastRequestJson())->toEqual(['device_id' => 'device_id', 'state' => 'off']);
+    expect($set)->toBeTrue();
+});
 
-        $skipped = $this->client->playerApi->skipToPreviousTrack();
+it('can set volume', function () {
+    mockHandler()->append(new Response(200));
 
-        $this->assertTrue($skipped);
-    }
+    $set = client()->playerApi->setVolume(24, ['device_id' => 'device_id']);
 
-    public function testStartPlayback()
-    {
-        $this->mockHandler->append(new Response(200));
+    $requestUri = PlayerApi::PLAYER_URI . '/volume';
 
-        $started = $this->client->playerApi->startPlayback();
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect(lastRequestJson())->toEqual(['device_id' => 'device_id', 'volume_percent' => 24]);
+    expect($set)->toBeTrue();
+});
 
-        $this->assertTrue($started);
-    }
+it('can skip to next track', function () {
+    mockHandler()->append(new Response(200));
 
-    public function testToggleShuffle()
-    {
-        $this->mockHandler->append(new Response(200));
+    $skipped = client()->playerApi->skipToNextTrack();
 
-        $toggled = $this->client->playerApi->toggleShuffle(true);
+    $requestUri = PlayerApi::PLAYER_URI . '/next';
 
-        $this->assertTrue($toggled);
-    }
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect($skipped)->toBeTrue();
+});
 
-    public function testTransferPlayback()
-    {
-        $this->mockHandler->append(new Response(200));
+it('can skip to previous track', function () {
+    mockHandler()->append(new Response(200));
 
-        $transfered = $this->client->playerApi->transferPlayback(['74ASZWbe4lXaubB36ztrGX']);
+    $skipped = client()->playerApi->skipToPreviousTrack();
 
-        $this->assertTrue($transfered);
-    }
-}
+    $requestUri = PlayerApi::PLAYER_URI . '/previous';
+
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect($skipped)->toBeTrue();
+});
+
+it('can start playback', function () {
+    mockHandler()->append(new Response(200));
+
+    $started = client()->playerApi->startPlayback();
+
+    $requestUri = PlayerApi::PLAYER_URI . '/play';
+
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect($started)->toBeTrue();
+});
+
+it('can toggle shuffle', function () {
+    mockHandler()->append(new Response(200));
+
+    $toggled = client()->playerApi->toggleShuffle(true, ['device_id' => 'device_id']);
+
+    $requestUri = PlayerApi::PLAYER_URI . '/shuffle';
+
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect(lastRequestJson())->toEqual(['device_id' => 'device_id', 'state' => true]);
+    expect($toggled)->toBeTrue();
+});
+
+it('can transfer playback', function () {
+    mockHandler()->append(new Response(200));
+
+    $transfered = client()->playerApi->transferPlayback(['74ASZWbe4lXaubB36ztrGX'], ['play' => true]);
+
+    $requestUri = PlayerApi::PLAYER_URI;
+
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect(lastRequestJson())->toEqual(['play' => true, 'device_ids' => ['74ASZWbe4lXaubB36ztrGX']]);
+    expect($transfered)->toBeTrue();
+});

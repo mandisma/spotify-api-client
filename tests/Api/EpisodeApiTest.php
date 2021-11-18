@@ -1,31 +1,30 @@
 <?php
 
-namespace Mandisma\SpotifyApiClient\Tests\Actions;
-
 use GuzzleHttp\Psr7\Response;
-use Mandisma\SpotifyApiClient\Tests\ApiTestCase;
+use Mandisma\SpotifyApiClient\Api\EpisodeApi;
 
-class EpisodeApiTest extends ApiTestCase
-{
-    public function testGetEpisodes()
-    {
-        $this->mockHandler->append(new Response(200, [], load_fixture('episodes')));
+it('can get episodes', function () {
+    mockHandler()->append(new Response(200, [], load_fixture('episodes')));
 
-        $episodesIds = ['77o6BIVlYM3msb4MMIL1jH', '0Q86acNRm6V9GYx55SXKwf'];
+    $episodesIds = ['77o6BIVlYM3msb4MMIL1jH', '0Q86acNRm6V9GYx55SXKwf'];
 
-        $episodes = $this->client->episodeApi->getEpisodes($episodesIds);
+    $episodes = client()->episodeApi->getEpisodes($episodesIds, ['market' => 'FR']);
 
-        $this->assertNotEmpty($episodes);
-    }
+    $requestUri = EpisodeApi::EPISODE_URI . '?' . http_build_query(['market' => 'FR', 'ids' => $episodesIds]);
 
-    public function testGetEpisode()
-    {
-        $this->mockHandler->append(new Response(200, [], load_fixture('episode')));
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect($episodes)->not->toBeEmpty();
+});
 
-        $episodeId = '512ojhOuo1ktJprKbVcKyQ';
+it('can get episode', function () {
+    mockHandler()->append(new Response(200, [], load_fixture('episode')));
 
-        $episode = $this->client->episodeApi->getEpisode($episodeId);
+    $episodeId = '512ojhOuo1ktJprKbVcKyQ';
 
-        $this->assertNotEmpty($episode);
-    }
-}
+    $episode = client()->episodeApi->getEpisode($episodeId);
+
+    $requestUri = EpisodeApi::EPISODE_URI . '/' . $episodeId;
+
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect($episode)->not->toBeEmpty();
+});

@@ -6,8 +6,8 @@ namespace Mandisma\SpotifyApiClient\Api;
 
 final class FollowApi extends AbstractApi implements FollowApiInterface
 {
-    private const TYPE_ARTIST = 'artist';
-    private const TYPE_USER = 'user';
+    public const TYPE_ARTIST = 'artist';
+    public const TYPE_USER = 'user';
 
     /**
      * {@inheritdoc}
@@ -82,7 +82,7 @@ final class FollowApi extends AbstractApi implements FollowApiInterface
      */
     public function followPlaylists(string $playlistId, array $options = []): bool
     {
-        $this->resourceClient->put('v1/playlists/' . $playlistId . '/followers', $options);
+        $this->resourceClient->put('/v1/playlists/' . $playlistId . '/followers', $options);
 
         return true;
     }
