@@ -40,7 +40,7 @@ interface TrackApiInterface
      * Get Spotify catalog information for multiple tracks based on their Spotify IDs.
      * https://developer.spotify.com/documentation/web-api/reference/tracks/get-several-tracks/
      *
-     * @param array $trackIds A list of the Spotify IDs for the tracks. Maximum: 100 IDs.
+     * @param array<string> $trackIds A list of the Spotify IDs for the tracks. Maximum: 100 IDs.
      * @param array $options
      * - string market An ISO 3166-1 alpha-2 country code or the string from_token
      *

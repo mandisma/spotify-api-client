@@ -83,9 +83,9 @@ interface BrowseApiInterface
      * Create a playlist-style listening experience based on seed artists, tracks and genres
      * https://developer.spotify.com/documentation/web-api/reference/browse/get-recommendations/
      *
-     * @param array $seedArtists
-     * @param array $seedGenres
-     * @param array $seedTracks
+     * @param array<string> $seedArtists
+     * @param array<string> $seedGenres
+     * @param array<string> $seedTracks
      * @param array $options
      * - int limit The target size of the list of recommended tracks
      * - string market An ISO 3166-1 alpha-2 country code or the string from_token

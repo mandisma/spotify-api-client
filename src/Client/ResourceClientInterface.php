@@ -6,23 +6,11 @@ namespace Mandisma\SpotifyApiClient\Client;
 
 interface ResourceClientInterface
 {
-    /**
-     * @return array
-     */
     public function get(string $uri, array $query = []): array;
 
-    /**
-     * @return mixed
-     */
-    public function post(string $uri, array $payload = []);
+    public function post(string $uri, array $payload = []): array;
 
-    /**
-     * @return mixed
-     */
-    public function put(string $uri, array $payload = []);
+    public function put(string $uri, array $payload = []): array;
 
-    /**
-     * @return mixed
-     */
-    public function delete(string $uri, array $payload = []);
+    public function delete(string $uri, array $payload = []): array;
 }

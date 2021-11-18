@@ -29,42 +29,27 @@ final class AuthenticatedHttpClient implements ResourceClientInterface
         $this->authorization = $authorization;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function get(string $uri, array $query = []): array
     {
         return $this->request('GET', $uri, [RequestOptions::QUERY => $query]);
     }
 
-    /**
-     * @return mixed
-     */
-    public function post(string $uri, array $payload = [])
+    public function post(string $uri, array $payload = []): array
     {
         return $this->request('POST', $uri, [RequestOptions::JSON => $payload]);
     }
 
-    /**
-     * @return mixed
-     */
-    public function put(string $uri, array $payload = [])
+    public function put(string $uri, array $payload = []): array
     {
         return $this->request('PUT', $uri, [RequestOptions::JSON => $payload]);
     }
 
-    /**
-     * @return mixed
-     */
-    public function delete(string $uri, array $payload = [])
+    public function delete(string $uri, array $payload = []): array
     {
         return $this->request('DELETE', $uri, [RequestOptions::JSON => $payload]);
     }
 
-    /**
-     * @return mixed
-     */
-    private function request(string $method, string $uri = '', array $payload = [])
+    private function request(string $method, string $uri = '', array $payload = []): array
     {
         $payload[RequestOptions::HEADERS] = $this->getHeaders();
 
@@ -78,7 +63,13 @@ final class AuthenticatedHttpClient implements ResourceClientInterface
 
         $responseBody = (string) $response->getBody();
 
-        return json_decode($responseBody, true) ?: $responseBody;
+        $responseData = json_decode($responseBody, true);
+
+        if (! is_array($responseData)) {
+            return [];
+        }
+
+        return $responseData;
     }
 
     /**

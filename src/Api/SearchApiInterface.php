@@ -11,7 +11,7 @@ interface SearchApiInterface
      * https://developer.spotify.com/documentation/web-api/reference/search/
      *
      * @param string $query Search query keywords and optional field filters and operators
-     * @param string|array $type List of item types to search across
+     * @param string|array<string> $type List of item types to search across
      * @param array $options Optionnal parameters
      * - string market An ISO 3166-1 alpha-2 country code or the string from_token
      * - int limit Maximum number of results to return

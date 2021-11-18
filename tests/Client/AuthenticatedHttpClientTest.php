@@ -44,7 +44,7 @@ it('can make put request', function () {
 
     $data = authenticatedHttpClient()->put('test');
 
-    expect($data)->toBeString();
+    expect($data)->toBeArray();
     expect($data)->toBeEmpty();
 });
 
@@ -53,7 +53,7 @@ it('can make delete request', function () {
 
     $data = authenticatedHttpClient()->delete('test');
 
-    expect($data)->toBeString();
+    expect($data)->toBeArray();
     expect($data)->toBeEmpty();
 });
 
