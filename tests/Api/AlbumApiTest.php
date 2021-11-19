@@ -52,3 +52,67 @@ it('can get tracks', function () {
     expect(lastRequestUri())->toEqual($requestUri);
     expect($response)->not->toBeEmpty();
 });
+
+it('can get current user saved albums', function () {
+    mockHandler()->append(new Response(200, [], load_fixture('albums')));
+
+    $albums = client()->albumApi->getCurrentUserSavedAlbums();
+
+    $requestUri = '/v1/me/albums';
+
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect($albums)->not->toBeEmpty();
+});
+
+it('can save current user albums', function () {
+    mockHandler()->append(new Response(200, []));
+
+    $albumsIds = ["4iV5W9uYEdYUVa79Axb7Rh", "1301WleyT98MSxVHPZCA6M"];
+
+    $saved = client()->albumApi->saveCurrentUserAlbums($albumsIds);
+
+    $requestUri = '/v1/me/albums';
+
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect(lastRequestJson())->toEqual(['ids' => $albumsIds]);
+    expect($saved)->toBeTrue();
+});
+
+
+it('can check current user saved albums', function () {
+    mockHandler()->append(new Response(200, [], load_fixture('albums')));
+
+    $albumsIds = ["4iV5W9uYEdYUVa79Axb7Rh", "1301WleyT98MSxVHPZCA6M"];
+
+    $albums = client()->albumApi->checkCurrentUserSavedAlbums($albumsIds);
+
+    $requestUri = '/v1/me/albums/contains?' . http_build_query(['ids' => $albumsIds]);
+
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect($albums)->not->toBeEmpty();
+});
+
+it('can remove current user saved albums', function () {
+    mockHandler()->append(new Response(200, []));
+
+    $albumsIds = ["4iV5W9uYEdYUVa79Axb7Rh", "1301WleyT98MSxVHPZCA6M"];
+
+    $removed = client()->albumApi->removeCurrentUserSavedAlbums($albumsIds);
+
+    $requestUri = '/v1/me/albums';
+
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect(lastRequestJson())->toEqual(['ids' => $albumsIds]);
+    expect($removed)->toBeTrue();
+});
+
+it('can get new releases', function () {
+    mockHandler()->append(new Response(200, [], load_fixture('albums')));
+
+    $releases = client()->albumApi->getNewReleases();
+
+    $requestUri = '/v1/browse/new-releases';
+
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect($releases)->not->toBeEmpty();
+});

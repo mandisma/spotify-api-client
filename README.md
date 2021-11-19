@@ -6,7 +6,7 @@
 
 PHP Wrapper for the Spotify Api.
 
-The library follow the structure from the Spotify Web Api Reference : https://developer.spotify.com/documentation/web-api/reference/
+The library follow the structure from the Spotify Web Api Reference : <https://developer.spotify.com/documentation/web-api/reference/#/>
 
 ## Installation
 

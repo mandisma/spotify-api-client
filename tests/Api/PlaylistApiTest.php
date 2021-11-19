@@ -173,3 +173,27 @@ it('can upload cover', function () {
     expect(lastRequestUri())->toEqual($requestUri);
     expect($uploaded)->toEqual(true);
 });
+
+it('can get playlists with category', function () {
+    mockHandler()->append(new Response(200, [], load_fixture('playlists')));
+
+    $categoryId = 'party';
+
+    $playlists = client()->playlistApi->getPlaylistsByCategory($categoryId);
+
+    $requestUri = '/v1/browse/categories/' . $categoryId . '/playlists';
+
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect($playlists)->not->toBeEmpty();
+});
+
+it('can get featured playlists', function () {
+    mockHandler()->append(new Response(200, [], load_fixture('playlists')));
+
+    $playlists = client()->playlistApi->getFeaturedPlaylists();
+
+    $requestUri = '/v1/browse/featured-playlists';
+
+    expect(lastRequestUri())->toEqual($requestUri);
+    expect($playlists)->not->toBeEmpty();
+});

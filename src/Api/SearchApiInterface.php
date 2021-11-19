@@ -8,7 +8,7 @@ interface SearchApiInterface
 {
     /**
      * Get Spotify Catalog information about artists, albums, tracks or playlists that match a keyword string
-     * https://developer.spotify.com/documentation/web-api/reference/search/
+     * https://developer.spotify.com/documentation/web-api/reference/#/operations/search
      *
      * @param string $query Search query keywords and optional field filters and operators
      * @param string|array<string> $type List of item types to search across

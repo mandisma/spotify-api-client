@@ -53,4 +53,66 @@ final class TrackApi extends AbstractApi implements TrackApiInterface
     {
         return $this->resourceClient->get("/v1/tracks/${trackId}");
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getRecommendations(array $seedArtists, array $seedGenres, array $seedTracks, array $options = []): array
+    {
+        $options = array_merge($options, [
+            'seed_artists' => implode(',', $seedArtists),
+            'seed_genres' => implode(',', $seedGenres),
+            'seed_tracks' => implode(',', $seedTracks),
+        ]);
+
+        return $this->resourceClient->get('/v1/recommendations', $options);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function checkCurrentUserSavedTracks(array $trackIds): array
+    {
+        $params = [
+            'ids' => $trackIds,
+        ];
+
+        return $this->resourceClient->get('/v1/me/tracks/contains', $params);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCurrentUserSavedTracks(array $options = []): array
+    {
+        return $this->resourceClient->get('/v1/me/tracks', $options);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeCurrentUserSavedTracks(array $trackIds): bool
+    {
+        $params = [
+            'ids' => $trackIds,
+        ];
+
+        $this->resourceClient->delete('/v1/me/tracks', $params);
+
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function saveCurrentUserTracks(array $trackIds): bool
+    {
+        $params = [
+            'ids' => $trackIds,
+        ];
+
+        $this->resourceClient->put('/v1/me/tracks', $params);
+
+        return true;
+    }
 }

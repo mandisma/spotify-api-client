@@ -130,4 +130,20 @@ final class PlaylistApi extends AbstractApi implements PlaylistApiInterface
 
         return true;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPlaylistsByCategory(string $categoryId, array $options = []): array
+    {
+        return $this->resourceClient->get('/v1/browse/categories/' . $categoryId . '/playlists', $options);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFeaturedPlaylists(array $options = []): array
+    {
+        return $this->resourceClient->get('/v1/browse/featured-playlists', $options);
+    }
 }

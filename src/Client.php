@@ -6,17 +6,16 @@ namespace Mandisma\SpotifyApiClient;
 
 use Mandisma\SpotifyApiClient\Api\AlbumApiInterface;
 use Mandisma\SpotifyApiClient\Api\ArtistApiInterface;
-use Mandisma\SpotifyApiClient\Api\BrowseApiInterface;
+use Mandisma\SpotifyApiClient\Api\CategoryApiInterface;
 use Mandisma\SpotifyApiClient\Api\EpisodeApiInterface;
-use Mandisma\SpotifyApiClient\Api\FollowApiInterface;
-use Mandisma\SpotifyApiClient\Api\LibraryApiInterface;
-use Mandisma\SpotifyApiClient\Api\PersonalizationApiInterface;
+use Mandisma\SpotifyApiClient\Api\GenreApiInterface;
+use Mandisma\SpotifyApiClient\Api\MarketApiInterface;
 use Mandisma\SpotifyApiClient\Api\PlayerApiInterface;
 use Mandisma\SpotifyApiClient\Api\PlaylistApiInterface;
 use Mandisma\SpotifyApiClient\Api\SearchApiInterface;
 use Mandisma\SpotifyApiClient\Api\ShowApiInterface;
 use Mandisma\SpotifyApiClient\Api\TrackApiInterface;
-use Mandisma\SpotifyApiClient\Api\UserProfileApiInterface;
+use Mandisma\SpotifyApiClient\Api\UserApiInterface;
 
 final class Client
 {
@@ -36,9 +35,9 @@ final class Client
     public $artistApi;
 
     /**
-     * @var BrowseApiInterface
+     * @var CategoryApiInterface
      */
-    public $browseApi;
+    public $categoryApi;
 
     /**
      * @var EpisodeApiInterface
@@ -46,19 +45,14 @@ final class Client
     public $episodeApi;
 
     /**
-     * @var FollowApiInterface
+     * @var GenreApiInterface
      */
-    public $followApi;
+    public $genreApi;
 
     /**
-     * @var LibraryApiInterface
+     * @var MarketApiInterface
      */
-    public $libraryApi;
-
-    /**
-     * @var PersonalizationApiInterface
-     */
-    public $personalizationApi;
+    public $marketApi;
 
     /**
      * @var PlayerApiInterface
@@ -86,9 +80,9 @@ final class Client
     public $trackApi;
 
     /**
-     * @var UserProfileApiInterface
+     * @var UserApiInterface
      */
-    public $userProfileApi;
+    public $userApi;
 
     /**
      * Client constructor.
@@ -96,30 +90,28 @@ final class Client
     public function __construct(
         AlbumApiInterface $albumApi,
         ArtistApiInterface $artistApi,
-        BrowseApiInterface $browseApi,
+        CategoryApiInterface $categoryApi,
         EpisodeApiInterface $episodeApi,
-        FollowApiInterface $followApi,
-        LibraryApiInterface $libraryApi,
-        PersonalizationApiInterface $personalizationApi,
+        GenreApiInterface $genreApi,
+        MarketApiInterface $marketApi,
         PlayerApiInterface $playerApi,
         PlaylistApiInterface $playlistApi,
         SearchApiInterface $searchApi,
         ShowApiInterface $showApi,
         TrackApiInterface $trackApi,
-        UserProfileApiInterface $userProfileApi
+        UserApiInterface $userApi
     ) {
         $this->albumApi = $albumApi;
         $this->artistApi = $artistApi;
-        $this->browseApi = $browseApi;
+        $this->categoryApi = $categoryApi;
         $this->episodeApi = $episodeApi;
-        $this->followApi = $followApi;
-        $this->libraryApi = $libraryApi;
-        $this->personalizationApi = $personalizationApi;
+        $this->genreApi = $genreApi;
+        $this->marketApi = $marketApi;
         $this->playerApi = $playerApi;
         $this->playlistApi = $playlistApi;
         $this->searchApi = $searchApi;
         $this->showApi = $showApi;
         $this->trackApi = $trackApi;
-        $this->userProfileApi = $userProfileApi;
+        $this->userApi = $userApi;
     }
 }

@@ -106,5 +106,6 @@ abstract class ApiTestCase extends TestCase
         $this->mockHandler = null;
         $this->httpClient = null;
         $this->client = null;
+        $this->container = [];
     }
 }

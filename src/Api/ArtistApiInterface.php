@@ -8,7 +8,7 @@ interface ArtistApiInterface
 {
     /**
      * Get Spotify catalog information for a single artist identified by their unique Spotify ID
-     * https://developer.spotify.com/documentation/web-api/reference/artists/get-artist/
+     * https://developer.spotify.com/documentation/web-api/reference/#/operations/get-an-artist
      *
      * @param string $artistId The Spotify ID for the artist
      *
@@ -18,7 +18,7 @@ interface ArtistApiInterface
 
     /**
      * Get Spotify catalog information about an artist’s albums.
-     * https://developer.spotify.com/documentation/web-api/reference/artists/get-artists-albums/
+     * https://developer.spotify.com/documentation/web-api/reference/#/operations/get-an-artists-albums
      *
      * @param string $artistId The Spotify ID of the the artist
      * @param array $options Optional parameters
@@ -33,7 +33,7 @@ interface ArtistApiInterface
 
     /**
      * Get Spotify catalog information about an artist’s top tracks by country
-     * https://developer.spotify.com/documentation/web-api/reference/artists/get-artists-top-tracks/
+     * https://developer.spotify.com/documentation/web-api/reference/#/operations/get-an-artists-top-tracks
      *
      * @param string $artistId The Spotify ID for the artist
      * @param string $country An ISO 3166-1 alpha-2 country code or the string from_token.
@@ -45,7 +45,7 @@ interface ArtistApiInterface
     /**
      * Get Spotify catalog information about artists similar to a given artist.
      * Similarity is based on analysis of the Spotify community’s listening history
-     * https://developer.spotify.com/documentation/web-api/reference/artists/get-related-artists/
+     * https://developer.spotify.com/documentation/web-api/reference/#/operations/get-an-artists-related-artists
      *
      * @param string $artistId The Spotify ID for the artist
      *
@@ -55,7 +55,7 @@ interface ArtistApiInterface
 
     /**
      * Get Spotify catalog information for several artists based on their Spotify IDs
-     * https://developer.spotify.com/documentation/web-api/reference/artists/get-several-artists/
+     * https://developer.spotify.com/documentation/web-api/reference/#/operations/get-multiple-artists
      *
      * @param array $artistIds List of the Spotify IDs for the artists
      *
