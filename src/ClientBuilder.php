@@ -23,10 +23,7 @@ use Mandisma\SpotifyApiClient\Security\AuthorizationInterface;
 
 final class ClientBuilder
 {
-    /**
-     * @var HttpClientInterface
-     */
-    private $httpClient;
+    private HttpClientInterface $httpClient;
 
     public function __construct(?HttpClientInterface $httpClient = null)
     {

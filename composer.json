@@ -17,7 +17,7 @@
     ],
     "require": {
         "guzzlehttp/guzzle": "^7.2",
-        "php": "^7.3|^8.0",
+        "php": "^8.0 || ^8.1",
         "ext-json": "*"
     },
     "require-dev": {
@@ -41,5 +41,10 @@
         "psalm": "psalm",
         "lint": "php-cs-fixer fix --config=.php_cs.dist.php -v --dry-run",
         "lint:fix": "php-cs-fixer fix --config=.php_cs.dist.php -v"
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
     }
 }

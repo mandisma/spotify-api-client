@@ -8,13 +8,7 @@ use Mandisma\SpotifyApiClient\Client\ResourceClientInterface;
 
 abstract class AbstractApi
 {
-    /**
-     * @var ResourceClientInterface
-     */
-    protected $resourceClient;
-
-    public function __construct(ResourceClientInterface $resourceClient)
+    public function __construct(protected ResourceClientInterface $resourceClient)
     {
-        $this->resourceClient = $resourceClient;
     }
 }

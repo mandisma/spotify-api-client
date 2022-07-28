@@ -25,93 +25,21 @@ final class Client
     public const API_URL = 'https://api.spotify.com';
 
     /**
-     * @var AlbumApiInterface
-     */
-    public $albumApi;
-
-    /**
-     * @var ArtistApiInterface
-     */
-    public $artistApi;
-
-    /**
-     * @var CategoryApiInterface
-     */
-    public $categoryApi;
-
-    /**
-     * @var EpisodeApiInterface
-     */
-    public $episodeApi;
-
-    /**
-     * @var GenreApiInterface
-     */
-    public $genreApi;
-
-    /**
-     * @var MarketApiInterface
-     */
-    public $marketApi;
-
-    /**
-     * @var PlayerApiInterface
-     */
-    public $playerApi;
-
-    /**
-     * @var PlaylistApiInterface
-     */
-    public $playlistApi;
-
-    /**
-     * @var SearchApiInterface
-     */
-    public $searchApi;
-
-    /**
-     * @var ShowApiInterface
-     */
-    public $showApi;
-
-    /**
-     * @var TrackApiInterface
-     */
-    public $trackApi;
-
-    /**
-     * @var UserApiInterface
-     */
-    public $userApi;
-
-    /**
      * Client constructor.
      */
     public function __construct(
-        AlbumApiInterface $albumApi,
-        ArtistApiInterface $artistApi,
-        CategoryApiInterface $categoryApi,
-        EpisodeApiInterface $episodeApi,
-        GenreApiInterface $genreApi,
-        MarketApiInterface $marketApi,
-        PlayerApiInterface $playerApi,
-        PlaylistApiInterface $playlistApi,
-        SearchApiInterface $searchApi,
-        ShowApiInterface $showApi,
-        TrackApiInterface $trackApi,
-        UserApiInterface $userApi
+        public AlbumApiInterface $albumApi,
+        public ArtistApiInterface $artistApi,
+        public CategoryApiInterface $categoryApi,
+        public EpisodeApiInterface $episodeApi,
+        public GenreApiInterface $genreApi,
+        public MarketApiInterface $marketApi,
+        public PlayerApiInterface $playerApi,
+        public PlaylistApiInterface $playlistApi,
+        public SearchApiInterface $searchApi,
+        public ShowApiInterface $showApi,
+        public TrackApiInterface $trackApi,
+        public UserApiInterface $userApi
     ) {
-        $this->albumApi = $albumApi;
-        $this->artistApi = $artistApi;
-        $this->categoryApi = $categoryApi;
-        $this->episodeApi = $episodeApi;
-        $this->genreApi = $genreApi;
-        $this->marketApi = $marketApi;
-        $this->playerApi = $playerApi;
-        $this->playlistApi = $playlistApi;
-        $this->searchApi = $searchApi;
-        $this->showApi = $showApi;
-        $this->trackApi = $trackApi;
-        $this->userApi = $userApi;
     }
 }

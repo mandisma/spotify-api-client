@@ -11,22 +11,10 @@ use Mandisma\SpotifyApiClient\Security\AuthorizationInterface;
 
 final class AuthenticatedHttpClient implements ResourceClientInterface
 {
-    /**
-     * @var ClientInterface
-     */
-    private $baseHttpClient;
-
-    /**
-     * @var AuthorizationInterface
-     */
-    private $authorization;
-
     public function __construct(
-        ClientInterface $baseHttpClient,
-        AuthorizationInterface $authorization
+        private ClientInterface $baseHttpClient,
+        private AuthorizationInterface $authorization
     ) {
-        $this->baseHttpClient = $baseHttpClient;
-        $this->authorization = $authorization;
     }
 
     public function get(string $uri, array $query = []): array
